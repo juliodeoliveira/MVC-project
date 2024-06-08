@@ -2,20 +2,29 @@
 
 namespace core;
 
-use app\classes\Uri;
+// use app\classes\Uri;
 use app\exceptions\ControllerNotExistException;
+
+class Uri {
+    public static function uri() {
+        return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+    }
+
+}
 
 class Controller {
     private $uri;
     private $namespace;
+
     private $controller;
+
     private $folders = [
         'app\controllers\portal', 
         'app\controllers\admin'
     ];
     
     public function __construct() {
-        $this->uri = Uri::uri();
+        $this->uri = URI::uri();
     }
 
     public function load() {
@@ -27,14 +36,14 @@ class Controller {
 
     private function controllerHome() {
         if (!$this->controllerExist('HomeController')) {
-            throw new ControllerNotExistException("Esse controller não existe");
+            
+            throw new ControllerNotExistException("A página que você está tentando acessar não existe!");
         }
-        echo "You are at home!";
         return $this->instantiateController();
     }
 
     private function controllerNotHome() {
-        echo "You are not at home!";
+        throw new ControllerNotExistException("A página que você está tentando acessar não existe!");
     }
 
     private function isHome() {
@@ -57,7 +66,8 @@ class Controller {
 
     private function instantiateController() {
         $controller = $this->namespace."\\".$this->controller;
-        echo "You are at home! XD";
+        echo "Você está na página inicial! <br>";
+        echo "<br>";
         return new $controller;
     }   
 }

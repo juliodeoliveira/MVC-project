@@ -2,17 +2,11 @@
 
 namespace core;
 
-// use app\classes\Uri;
+use app\classes\Uri;
 use app\exceptions\ControllerNotExistException;
 
-class Uri {
-    public static function uri() {
-        return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-    }
-
-}
-
-class Controller {
+class Controller 
+{
     private $uri;
     private $namespace;
 
@@ -23,34 +17,56 @@ class Controller {
         'app\controllers\admin'
     ];
     
-    public function __construct() {
+    public function __construct() 
+    {
         $this->uri = URI::uri();
     }
 
-    public function load() {
+    public function load() 
+    {
         if ($this->isHome()) {
             return $this->controllerHome();
         }
         return $this->controllerNotHome();
     }
 
-    private function controllerHome() {
+    private function controllerHome() 
+    {
         if (!$this->controllerExist('HomeController')) {
-            
             throw new ControllerNotExistException("A página que você está tentando acessar não existe!");
         }
+
         return $this->instantiateController();
     }
 
-    private function controllerNotHome() {
-        throw new ControllerNotExistException("A página que você está tentando acessar não existe!");
+    private function controllerNotHome() 
+    {
+        $controller = $this->getControllerNotHome();
+
+        if (!$this->controllerExist($controller)) {
+            throw new ControllerNotExistException("Esse controller não existe");
+        }
+
+        return $this->instantiateController();
     }
 
-    private function isHome() {
+    private function getControllerNotHome()
+    {
+        if (substr_count($this->uri, "/") > 1) {
+            list($controller) = array_values(array_filter(explode("/", $this->uri)));
+            return ucfirst($controller)."Controller";
+        }
+        
+        return ucfirst(ltrim($this->uri, "/")) . "Controller";
+    }
+
+    private function isHome() 
+    {
         return ($this->uri == "/");
     }
  
-    private function controllerExist($controller) {
+    private function controllerExist($controller) 
+    {
         $controllerExist = false;
 
         foreach ($this->folders as $folder) {
@@ -64,10 +80,9 @@ class Controller {
         return $controllerExist;
     }
 
-    private function instantiateController() {
+    private function instantiateController() 
+    {
         $controller = $this->namespace."\\".$this->controller;
-        echo "Você está na página inicial! <br>";
-        echo "<br>";
         return new $controller;
     }   
 }

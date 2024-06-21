@@ -16,7 +16,7 @@ class CursoController extends ContainerController
     {
         $this->view([
             'title' => "Curso",
-            'curso' => "PHP MVC"
+            'curso' => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta autem, et praesentium fuga, ex ducimus ad adipisci nihil omnis enim voluptates deleniti debitis necessitatibus inventore animi pariatur totam? Ex, nemo."
         ], 'portal.curso');
     }
 

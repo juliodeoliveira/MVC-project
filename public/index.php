@@ -1,5 +1,24 @@
 <?php
-// https://devclass.com.br/curso/show/12/23
+// TODO: Para esse projeto, como ele não especificou nenhum tema, vou criar uma concessionária, onde vende apenas carros da ficção
+// TODO: ou loja de planetas.
+// Até agora, nenhuma api, carro ou planetas, fornece imagens, então vou usar uma api do google imagens para pesquisar
+// api google imagens: https://www.searchapi.io/docs/google-images (filtrar por tamanho é possível aqui)
+// api de planetas: https://api-ninjas.com/api/planets
+// api de carros: https://www.carqueryapi.com/, https://deividfortuna.github.io/fipe/, https://docs.carsxe.com/vehicle-images
+// api 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 require "../bootstrap.php";
 
 ini_set('display_errors', 1);

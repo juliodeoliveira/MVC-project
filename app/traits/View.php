@@ -9,7 +9,11 @@ trait View
     private function twig()
     {
         $twig = new Twig;
-        return $twig->loadTwig();
+        $loadTwig = $twig->loadTwig();
+
+        $twig->loadExtensions();
+        $twig->loadFunctions();
+        return $loadTwig;
     }
 
     public function view($data, $view)
@@ -17,4 +21,5 @@ trait View
         $template = $this->twig()->load(str_replace(".", "/", $view) . ".html");
         return $template->display($data);
     }
+    
 }

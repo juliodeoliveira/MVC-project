@@ -27,7 +27,20 @@ class ClientRepository
 
     public function update(Client $client)
     {
+        $updateValues = $this->connection->prepare("UPDATE customers SET enterprise_name = :enterpriseName, email = :email, phone_number = :phoneNumber, cep = :cep, street = :street, house_number = :houseNumber, complement = :complement, neighborhood = :neighborhood, city = :city, state = :state");
+        
+        $updateValues->bindValue(":enterpriseName", $client->getEnterpriseName());
+        $updateValues->bindValue(":email", $client->getEmail());
+        $updateValues->bindValue(":phoneNumber", $client->getPhoneNumber());
+        $updateValues->bindValue(":cep", $client->getCep());
+        $updateValues->bindValue(":street", $client->getStreet());
+        $updateValues->bindValue(":houseNumber", $client->getHouseNumber());
+        $updateValues->bindValue(":complement", $client->getComplement());
+        $updateValues->bindValue(":neighborhood", $client->getNeighborhood());
+        $updateValues->bindValue(":city", $client->getCity());
+        $updateValues->bindValue(":state", $client->getState());
 
+        $updateValues->execute();
     }
 
     public function delete()

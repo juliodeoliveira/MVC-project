@@ -1,25 +1,5 @@
-<style>
-    input, textarea {
-        display: block;
-        margin: 10px;
-    }
-</style>
-<form action="index.php" method="POST">
-    <input type="text" name="enterpriseName" require placeholder="Nome da empresa *">
-    <input type="email" name="email" require placeholder="Email *">
-    <input type="tel" name="phone_number" id="telephone" placeholder="Telefone">
-    <input type="text" name="cep" id="cep" placeholder="CEP">
-    <input type="text" name="street" id="street" placeholder="Rua">
-    <input type="text" name="nHouse" id="house" placeholder="Número da casa">
-    <input type="text" name="neighbor" id="neightborhood" placeholder="Bairro">
-    <input type="text" name="city" id="city" placeholder="Cidade">
-    <input type="text" name="state" id="state" placeholder="Estado (UF)">
-    <textarea name="complement" id="complement" placeholder="Complemento"></textarea>
-    
-    <input type="submit" value="Enviar">
-</form>
-
 <?php
+readfile("../views/portal/cadastro.html");
 
 use App\Controllers\blog\ClientController;
 use App\Repositories\ClientRepository;
@@ -47,12 +27,29 @@ try {
     // $parameters = $parameters->load();
 
     // $controller -> $method($parameters);
+
+    if (empty($_POST["enterpriseName"]) || empty($_POST["email"])) {
+        echo "Insira o nome e email da empresa!";
+        exit();
+    }
+
     $rep = new ClientRepository();
     $controller = new ClientController();
     
     $newClient = new Client($_POST['enterpriseName'], $_POST['email']);
+    $newClient->setPhoneNumber($_POST["phone_number"]);
+    $newClient->setCep($_POST["cep"]);
+    $newClient->setStreet($_POST["street"]);
+    $newClient->setHouseNumber($_POST["nHouse"]);
+    $newClient->setNeighbor($_POST["neighbor"]);
+    $newClient->setCity($_POST["city"]);
+    $newClient->setState($_POST["state"]);
+    $newClient->setComplement($_POST["complement"]);
     
     $id = $rep->insert($newClient);
+    if ($id != null) {
+        echo "Usuário cadastrado!";
+    }
 
     $client = $rep->show($id); 
 
@@ -60,7 +57,7 @@ try {
 
     // $update = $rep->update($newClient);
 
-    dd($client);
+    dd("<br>".$client);
 } catch (\Exception $e) {
     dd($e -> getMessage());
 }

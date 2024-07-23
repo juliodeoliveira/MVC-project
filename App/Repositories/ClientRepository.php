@@ -17,9 +17,18 @@ class ClientRepository
 
     public function insert(Client $client): int
     {
-        $insertValues = $this->connection->prepare("INSERT INTO customers (enterprise_name, email) VALUES (:enterpriseName, :email)");
+        $insertValues = $this->connection->prepare("INSERT INTO customers (enterprise_name, email, phone_number, cep, street, house_number, complement, neighborhood, city, state) VALUES (:enterpriseName, :email, :phone_number, :cep, :street, :house_number, :complement, :neighborhood, :city, :state)");
         $insertValues->bindValue(":enterpriseName", $client->getEnterpriseName());
         $insertValues->bindValue(":email", $client->getEmail());
+        $insertValues->bindValue(":phone_number", $client->getPhoneNumber());
+        $insertValues->bindValue(":cep", $client->getCep());
+        $insertValues->bindValue(":street", $client->getStreet());
+        $insertValues->bindValue(":house_number", $client->getHouseNumber());
+        $insertValues->bindValue(":complement", $client->getComplement());
+        $insertValues->bindValue(":neighborhood", $client->getNeighborhood());
+        $insertValues->bindValue(":city", $client->getCity());
+        $insertValues->bindValue(":state", $client->getState());
+
         $insertValues->execute();
 
         return $this->connection->lastInsertId();

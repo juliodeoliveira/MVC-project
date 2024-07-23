@@ -1,0 +1,1 @@
+O objetivo desse sistema de em si consiste em gerenciar projetos que estão em andamento, deixando tudo mais organizado e legível, dessa forma, todos os projetos em andamento poderão ser administrados de mais fácil e aǵil, solucionando o problema de se perder em meio tantos outros arquivos e fotos que podem facilmente se espalharem se não armazenados de maneira correta.

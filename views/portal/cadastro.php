@@ -13,7 +13,7 @@
     <title>Cadastro de cliente</title>
 </head>
 <body>
-    <form action="index.php" method="POST">
+    <form action="/sign-client" method="POST">
         <input type="text"  name="enterpriseName" require id="enterprisename" placeholder="Nome da empresa *">
         <input type="email" name="email" require id="email" placeholder="Email *">
         <input type="text" name="phone_number" id="telephone" placeholder="Telefone">

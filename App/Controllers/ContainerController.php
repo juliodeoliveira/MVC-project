@@ -1,9 +1,15 @@
 <?php
-namespace app\controllers;
+namespace App\Controllers;
 
 use app\traits\View;
-
-abstract class ContainerController 
+// mostra informações que precisa, tipo mostrar os formulários e páginas
+class ContainerController 
 {
-    use View;
+    public function signinClient() {
+        require_once "../views/portal/cadastro.php";
+    }
+
+    public function success() {
+        require_once "../views/portal/success.php";
+    }
 }

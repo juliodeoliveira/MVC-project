@@ -99,9 +99,9 @@ class Client
         $this->enterpriseName = $enterpriseName;
     }
 
-    public function setPhoneNumber(string $phoneNumber): void
+    public function setPhoneNumber(string $telephoneNumber): void
     {
-        $this->$phoneNumber = $phoneNumber;
+        $this->phoneNumber = $telephoneNumber;
     }
 
     public function setCep(string $cep): void

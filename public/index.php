@@ -4,7 +4,7 @@
 
 require_once "../config/router.php";
 
-use App\Controllers\blog\ClientController;
+use App\Controllers\ClientController;
 use App\Repositories\ClientRepository;
 use App\Models\Client;
 

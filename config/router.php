@@ -1,7 +1,7 @@
 <?php
 require "../bootstrap.php";
 
-use App\Controllers\blog\ClientController;
+use App\Controllers\ClientController;
 use App\Controllers\ContainerController;
 // mudar o nome da pasta blog
 

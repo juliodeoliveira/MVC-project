@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\blog;
+namespace App\Controllers;
 
 use App\Models\Client;
 use App\Repositories\ClientRepository;

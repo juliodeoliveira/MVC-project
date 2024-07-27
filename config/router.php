@@ -21,6 +21,13 @@ elseif ($uri == "/success") {
     $success = new ContainerController();
     $success->success();
 }
+elseif ($uri == "/list-customers") {
+    $display = new ContainerController();
+    $display->listCustomers();
+
+    // $list = new ClientController();
+    // $list->showClients();
+}
 elseif ($uri == "/") {
     require_once "../views/portal/home.php";
 } else {

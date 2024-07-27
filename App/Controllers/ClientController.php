@@ -5,11 +5,11 @@ namespace App\Controllers;
 use App\Models\Client;
 use App\Repositories\ClientRepository;
 
-
 class ClientController
 {
 
-    public function signClient() {
+    public function signClient(): void 
+    {
         $newClient = new Client($_POST['enterpriseName'], $_POST['email']);
         $newClient->setPhoneNumber($_POST["phone_number"]);
         $newClient->setCep($_POST["cep"]);
@@ -24,7 +24,8 @@ class ClientController
         $repository->insert($newClient);
     }
 
-    public function updateClient(Client $client) {
+    public function updateClient(Client $client): void 
+    {
         $newClient = new Client(
             $_POST["name"] ?? $client->getEnterpriseName(), 
             $_POST["email"] ?? $client->getEmail()
@@ -36,5 +37,10 @@ class ClientController
         // $client->setPhoneNumber($client->getPhoneNumber());
 
         //* Manda para o repositório em seguida
+    }
+    public function showClients(): array
+    {
+        $showClients = new ClientRepository();
+        return $showClients->all();
     }
 }

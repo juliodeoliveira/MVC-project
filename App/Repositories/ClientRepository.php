@@ -5,6 +5,8 @@ use App\Connection;
 use App\Models\Client;
 use PDO;
 
+use function PHPSTORM_META\type;
+
 class ClientRepository 
 {
     private $connection;
@@ -57,21 +59,25 @@ class ClientRepository
 
     }
 
-    public function show(int $id): Client
+    public function show(int $id)
     {
         $search = $this->connection->prepare("SELECT * FROM customers WHERE id = :id");
-        $search->bindValue(":id", $id);
+        $search->bindValue(":id", $id, PDO::PARAM_INT);
         $search->execute();
         $result = $search->fetch(PDO::FETCH_ASSOC);
 
         $client = new Client($result["enterprise_name"], $result["email"]);
         $client->setId($id);
 
-        return $client;
+        return $result;
     }
 
-    public function all()
+    public function all(): array
     {
+        $search = $this->connection->prepare("SELECT * FROM customers");
+        $search->execute();
+        $result = $search->fetchAll(PDO::FETCH_ASSOC);
 
+        return $result;
     }
 }

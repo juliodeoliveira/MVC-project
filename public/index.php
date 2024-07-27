@@ -1,6 +1,5 @@
 <?php
 
-//* Sistema de rotas, elas iniciam quando index carrega e manda pra rotas e página certa.
 
 require_once "../config/router.php";
 
@@ -13,6 +12,7 @@ require "../bootstrap.php";
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 exit();
 
 // use core\Controller;

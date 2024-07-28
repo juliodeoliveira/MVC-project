@@ -38,7 +38,7 @@ class ClientRepository
 
     public function update(Client $client)
     {
-        $updateValues = $this->connection->prepare("UPDATE customers SET enterprise_name = :enterpriseName, email = :email, phone_number = :phoneNumber, cep = :cep, street = :street, house_number = :houseNumber, complement = :complement, neighborhood = :neighborhood, city = :city, state = :state");
+        $updateValues = $this->connection->prepare("UPDATE customers SET enterprise_name = :enterpriseName, email = :email, phone_number = :phoneNumber, cep = :cep, street = :street, house_number = :houseNumber, complement = :complement, neighborhood = :neighborhood, city = :city, state = :state WHERE id = :id");
         
         $updateValues->bindValue(":enterpriseName", $client->getEnterpriseName());
         $updateValues->bindValue(":email", $client->getEmail());
@@ -50,7 +50,16 @@ class ClientRepository
         $updateValues->bindValue(":neighborhood", $client->getNeighborhood());
         $updateValues->bindValue(":city", $client->getCity());
         $updateValues->bindValue(":state", $client->getState());
+        $updateValues->bindValue(":id", $client->getId());
 
+        
+        
+        // $search = $this->connection->prepare("SELECT * FROM customers WHERE email = '".$client->getEmail()."'");
+        // //$search->bindValue(":email", $client->getEmail());
+        // $search->execute();
+        // dump($search);
+        // dd($search->fetchAll(PDO::FETCH_ASSOC));
+        
         $updateValues->execute();
     }
 

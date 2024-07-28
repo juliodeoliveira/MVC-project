@@ -19,4 +19,8 @@ class ContainerController
     {
         require_once "../views/portal/customers.php";
     }
+    public function edition(): void
+    {
+        require_once "../views/portal/editing.php";
+    }
 }

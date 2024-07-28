@@ -7,6 +7,8 @@ use App\Controllers\ClientController;
 use App\Repositories\ClientRepository;
 use App\Models\Client;
 
+// TODO; No loop, para cada cliente já adiciona um botão que já leva pro id certo, e já preenche as informações com base no ID que estava no botão, se precisar pode passar como parâmetro o id do cliente
+
 require "../bootstrap.php";
 
 ini_set('display_errors', 1);

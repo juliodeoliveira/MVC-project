@@ -26,11 +26,25 @@ class ClientController
 
     public function updateClient(Client $client): void 
     {
+        // $anotherClient = new Client;
         $newClient = new Client(
-            $_POST["name"] ?? $client->getEnterpriseName(), 
+            $_POST["enterpriseName"] ?? $client->getEnterpriseName(), 
             $_POST["email"] ?? $client->getEmail()
         );
 
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uriExplode = explode("/", "$uri");
+
+        $newClient->setId($uriExplode[sizeof($uriExplode)-1]);
+        $newClient->setPhoneNumber($_POST["phone_number"]);
+        $newClient->setCep($_POST["cep"]);
+        $newClient->setStreet($_POST["street"]);
+        $newClient->setHouseNumber($_POST["nHouse"]);
+        $newClient->setNeighbor($_POST["neighbor"]);
+        $newClient->setCity($_POST["city"]);
+        $newClient->setState($_POST["state"]);
+        $newClient->setComplement($_POST["complement"]);
+        
         $model = new ClientRepository();
         $update = $model->update($client);
 

@@ -18,8 +18,11 @@
             foreach ($allClients as $clients) {
                 foreach ($clients as $key => $value) {
                     echo DatabaseTreat::fieldName($key, $value);
-                    //dump($key."  --  ".$value);
                 }
+                echo "<br>";
+                dump("<a href='/editing/$clients[id]'>Editar informações</a>");
+
+                echo "<a href='/editing/$clients[id]'>Editar informações</a>";
                 echo "<hr>";
                 echo "<br>";
                 echo "<br>";

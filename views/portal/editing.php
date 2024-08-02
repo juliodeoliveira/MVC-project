@@ -14,59 +14,49 @@
 <body>
 <h1>Edite as informações</h1>
     <?php
-
         use App\Controllers\ClientController;
-        use App\Models\Client;
-        use App\Repositories\ClientRepository;
+        use App\Functions\URI;
 
-        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uriExplode = explode("/", "$uri");
+        $uriExplode = URI::uriExplode();
+        $getIdbyURI = $uriExplode[sizeof($uriExplode)-1];
 
-        // Acredito que seja melhor usar um método do clontroller
-        $selectClient = new ClientRepository();
-        $clientInfo = $selectClient->show($uriExplode[sizeof($uriExplode)-1]);
-        dump($clientInfo);
+        $findClient = new ClientController();
+        $client = $findClient->findClients($getIdbyURI);
     ?>
 
-    <form action="/edit/<?=$uriExplode[sizeof($uriExplode)-1]?>" method="POST">
+    <form action="/edit/<?=$getIdbyURI?>" method="POST">
 
         <label for="enterprisename">Nome da empresa:</label>
-        <input value="<?=$clientInfo["enterprise_name"]?>" type="text" name="enterpriseName" required id="enterprisename" placeholder="Nome da empresa *">
+        <input value="<?=$client->getEnterpriseName()?>" type="text" name="enterpriseName" required id="enterprisename" placeholder="Nome da empresa *">
 
         <label for="email">E-mail:</label>
-        <input value="<?=$clientInfo["email"]?>" type="email" name="email" required id="email" placeholder="Email *">
+        <input value="<?=$client->getEmail()?>" type="email" name="email" required id="email" placeholder="Email *">
 
         <label for="telephone">Telefone:</label>
-        <input value="<?=$clientInfo["phone_number"]?>" type="text" name="phone_number" id="telephone" placeholder="Telefone">
+        <input value="<?=$client->getPhoneNumber()?>" type="text" name="phone_number" id="telephone" placeholder="Telefone">
 
         <label for="cep">CEP:</label>
-        <input value="<?=$clientInfo["cep"]?>" type="text" name="cep" id="cep" placeholder="CEP">
+        <input value="<?=$client->getCep()?>" type="text" name="cep" id="cep" placeholder="CEP">
 
         <label for="street">Rua:</label>
-        <input value="<?=$clientInfo["street"]?>" type="text" name="street" id="street" placeholder="Rua">
+        <input value="<?=$client->getStreet()?>" type="text" name="street" id="street" placeholder="Rua">
 
         <label for="house">Número da casa:</label>
-        <input value="<?=$clientInfo["house_number"]?>" type="text" name="nHouse" id="house" placeholder="Número da casa">
+        <input value="<?=$client->getHouseNumber()?>" type="text" name="nHouse" id="house" placeholder="Número da casa">
 
         <label for="neighborhood">Bairro:</label>
-        <input value="<?=$clientInfo["neighborhood"]?>" type="text" name="neighbor" id="neightborhood" placeholder="Bairro">
+        <input value="<?=$client->getNeighborhood()?>" type="text" name="neighbor" id="neightborhood" placeholder="Bairro">
 
         <label for="city">Cidade:</label>
-        <input value="<?=$clientInfo["city"]?>" type="text" name="city" id="city" placeholder="Cidade">
+        <input value="<?=$client->getCity()?>" type="text" name="city" id="city" placeholder="Cidade">
 
         <label for="state">Estado:</label>
-        <input value="<?=$clientInfo["state"]?>" type="text" name="state" id="state" placeholder="Estado (UF)">
+        <input value="<?=$client->getState()?>" type="text" name="state" id="state" placeholder="Estado (UF)">
 
         <label for="complement">Complemento:</label>
-        <textarea name="complement" id="complement" placeholder="Complemento"><?=$clientInfo["complement"]?></textarea>
+        <textarea name="complement" id="complement" placeholder="Complemento"><?=$client->getComplement()?></textarea>
         
         <input type="submit" value="Editar">
-    </form>
-    <!-- // todo: Passar os atributos aqui e atualizar por meio da classe
-        new Controleller(nome email)    
-        setState(state)
-        ... 
-    -->
-   
+    </form>   
 </body>
 </html>

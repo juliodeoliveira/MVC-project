@@ -26,7 +26,6 @@ class ClientController
 
     public function updateClient(Client $client): void 
     {
-        // $anotherClient = new Client;
         $newClient = new Client(
             $_POST["enterpriseName"] ?? $client->getEnterpriseName(), 
             $_POST["email"] ?? $client->getEmail()
@@ -46,15 +45,21 @@ class ClientController
         $newClient->setComplement($_POST["complement"]);
         
         $model = new ClientRepository();
-        $update = $model->update($client);
-
-        // $client->setPhoneNumber($client->getPhoneNumber());
-
-        //* Manda para o repositório em seguida
+        $update = $model->update($newClient);
     }
-    public function showClients(): array
+
+    public function allClients(): array
     {
         $showClients = new ClientRepository();
-        return $showClients->all();
+        $clientsObject = $showClients->all();
+        return $clientsObject;
+    }
+
+    public function findClients($id): Client
+    {
+        $getClient = new ClientRepository();
+        $clients = $getClient->show($id);
+
+        return $clients;
     }
 }

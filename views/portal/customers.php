@@ -11,26 +11,37 @@
     <ul>
         <?php
             use App\Controllers\ClientController;
-            use App\Functions\DatabaseTreat;
             
             $listingClients = new ClientController();
-            $allClients = $listingClients->showClients();
-            foreach ($allClients as $clients) {
-                foreach ($clients as $key => $value) {
-                    echo DatabaseTreat::fieldName($key, $value);
-                }
-                echo "<br>";
-                dump("<a href='/editing/$clients[id]'>Editar informações</a>");
-
-                echo "<a href='/editing/$clients[id]'>Editar informações</a>";
-                echo "<hr>";
-                echo "<br>";
-                echo "<br>";
-                echo "<br>";
-            }
+            $allClients = $listingClients->allClients();
+            dump($allClients);
             
-        ?>
+            foreach ($allClients as $clients) {
+                dump($clients->getId());
 
+                ?>
+                <h1>Nome da empresa: <?=$clients->getEnterpriseName()?></h1>
+                <h1>Email: <?=$clients->getEmail()?></h1>
+                <ul>
+                    <li>N° de telefone: <?=$clients->getPhoneNumber()?></li>
+                    <li>CEP: <?=$clients->getCep()?></li>
+                    <li>Rua: <?=$clients->getStreet()?></li>
+                    <li>N° da casa: <?=$clients->getHouseNumber()?></li>
+                    <li>Complemento: <?=$clients->getComplement()?></li>
+                    <li>Bairro: <?=$clients->getNeighborhood()?></li>
+                    <li>Cidade: <?=$clients->getCity()?></li>
+                    <li>Estado: <?=$clients->getState()?></li>
+                    <a href="/editing/<?=$clients->getId()?>">Editar informações</a>
+                </ul>
+                
+                <br>
+                <hr>
+                <br>
+                <br>
+                <br>
+            <?php
+            }
+        ?>
     </ul>
 </body>
 </html>

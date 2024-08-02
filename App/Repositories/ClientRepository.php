@@ -5,8 +5,6 @@ use App\Connection;
 use App\Models\Client;
 use PDO;
 
-use function PHPSTORM_META\type;
-
 class ClientRepository 
 {
     private $connection;
@@ -36,7 +34,7 @@ class ClientRepository
         return $this->connection->lastInsertId();
     }
 
-    public function update(Client $client)
+    public function update(Client $client): void
     {
         $updateValues = $this->connection->prepare("UPDATE customers SET enterprise_name = :enterpriseName, email = :email, phone_number = :phoneNumber, cep = :cep, street = :street, house_number = :houseNumber, complement = :complement, neighborhood = :neighborhood, city = :city, state = :state WHERE id = :id");
         
@@ -51,34 +49,30 @@ class ClientRepository
         $updateValues->bindValue(":city", $client->getCity());
         $updateValues->bindValue(":state", $client->getState());
         $updateValues->bindValue(":id", $client->getId());
-
-        
-        
-        // $search = $this->connection->prepare("SELECT * FROM customers WHERE email = '".$client->getEmail()."'");
-        // //$search->bindValue(":email", $client->getEmail());
-        // $search->execute();
-        // dump($search);
-        // dd($search->fetchAll(PDO::FETCH_ASSOC));
         
         $updateValues->execute();
     }
 
-    public function delete()
-    {
-
-    }
-
-    public function show(int $id)
+    public function show(int $id): Client
     {
         $search = $this->connection->prepare("SELECT * FROM customers WHERE id = :id");
         $search->bindValue(":id", $id, PDO::PARAM_INT);
         $search->execute();
         $result = $search->fetch(PDO::FETCH_ASSOC);
 
+        // inserir todos os campos e depois retornar $client
         $client = new Client($result["enterprise_name"], $result["email"]);
         $client->setId($id);
+        $client->setPhoneNumber($result['phone_number']);
+        $client->setCep($result['cep']);
+        $client->setStreet($result['street']);
+        $client->setHouseNumber($result['house_number']);
+        $client->setComplement($result['complement']);
+        $client->setNeighbor($result['neighborhood']);
+        $client->setCity($result['city']);
+        $client->setState($result['state']);
 
-        return $result;
+        return $client;
     }
 
     public function all(): array
@@ -87,6 +81,22 @@ class ClientRepository
         $search->execute();
         $result = $search->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result;
+        $clients = [];
+        foreach ($result as $row) {
+            $client = new Client($row["enterprise_name"], $row["email"]);
+            $client -> setId($row['id']);
+            $client -> setPhoneNumber($row['phone_number']);
+            $client -> setCep($row['cep']);
+            $client -> setStreet($row['street']);
+            $client -> setHouseNumber($row['house_number']);
+            $client -> setComplement($row['complement']);
+            $client -> setNeighbor($row['neighborhood']);
+            $client -> setCity($row['city']);
+            $client -> setState($row['state']);
+            
+            $clients[] = $client;
+        }
+
+        return $clients;
     }
 }

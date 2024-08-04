@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Client;
 use App\Repositories\ClientRepository;
+use App\Functions\Validation;
 
 class ClientController
 {
@@ -17,8 +18,15 @@ class ClientController
         $newClient->setHouseNumber($_POST["nHouse"]);
         $newClient->setNeighbor($_POST["neighbor"]);
         $newClient->setCity($_POST["city"]);
-        $newClient->setState($_POST["state"]);
         $newClient->setComplement($_POST["complement"]);
+
+        if (Validation::validate($_POST["state"])) {
+            $newClient->setState($_POST["state"]);
+        } else {
+            $newClient->setState("");
+        }
+
+        
 
         $repository = new ClientRepository();
         $repository->insert($newClient);

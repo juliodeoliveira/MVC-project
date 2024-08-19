@@ -64,7 +64,7 @@ class ClientController
         return $clientsObject;
     }
 
-    public function findClients($id): Client
+    public function findClients($id): Client | null
     {
         $getClient = new ClientRepository();
         $clients = $getClient->show($id);

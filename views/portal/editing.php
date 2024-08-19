@@ -23,6 +23,11 @@
 
         $findClient = new ClientController();
         $client = $findClient->findClients($getIdbyURI);
+
+        if (empty($client)) {
+            header("Location: /notfound :(");
+            exit();
+        }
     ?>
 
     <form action="/edit/<?=$getIdbyURI?>" method="POST">

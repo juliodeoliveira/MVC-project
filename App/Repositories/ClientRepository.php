@@ -53,12 +53,16 @@ class ClientRepository
         $updateValues->execute();
     }
 
-    public function show(int $id): Client
+    public function show(int $id): Client | null
     {
         $search = $this->connection->prepare("SELECT * FROM customers WHERE id = :id");
         $search->bindValue(":id", $id, PDO::PARAM_INT);
         $search->execute();
         $result = $search->fetch(PDO::FETCH_ASSOC);
+
+        if ($result === false) {
+            return null;
+        }
 
         // inserir todos os campos e depois retornar $client
         $client = new Client($result["enterprise_name"], $result["email"]);

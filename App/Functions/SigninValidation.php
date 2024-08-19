@@ -5,7 +5,7 @@ use App\Models\Client;
 
 class SigninValidation 
 {
-    public static function validate(Client $client)
+    public static function validate(Client $client): void
     {
         $client->setEnterpriseName(preg_replace("/[^a-zA-Z0-9]+/", "", $client->getEnterpriseName()));
         $client->setEmail(preg_replace("/[^a-zA-Z0-9@.]+/", "", $client->getEmail()));

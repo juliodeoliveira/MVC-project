@@ -7,7 +7,7 @@ namespace App\Functions;
  */
 class StateValidation
 {
-    public static function validate($value)
+    public static function validate($value): bool
     {
         $states = [
             "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", 

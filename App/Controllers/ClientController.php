@@ -2,9 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Functions\SigninValidation;
 use App\Models\Client;
 use App\Repositories\ClientRepository;
-use App\Functions\Validation;
+use App\Functions\StateValidation;
 
 class ClientController
 {
@@ -19,14 +20,14 @@ class ClientController
         $newClient->setNeighbor($_POST["neighbor"]);
         $newClient->setCity($_POST["city"]);
         $newClient->setComplement($_POST["complement"]);
+        
+        SigninValidation::validate($newClient);
 
-        if (Validation::validate($_POST["state"])) {
+        if (StateValidation::validate($_POST["state"])) {
             $newClient->setState($_POST["state"]);
         } else {
             $newClient->setState("");
         }
-
-        
 
         $repository = new ClientRepository();
         $repository->insert($newClient);

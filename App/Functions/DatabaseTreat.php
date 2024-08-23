@@ -1,5 +1,6 @@
 <?php
 
+// ! DEPRECATED 
 namespace App\Functions;
 
 class DatabaseTreat {

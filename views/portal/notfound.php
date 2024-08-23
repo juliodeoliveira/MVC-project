@@ -45,6 +45,7 @@
             background-color: #45a049;
         }
     </style>
+    <link rel="shortcut icon" href="./../assets/images/favicon/closedfolder.png" type="image/x-icon">
 </head>
 <body>
     <div class="container">

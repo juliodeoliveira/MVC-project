@@ -1,8 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use app\traits\View;
-// mostra informações que precisa, tipo mostrar os formulários e páginas
 class ContainerController 
 {
     public function signinClient(): void 

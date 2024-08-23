@@ -23,7 +23,7 @@ class StateValidation
         return false;
     }
 
-    public static function replaceState($state): string 
+    public static function replaceState($state): string
     {
         $states = [
             "AC" => "Acre - AC",
@@ -49,9 +49,13 @@ class StateValidation
             "SC" => "Santa Catarina - SC",
             "SP" => "São Paulo - SP",
             "SE" => "Sergipe - SE",
-            "TO" => "Tocantins - TO",
-            "" => "Selecione um estado"
+            "TO" => "Tocantins - TO"
         ];
+
+        if (!array_key_exists($state, $states)) {
+            return "Selecione um estado";
+        }
+
         return $states[$state];
     }
 }

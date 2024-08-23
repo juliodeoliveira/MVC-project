@@ -99,42 +99,42 @@ class Client
         $this->enterpriseName = $enterpriseName;
     }
 
-    public function setPhoneNumber(string $telephoneNumber): void
+    public function setPhoneNumber(?string $telephoneNumber): void
     {
         $this->phoneNumber = $telephoneNumber;
     }
 
-    public function setCep(string $cep): void
+    public function setCep(?string $cep): void
     {
         $this->cep = $cep;
     }
 
-    public function setStreet(string $street): void
+    public function setStreet(?string $street): void
     {
         $this->street = $street;
     }
 
-    public function setHouseNumber(string $houseNumber): void
+    public function setHouseNumber(?string $houseNumber): void
     {
         $this->houseNumber = $houseNumber;
     }
 
-    public function setComplement(string $complement): void
+    public function setComplement(?string $complement): void
     {
         $this->complement = $complement;
     }
 
-    public function setNeighbor(string $neighborhood): void
+    public function setNeighbor(?string $neighborhood): void
     {
         $this->neighborhood = $neighborhood;
     }
 
-    public function setCity(string $city): void
+    public function setCity(?string $city): void
     {
         $this->city = $city;
     }
     
-    public function setState(string $state): void
+    public function setState(?string $state): void
     {
         $this->state = $state;
     }

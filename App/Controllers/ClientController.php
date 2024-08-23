@@ -12,6 +12,11 @@ class ClientController
 
     public function signClient(): void 
     {
+        if(empty($_POST['enterpriseName']) || empty($_POST['email'])) {
+            header("Location: /");
+            exit();
+        }
+
         $newClient = new Client($_POST['enterpriseName'], $_POST['email']);
         $newClient->setPhoneNumber($_POST["phone_number"]);
         $newClient->setCep($_POST["cep"]);
@@ -54,7 +59,7 @@ class ClientController
         $newClient->setComplement($_POST["complement"]);
         
         $model = new ClientRepository();
-        $update = $model->update($newClient);
+        $model->update($newClient);
     }
 
     public function allClients(): array

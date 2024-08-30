@@ -28,7 +28,7 @@ function searchProjects(Projects $project, $haystack) {
 <body>
     <h1>Resultado da busca por: <?=$_POST["searchProject"]?></h1>
 
-    <form action="/search-projects/<?=$getClientIdByURI[sizeof($getClientIdByURI)-1]?>" method="post">
+    <form action="/search-projects/<?=$getClientIdByURI[sizeof($getClientIdByURI)-1]?>" method="post" id="searchForm">
         <input type="text" name="searchProject" id="searchProject" placeholder="Pesquise seus projetos" value="<?=$_POST['searchProject']?>">
         <input type="submit" value="Pesquisar">
     </form>
@@ -36,6 +36,7 @@ function searchProjects(Projects $project, $haystack) {
     <hr>
     <?php
         $count = 0;
+        // TODO: Implementar busca binária
         foreach ($getProjects as $project) {
             if (searchProjects($project, $_POST["searchProject"])) {
                 ?>
@@ -58,6 +59,5 @@ function searchProjects(Projects $project, $haystack) {
             <?php
         }
     ?>
-
 </body>
 </html>

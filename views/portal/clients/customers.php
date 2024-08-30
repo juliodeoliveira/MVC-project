@@ -8,6 +8,12 @@
 </head>
 <body>
     <h1>Lista de clientes cadastrados</h1>
+    <form action="/search-clients" method="post">
+        <input type="text" name="searchClients" id="searchClients" placeholder="Pesquise por clientes">
+        <input type="submit" value="Pesquisar">
+    </form>
+
+    <br>
     <a href="/">Voltar para a tela inicial</a>
     <ul>
         <?php
@@ -46,5 +52,8 @@
             }
         ?>
     </ul>
+    <script>
+        
+    </script>
 </body>
 </html>

@@ -61,6 +61,10 @@ elseif (str_contains($uri, "/search-projects")) {
     $display = new ContainerController();
     $display->findProject();
 }
+elseif (str_contains($uri, "/search-clients")) {
+    $display = new ContainerController();
+    $display->findClients();
+}
 
 elseif ($uri == "/") {
     require_once "../views/portal/home.php";

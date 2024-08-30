@@ -5,7 +5,7 @@ class ContainerController
 {
     public function signinClient(): void 
     {
-        require_once "../views/portal/cadastro.php";
+        require_once "../views/portal/clients/cadastro.php";
     }
 
     public function success(): void
@@ -15,25 +15,32 @@ class ContainerController
 
     public function listCustomers(): void
     {
-        require_once "../views/portal/customers.php";
+        require_once "../views/portal/clients/customers.php";
     }
     public function edition(): void
     {
-        require_once "../views/portal/editing.php";
+        require_once "../views/portal/clients/editing.php";
+    }
+
+    
+    public function findClients(): void
+    {
+        require_once "../views/portal/clients/searchClients.php";
     }
 
     public function listProjects(): void
     {
-        require_once "../views/portal/projects.php";
+        require_once "../views/portal/projects/projects.php";
     }
 
     public function createProject(): void
     {
-        require_once "../views/portal/createProject.php";
+        require_once "../views/portal/projects/createProject.php";
     }
 
     public function findProject(): void
     {
-        require_once "../views/portal/findProjects.php";
+        require_once "../views/portal/projects/findProjects.php";
     }
+
 }

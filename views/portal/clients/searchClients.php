@@ -34,7 +34,6 @@ function searchClient(Client $client, $haystack) {
     <hr>
     <?php
         $count = 0;
-        // TODO: Implementar busca binária
         foreach ($allClients as $client) {
             if (searchClient($client, $_POST["searchClients"])) {
             ?>
@@ -60,6 +59,7 @@ function searchClient(Client $client, $haystack) {
                 <h2>Não foi encontrado nenhum resultado para a pesquisa</h2>
             <?php
         }
+        dump($allClients);
     ?>
 </body>
 </html>

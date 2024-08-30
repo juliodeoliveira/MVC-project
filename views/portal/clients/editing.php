@@ -28,7 +28,6 @@
         }
     </style>
     <link rel="shortcut icon" href="localhost:5500/../assets/images/favicon/closedfolder.png" type="image/x-icon">
-
 </head>
 <body>
 

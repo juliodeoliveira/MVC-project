@@ -52,8 +52,6 @@ elseif (str_contains($uri, "/create-project")) {
 }
 elseif (str_contains($uri, "/create")) {
     $creation = new ProjectsController();
-    //$project = new Projects($_POST["title"], $_POST["startDate"], $_POST["endDate"], $_POST["service"]);
-    // Please always consider to put the last index in this array, but this is a temporary solution
     $creation->createProject($uriExplodes[sizeof($uriExplodes)-1]);
     header("Location: /success");
 }

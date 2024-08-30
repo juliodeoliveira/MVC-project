@@ -31,4 +31,9 @@ class ContainerController
     {
         require_once "../views/portal/createProject.php";
     }
+
+    public function findProject(): void
+    {
+        require_once "../views/portal/findProjects.php";
+    }
 }

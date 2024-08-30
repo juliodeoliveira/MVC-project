@@ -6,7 +6,7 @@ $getIdbyURI = (int) $uriExplode[sizeof($uriExplode)-1];
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <style>
         input, textarea {
@@ -33,5 +33,6 @@ $getIdbyURI = (int) $uriExplode[sizeof($uriExplode)-1];
         <input type="text" require name="service" id="service" placeholder="Serviço *">
         <input type="submit" value="Enviar">
     </form>
+    <script src="./../assets/js/validateCaracters.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ use App\Repositories\ProjectsRepository;
 
 use App\Models\Projects;
 
-class ProjectController
+class ProjectsController
 {
      public function findProject(int $id): Projects | null
      {

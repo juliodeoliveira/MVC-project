@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <style>
         input, textarea {
@@ -41,8 +41,5 @@
     </form>
 
   <script src="./assets/js/validateCaracters.js"></script>
-  <script>
-    
-  </script>
 </body>
 </html>

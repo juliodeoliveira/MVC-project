@@ -45,6 +45,11 @@ elseif(str_contains($uri, "/edit")) {
     $success->success();
 
 }
+
+elseif(str_contains($uri, "/project")) {
+    $display = new ContainerController();
+    $display->listProjects();
+}
 elseif ($uri == "/") {
     require_once "../views/portal/home.php";
 } else {

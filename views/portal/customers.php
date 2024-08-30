@@ -33,6 +33,8 @@
                     <li>Cidade: <?=$clients->getCity()?></li>
                     <li>Estado: <?=$clients->getState()?></li>
                     <a href="/editing/<?=$clients->getId()?>">Editar informações</a>
+                    <br>
+                    <a href="/project/<?=$clients->getId()?>">Ver projetos</a>
                 </ul>
                 
                 <br>

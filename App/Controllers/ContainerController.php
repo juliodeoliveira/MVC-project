@@ -21,4 +21,9 @@ class ContainerController
     {
         require_once "../views/portal/editing.php";
     }
+
+    public function listProjects(): void
+    {
+        require_once "../views/portal/projects.php";
+    }
 }

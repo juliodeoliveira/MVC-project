@@ -47,6 +47,6 @@ $allProjects = $projectController->allProjects($getIdbyURI);
     ?>
 
     </ul>
-    <a href="/create-project/<?=$client->getEnterpriseName()?>">Criar projeto</a>
+    <a href="/create-project/<?=$client->getId()?>">Criar projeto</a>
 </body>
 </html>

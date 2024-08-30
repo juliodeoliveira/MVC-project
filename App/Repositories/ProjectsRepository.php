@@ -17,8 +17,19 @@ class ProjectsRepository
         $this->connection = $conn->connect();
     }
 
-    public function insert()
+    public function insert(Projects $project): int
     {
+        $insertProject = $this->connection->prepare("INSERT INTO projects (title, description, start_date, end_date, service, customer_id) VALUES (:title, :description, :startDate, :endDate, :service, :customer_id);");
+        $insertProject->bindValue(":title", $project->getTitle());
+        $insertProject->bindValue(":description", $project->getDescription());
+        $insertProject->bindValue(":startDate", $project->getStartDate());
+        $insertProject->bindValue(":endDate", $project->getEndDate());
+        $insertProject->bindValue(":service", $project->getService());
+        $insertProject->bindValue(":customer_id", $project->getClientId());
+
+        $insertProject->execute();
+
+        return $this->connection->lastInsertId();
 
     }
 

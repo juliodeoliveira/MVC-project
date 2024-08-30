@@ -6,12 +6,14 @@ use DateTimeImmutable;
 
 class Projects
 {
-    private int $id;
     private string $title;
-    private ?string $description;
     private string $startDate;
     private string $endDate;
     private string $service;
+    
+    private int $id;
+    
+    private ?string $description;
     private string $clientId;
 
     private DateTimeImmutable $createdAt;

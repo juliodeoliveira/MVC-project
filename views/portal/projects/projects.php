@@ -44,6 +44,7 @@ $allProjects = $projectController->allProjects($getIdbyURI);
                 <li>Data de início: <?=$project->getStartDate()?></li>
                 <li>Data de término: <?=$project->getEndDate()?></li>
                 <li>Serviço: <?=$project->getService()?></li>
+                <a href="/to-do-list/<?=$project->getId()?>">Lista de tarefas</a>
                 <hr>
             <?php
         }

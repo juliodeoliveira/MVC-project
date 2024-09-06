@@ -8,6 +8,8 @@ use App\Models\Client;
 use App\Functions\URI;
 use App\Models\Projects;
 
+use function PHPSTORM_META\type;
+
 $uri = URI::uri();
 $uriExplodes = URI::uriExplode();
 
@@ -62,6 +64,18 @@ elseif (str_contains($uri, "/search-projects")) {
 elseif (str_contains($uri, "/search-clients")) {
     $display = new ContainerController();
     $display->findClients();
+}
+
+elseif (str_contains($uri, "/to-do-list")) {
+    $display = new ContainerController();
+    $display->toDoList();
+}
+elseif (str_contains($uri, "/save-todo")) {
+    // não da echo 
+    echo $_POST['valor'];
+    header("Location: /success");
+    die();
+    exit();
 }
 
 elseif ($uri == "/") {

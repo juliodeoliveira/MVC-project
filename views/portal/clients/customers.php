@@ -52,8 +52,5 @@
             }
         ?>
     </ul>
-    <script>
-        
-    </script>
 </body>
 </html>

@@ -89,6 +89,7 @@ $projectID = $uri[sizeof($uri)-1];
                 type: 'POST',
                 data: { valor: JSON.stringify(tarefas) }, // Verifique os dados enviados
                 success: function(response) {
+                    console.log(response)
                     Swal.fire({
                         position: "top-end",
                         icon: "success",

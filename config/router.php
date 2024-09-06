@@ -71,10 +71,8 @@ elseif (str_contains($uri, "/to-do-list")) {
     $display->toDoList();
 }
 elseif (str_contains($uri, "/save-todo")) {
-    // não da echo 
-    echo $_POST['valor'];
-    header("Location: /success");
-    die();
+    // TODO: Call controller function that calls repository that writes in database
+    var_dump(json_decode($_POST['valor'], true));
     exit();
 }
 

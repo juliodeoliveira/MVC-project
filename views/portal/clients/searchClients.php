@@ -31,6 +31,7 @@ function searchClient(Client $client, $haystack) {
         <input type="text" name="searchClients" id="searchProject" placeholder="Pesquise seus projetos" value="<?=$_POST['searchClients']?>">
         <input type="submit" value="Pesquisar">
     </form>
+    <a href="/">Voltar para a tela inicial</a>
     <hr>
     <?php
         $count = 0;

@@ -12,7 +12,9 @@ class ClientController
 
     public function signClient(): void 
     {
-        if(empty($_POST['enterpriseName']) || empty($_POST['email'])) {
+        $_POST['enterpriseName'] = trim($_POST['enterpriseName']);
+        $_POST['email'] = trim($_POST['email']);
+        if(empty($_POST['enterpriseName']) || empty(($_POST['email']))) {
             header("Location: /");
             exit();
         }

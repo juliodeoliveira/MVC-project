@@ -72,8 +72,13 @@ elseif (str_contains($uri, "/to-do-list")) {
 }
 elseif (str_contains($uri, "/save-todo")) {
     // TODO: Call controller function that calls repository that writes in database
+    $addToDo = new ProjectsController();
+    //! stopped production due to complexity (I prefer writing all task in JSON into database, some people prefer adding name, checked in different fields)
+
+    $toDoList = json_decode($_POST['valor'], true);
+    $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
+
     var_dump(json_decode($_POST['valor'], true));
-    exit();
 }
 
 elseif ($uri == "/") {

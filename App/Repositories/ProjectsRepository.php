@@ -77,4 +77,16 @@ class ProjectsRepository
         return $projects;
     }
 
+    public function saveToDo(int $projectId, array $toDoList) 
+    {
+        // if se no indice checked do arrya  ta diferente do que tava, pega o select que vai ter o valor antigo
+        
+        $save = $this->connection->prepare("UPDATE project_tasks SET task_description = :description, task_status = :checked WHERE task_project_id = :projectId");
+        foreach ($toDoList as $todo) {
+            $save->bindValue(":descripton", $todo["name"]);
+        //    $save->bindValue("");
+            $save->bindValue(":checked", $todo["checked"] ? 'true' : 'false');
+            $save->execute();
+        }  
+    }
 }

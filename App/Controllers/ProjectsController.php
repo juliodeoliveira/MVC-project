@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Repositories\ProjectsRepository;
 
 use App\Models\Projects;
+use App\Models\ToDolist;
 
 class ProjectsController
 {
@@ -39,7 +40,13 @@ class ProjectsController
           $repository->insert($newProject);
      }
 
-     public function saveToDoList(int $projectId) {
+     public function saveToDoList(int $projectId, array $toDoList) {
+          echo "Reached the controller!";
+
+          $project = new ToDolist();
+
+          
+          // $project = new ProjectsRepository();
           
      }
 }

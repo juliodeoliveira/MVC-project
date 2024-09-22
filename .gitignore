@@ -2,3 +2,4 @@
 /vendor/
 /autoload.php
 composer.json
+.env

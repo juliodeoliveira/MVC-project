@@ -78,7 +78,7 @@ elseif (str_contains($uri, "/save-todo")) {
     $toDoList = json_decode($_POST['valor'], true);
     $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
 
-    var_dump(json_decode($_POST['valor'], true));
+    //var_dump(json_decode($_POST['valor'], true));
 }
 
 elseif ($uri == "/") {

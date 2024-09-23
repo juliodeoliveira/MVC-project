@@ -5,6 +5,7 @@ namespace App\Repositories;
 namespace App\Repositories;
 use App\Connection;
 use App\Models\Projects;
+use App\Models\ToDoList;
 use PDO;
 
 class ProjectsRepository
@@ -83,10 +84,21 @@ class ProjectsRepository
         
         $save = $this->connection->prepare("UPDATE project_tasks SET task_description = :description, task_status = :checked WHERE task_project_id = :projectId");
         foreach ($toDoList as $todo) {
-            $save->bindValue(":descripton", $todo["name"]);
-        //    $save->bindValue("");
-            $save->bindValue(":checked", $todo["checked"] ? 'true' : 'false');
-            $save->execute();
+        //     $save->bindValue(":descripton", $todo["name"]);
+        // //    $save->bindValue("");
+        //     $save->bindValue(":checked", $todo["checked"] ? 'true' : 'false');
+        //     $save->execute();
         }  
+    }
+
+    public function insertTask(ToDoList $list)
+    {
+        $insert = $this->connection->prepare("INSERT INTO project_tasks VALUES (0, :projectId, :taskDescription, :taskStatus)");
+        $insert->bindValue(":projectId", $list->getTaskProjectId());
+        $insert->bindValue(":taskDescription", $list->getTaskDescription());
+        // suposed to be temporary
+        $insert->bindValue(":taskStatus", $list->getTaskMarked() ? 1 : 0);
+        $insert->execute();
+
     }
 }

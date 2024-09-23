@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Repositories\ProjectsRepository;
 
 use App\Models\Projects;
-use App\Models\ToDolist;
+use App\Models\ToDoList;
 
 class ProjectsController
 {
@@ -40,6 +40,7 @@ class ProjectsController
           $repository->insert($newProject);
      }
 
+<<<<<<< Updated upstream
      public function saveToDoList(int $projectId, array $toDoList) {
           echo "Reached the controller!";
 
@@ -48,5 +49,50 @@ class ProjectsController
           
           // $project = new ProjectsRepository();
           
+=======
+     // This name's supposed to be temporary
+     public function arrayMaker(int $projectId, array $todolist)
+     {
+          $tasksObject = [];
+          foreach ($todolist as $task) {
+               $projectTask = new ToDolist();
+               $projectTask->setId(0);
+               $projectTask->setTaskProjectId($projectId);
+               $projectTask->setTaskDescription($task["name"]);
+               $projectTask->setTaskMarked($task["checked"]);
+
+               $tasksObject[] = $projectTask;
+          }
+
+          return $tasksObject;
      }
+
+     public function saveToDoList(int $projectId, array $toDoList)
+     {
+          // $project = new ToDoList();
+          // echo "ID do projeto: $projectId\n";
+          $test = new ProjectsController();
+          $tasks = $test->arrayMaker($projectId, $toDoList);
+          //var_dump($tasks);
+
+          // there is no validation, not even a single one
+          foreach ($tasks as $task) {
+               $insert = new ProjectsRepository();
+               $insert->insertTask($task);
+          }
+
+          echo "Inserted! Finally!\n";
+
+
+          // First thing first add a insert method, then one to find and other other to get all task
+          // I can have an array of objects
+          // insert -> see -> update
+
+          // var_dump("List de Tarefas: ");
+          // var_dump($toDoList);
+
+>>>>>>> Stashed changes
+     }
+     
+     
 }

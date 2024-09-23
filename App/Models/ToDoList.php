@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class ToDolist 
+class ToDoList 
 {
     private int $id;
     private int $taskProjectId;

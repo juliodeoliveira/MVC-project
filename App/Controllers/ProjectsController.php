@@ -40,10 +40,19 @@ class ProjectsController
           $repository->insert($newProject);
      }
 
-     public function saveToDoList(int $projectId, array $toDoList) {
+     public function saveToDoList(int $projectId, array $toDoList)
+     {
           echo "Reached the controller!";
 
+          //$project = new ToDolist();
+          echo "ID do projeto: $projectId\n";
+          var_dump("List de Tarefas: ");
+          var_dump($toDoList);
+
           $project = new ToDolist();
+
+
+
 
           
           // $project = new ProjectsRepository();

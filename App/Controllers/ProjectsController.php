@@ -40,16 +40,6 @@ class ProjectsController
           $repository->insert($newProject);
      }
 
-<<<<<<< Updated upstream
-     public function saveToDoList(int $projectId, array $toDoList) {
-          echo "Reached the controller!";
-
-          $project = new ToDolist();
-
-          
-          // $project = new ProjectsRepository();
-          
-=======
      // This name's supposed to be temporary
      public function arrayMaker(int $projectId, array $todolist)
      {
@@ -91,8 +81,5 @@ class ProjectsController
           // var_dump("List de Tarefas: ");
           // var_dump($toDoList);
 
->>>>>>> Stashed changes
      }
-     
-     
 }

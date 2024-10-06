@@ -101,4 +101,24 @@ class ProjectsRepository
         $insert->execute();
 
     }
+
+    public function showAllTasks(int $projectId)
+    {
+        $all = $this->connection->prepare("SELECT * FROM project_tasks WHERE task_project_id = :projectId");
+        $all->bindValue(":projectId", $projectId);
+        $all->execute();
+        $result = $all->fetchAll(PDO::FETCH_ASSOC);
+
+        $tasks = [];
+        foreach ($result as $task) {
+            $taskObject = new ToDoList();
+            $taskObject->setId($task["id"]);
+            $taskObject->setTaskProjectId($task["task_project_id"]);
+            $taskObject->setTaskDescription($task["task_description"]);
+            $taskObject->setTaskMarked($task["task_status"]);
+
+            $tasks[] = $taskObject;
+        }
+        return $tasks;
+    }
 }

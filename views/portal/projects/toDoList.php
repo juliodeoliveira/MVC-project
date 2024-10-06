@@ -1,6 +1,8 @@
 <?php
 
+use App\Controllers\ProjectsController;
 use App\Functions\URI;
+use App\Repositories\ProjectsRepository;
 $uri = URI::uriExplode();
 $projectID = $uri[sizeof($uri)-1];
 
@@ -23,13 +25,29 @@ $projectID = $uri[sizeof($uri)-1];
     <input type="button" class="sendInfo" value="Salvar lista de tarefas">
 
     <div class="tasks">
+        <?php
+            $currentTasks = new ProjectsRepository();
+            $currentTasks = $currentTasks->showAllTasks($projectID);
+
+            dump($currentTasks);
+
+            foreach ($currentTasks as $tasks) {
+                $description = $tasks->getTaskDescription();
+                echo "<br>";
+                if ($tasks->getTaskMarked()) {
+                    echo "<input class='goal' type='checkbox' value='$description' checked>$description";
+                } else {
+                    echo "<input class='goal' type='checkbox' value='$description'>$description";
+                }
+            }
+        ?>
     </div>
 
     <script>
         var tarefas = [];
         $(".addTask").click(function(event) {
             var taskName = $(".taskName").val();
-            $(".tasks").append(`<input type='checkbox' value='${taskName}' class='goal'>${taskName}`);
+            $(".tasks").append(`<br><input type='checkbox' value='${taskName}' class='goal'>${taskName}<br>`);
             $(".taskName").val("");
 
             var newObject = {};

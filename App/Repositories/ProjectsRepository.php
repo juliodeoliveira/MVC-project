@@ -91,18 +91,36 @@ class ProjectsRepository
         }  
     }
 
-    public function insertTask(ToDoList $list)
+    public function insertTask(ToDoList $list): void
     {
-        $insert = $this->connection->prepare("INSERT INTO project_tasks VALUES (0, :projectId, :taskDescription, :taskStatus)");
-        $insert->bindValue(":projectId", $list->getTaskProjectId());
-        $insert->bindValue(":taskDescription", $list->getTaskDescription());
-        // suposed to be temporary
-        $insert->bindValue(":taskStatus", $list->getTaskMarked() ? 1 : 0);
-        $insert->execute();
+        //! Preciso de pegar os id e os status de cada, mas tem como fazer isso sem que volte um objeto e sem precisar criar um array aqui?
+        // select com where id = id, ja que assim ve se existe id e se o status desse id é diferente.
+        $selectID = $this->connection->prepare("SELECT id, task_status FROM project_tasks");
+        $selectID->execute();
+        $result = $selectID->fetchAll(PDO::FETCH_ASSOC);
 
+        $idOnly = array_column($result, "id");
+
+        // TODO: O problema disso é que vai "atualizar" tudo, já que se eu apenas marcar uma tarefa como feita, todas as outras ainda vao existir, REFATORAR DEPOIS
+        if (in_array($list->getId(), $idOnly)) {
+            $updateTask = $this->connection->prepare("UPDATE project_tasks SET task_status = :isMarked WHERE id = :taskId");
+            $updateTask->bindValue(":isMarked", $list->getTaskMarked() ? 1 : 0);
+            $updateTask->bindValue(":taskId", $list->getId());
+            $updateTask->execute();
+            
+        } else {
+            $insert = $this->connection->prepare("INSERT INTO project_tasks VALUES (:taskId, :projectId, :taskDescription, :taskStatus)");
+            $insert->bindValue(":taskId", $list->getId());
+            $insert->bindValue(":projectId", $list->getTaskProjectId());
+            $insert->bindValue(":taskDescription", $list->getTaskDescription());
+
+            // suposed to be temporary
+            $insert->bindValue(":taskStatus", $list->getTaskMarked() ? 1 : 0);
+            $insert->execute();
+        }
     }
 
-    public function showAllTasks(int $projectId)
+    public function showAllTasks(int $projectId): array
     {
         $all = $this->connection->prepare("SELECT * FROM project_tasks WHERE task_project_id = :projectId");
         $all->bindValue(":projectId", $projectId);

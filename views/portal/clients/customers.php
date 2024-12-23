@@ -17,6 +17,7 @@
     <a href="/">Voltar para a tela inicial</a>
     <ul>
         <?php
+            //TODO: Adicionar um pequeno texto que mostra quantos projetos eu tenho
             use App\Controllers\ClientController;
             
             $listingClients = new ClientController();

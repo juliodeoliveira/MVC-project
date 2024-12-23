@@ -45,10 +45,11 @@ class ProjectsController
      {
           $tasksObject = [];
           foreach ($todolist as $task) {
+               //var_dump($task);
                $projectTask = new ToDolist();
-               $projectTask->setId(0);
+               $projectTask->setId($task["id"]);
                $projectTask->setTaskProjectId($projectId);
-               $projectTask->setTaskDescription($task["name"]);
+               $projectTask->setTaskDescription($task["description"]);
                $projectTask->setTaskMarked($task["checked"]);
 
                $tasksObject[] = $projectTask;
@@ -61,6 +62,7 @@ class ProjectsController
      {
           // $project = new ToDoList();
           // echo "ID do projeto: $projectId\n";
+
           $test = new ProjectsController();
           $tasks = $test->arrayMaker($projectId, $toDoList);
           //var_dump($tasks);
@@ -71,10 +73,7 @@ class ProjectsController
                $insert->insertTask($task);
           }
 
-          echo "Inserted! Finally!\n";
-
-
-          // First thing first add a insert method, then one to find and other other to get all task
+          // First things first add a insert method, then one to find and other other to get all task
           // I can have an array of objects
           // insert -> see -> update
 

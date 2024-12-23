@@ -6,6 +6,8 @@ use App\Repositories\ProjectsRepository;
 $uri = URI::uriExplode();
 $projectID = $uri[sizeof($uri)-1];
 
+// TODO: tem um erro quando eu marco uma tarefa como feita e quando ela volta, nao mostra a tarefa marcada e duplica 
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -29,37 +31,46 @@ $projectID = $uri[sizeof($uri)-1];
             $currentTasks = new ProjectsRepository();
             $currentTasks = $currentTasks->showAllTasks($projectID);
 
-            dump($currentTasks);
+            $tasksToJson = [];
 
             foreach ($currentTasks as $tasks) {
                 $description = $tasks->getTaskDescription();
+                $isMarked = $tasks->getTaskMarked();
+                $taskId = $tasks->getId();
+                $tasksToJson[] = [
+                    "id" => $taskId,
+                    "description" => $description,
+                    "checked" => $isMarked
+                ]; 
                 echo "<br>";
-                if ($tasks->getTaskMarked()) {
+                if ($isMarked) {
                     echo "<input class='goal' type='checkbox' value='$description' checked>$description";
                 } else {
                     echo "<input class='goal' type='checkbox' value='$description'>$description";
                 }
             }
+
+            dump($tasksToJson);
+            $jsonTasks = json_encode($tasksToJson);
         ?>
     </div>
 
     <script>
-        var tarefas = [];
+        var tarefas = <?=$jsonTasks?> ?? [];
         $(".addTask").click(function(event) {
             var taskName = $(".taskName").val();
             $(".tasks").append(`<br><input type='checkbox' value='${taskName}' class='goal'>${taskName}<br>`);
             $(".taskName").val("");
 
             var newObject = {};
+            var id = 1;
             $("input[type=checkbox]").each(function(index) {
                 if ($(this).is(':checked')) {
-                   newObject = {name: taskName, checked: true};
-                    
-                    // console.log(`checkbox marcado ${index}: `, $(this).val());
+                   newObject = {id: id, description: taskName, checked: true};
                 } else {
-                    newObject = {name: taskName, checked: false};
-                    // console.log('checkbox não marcado', $(this).val());
+                    newObject = {id: id, description: taskName, checked: false};
                 }
+                id++;
             });
 
             tarefas.push(newObject);
@@ -71,11 +82,8 @@ $projectID = $uri[sizeof($uri)-1];
 
             $(".tasks > input[type=checkbox]").each(function(index) {
                 if ($(this).is(":checked")) {
-                    // console.log(`i; ${index}, v: ${$(this).val()} [marked]`);
                     tarefas[index].checked = true;
-                }
-                else {
-                    // console.log(`i; ${index}, v: ${$(this).val()}`);
+                } else {
                     tarefas[index].checked = false;
                 }
             });
@@ -85,29 +93,15 @@ $projectID = $uri[sizeof($uri)-1];
     </script>
 
     <script>
-        // TODO: descomentar depois
         $(".sendInfo").click(function() {
-            //console.log(JSON.stringify(tarefas));
             // TODO: Caso não se torne uma boa opção escrever tudo em um campo da tabela em JSON, só crie outra tabela com clunas: id, id_projeto(FK) e tarefas (JSON)
-
-            // $.ajax({
-            //     url: '/save-todo/<?=$projectID?>', // enviar para a página que salva
-            //     type: "POST", 
-            //     data: {tasks: tarefas},
-            //     success: function(response) {
-            //         console.log("Response: ", response);
-            //     },
-            //     error: function (xhr, status, error) {
-            //         console.error("Error: ", status, error);
-            //     }
-            // });
 
             $.ajax({
                 url: 'http://localhost:5500/save-todo/<?=$projectID?>', // Verifique se o URL está correto
                 type: 'POST',
                 data: { valor: JSON.stringify(tarefas) }, // Verifique os dados enviados
                 success: function(response) {
-                    console.log(response)
+                    console.log(response);
                     Swal.fire({
                         position: "top-end",
                         icon: "success",
@@ -117,7 +111,7 @@ $projectID = $uri[sizeof($uri)-1];
                     });
                 },
                 error: function(xhr, status, error) {
-                    console.error('Erro na requisição:', status, error);
+                    console.error('Erro na requisição:', status, error, tarefas);
                 }
             });
 

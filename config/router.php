@@ -74,10 +74,10 @@ elseif (str_contains($uri, "/save-todo")) {
     // TODO: Call controller function that calls repository that writes in database
     $addToDo = new ProjectsController();
 
+    // Agora eu preciso verificar o que está causando a duplicacao quando marco uma tarefa como feita
     $toDoList = json_decode($_POST['valor'], true);
     $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
 
-    var_dump(json_decode($_POST['valor'], true));
 }
 
 elseif ($uri == "/") {

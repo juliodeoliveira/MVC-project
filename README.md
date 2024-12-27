@@ -22,3 +22,11 @@ Once all the dependencies have been installed you will need to configure your `.
 ```bash
 php -S localhost:5500 -t public
 ```
+
+---
+## Contributing
+To contribute the project is very simple, it uses MVC architecture, basically it stands for Model, View and Controller. In this project I am using a Repository that cares about the queries and the database itself.
+
+### Branches
+To make it more organized I am using a branch for each "project state", the branches are: `feature, bugfixes and main`. If you want to add a new feature simply clone the project go to feature branch and create a new one with the name: feature/feature-name, and create a pull request, I will read the code and merge to the feature branch, when the release time comes I will merge the feature branch with the main, if a error appears, or someone else spotted an error, simply create a branch in bugfixes branch with the name bugfixes/bug-name, when error is solved the bugfixes/bug-name branch will be merged to bugfixes and bugfixes with main, basically the same thing with feature.
+

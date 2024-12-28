@@ -50,7 +50,6 @@ $projectID = $uri[sizeof($uri)-1];
                 }
             }
 
-            dump($tasksToJson);
             $jsonTasks = json_encode($tasksToJson);
         ?>
     </div>
@@ -87,30 +86,39 @@ $projectID = $uri[sizeof($uri)-1];
                     tarefas[index].checked = false;
                 }
             });
-
-            // console.log("Tarefas marcadas: ", marked);
         });
     </script>
+
+    <?php 
+        // Usado para pegar o valor de HOST logo abaixo
+        use App\Functions\LoadEnv;
+    ?>
 
     <script>
         $(".sendInfo").click(function() {
             // TODO: Caso não se torne uma boa opção escrever tudo em um campo da tabela em JSON, só crie outra tabela com clunas: id, id_projeto(FK) e tarefas (JSON)
-
             $.ajax({
-                url: 'http://localhost:5500/save-todo/<?=$projectID?>', // Verifique se o URL está correto
+                url: 'http://<?=LoadEnv::fetchEnv("HOST")?>/save-todo/<?=$projectID?>',
                 type: 'POST',
-                data: { valor: JSON.stringify(tarefas) }, // Verifique os dados enviados
+                data: { valor: JSON.stringify(tarefas) },
                 success: function(response) {
                     console.log(response);
                     Swal.fire({
-                        position: "top-end",
+                        position: "center-center",
                         icon: "success",
-                        title: "Your work has been saved",
+                        title: "Seu trabalho foi salvo com sucesso!",
                         showConfirmButton: false,
-                        timer: 1500
+                        timer: 2000
                     });
                 },
                 error: function(xhr, status, error) {
+                    Swal.fire({
+                        position: "center-center",
+                        icon: "error",
+                        title: "Não foi possível salvar seu trabalho!",
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
                     console.error('Erro na requisição:', status, error, tarefas);
                 }
             });

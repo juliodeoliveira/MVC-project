@@ -2,11 +2,9 @@
 
 use App\Controllers\ProjectsController;
 use App\Functions\URI;
-use App\Repositories\ProjectsRepository;
 $uri = URI::uriExplode();
 $projectID = $uri[sizeof($uri)-1];
 
-// TODO: tem um erro quando eu marco uma tarefa como feita e quando ela volta, nao mostra a tarefa marcada e duplica 
 
 ?>
 <!DOCTYPE html>
@@ -28,8 +26,9 @@ $projectID = $uri[sizeof($uri)-1];
 
     <div class="tasks">
         <?php
-            $currentTasks = new ProjectsRepository();
-            $currentTasks = $currentTasks->showAllTasks($projectID);
+
+            $controller = new ProjectsController();
+            $currentTasks = $controller->allTasks($projectID);
 
             $tasksToJson = [];
 
@@ -62,7 +61,11 @@ $projectID = $uri[sizeof($uri)-1];
             $(".taskName").val("");
 
             var newObject = {};
-            var id = 1;
+
+            <?php
+                $lastId = $controller->lastTaskId();
+            ?>
+            var id = <?=$lastId?>;
             $("input[type=checkbox]").each(function(index) {
                 if ($(this).is(':checked')) {
                    newObject = {id: id, description: taskName, checked: true};
@@ -96,7 +99,6 @@ $projectID = $uri[sizeof($uri)-1];
 
     <script>
         $(".sendInfo").click(function() {
-            // TODO: Caso não se torne uma boa opção escrever tudo em um campo da tabela em JSON, só crie outra tabela com clunas: id, id_projeto(FK) e tarefas (JSON)
             $.ajax({
                 url: 'http://<?=LoadEnv::fetchEnv("HOST")?>/save-todo/<?=$projectID?>',
                 type: 'POST',

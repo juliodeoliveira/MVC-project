@@ -8,8 +8,6 @@ use App\Models\Client;
 use App\Functions\URI;
 use App\Models\Projects;
 
-use function PHPSTORM_META\type;
-
 $uri = URI::uri();
 $uriExplodes = URI::uriExplode();
 

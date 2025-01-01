@@ -102,6 +102,8 @@ class ProjectsRepository
         $idOnly = array_column($result, "id");
 
         // TODO: O problema disso é que vai "atualizar" tudo, já que se eu apenas marcar uma tarefa como feita, todas as outras ainda vao existir, REFATORAR DEPOIS
+
+        //! preciso pegar um id diferente, já que projetos diferentes vao ter um id comecando com 0 aí da problema la na hora de escrever na tabela
         if (in_array($list->getId(), $idOnly)) {
             $updateTask = $this->connection->prepare("UPDATE project_tasks SET task_status = :isMarked WHERE id = :taskId");
             $updateTask->bindValue(":isMarked", $list->getTaskMarked() ? 1 : 0);
@@ -138,5 +140,13 @@ class ProjectsRepository
             $tasks[] = $taskObject;
         }
         return $tasks;
+    }
+
+    public function lastTaskId() 
+    {
+        $lastId = $this->connection->prepare("SELECT id FROM project_tasks ORDER BY id DESC LIMIT 1");
+        $lastId->execute();
+        $result = $lastId->fetchColumn();
+        return $result;
     }
 }

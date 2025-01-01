@@ -81,4 +81,16 @@ class ProjectsController
           // var_dump($toDoList);
 
      }
+
+     public function allTasks($projectId) {
+          $currentTasks = new ProjectsRepository();
+          $currentTasks = $currentTasks->showAllTasks($projectId);
+          return $currentTasks;
+     }
+
+     public function lastTaskId(): int
+     {
+          $getLast = new ProjectsRepository();
+          return $getLast->lastTaskId();
+     }
 }

@@ -13,17 +13,17 @@ Once the packages have been installed, we can move on to the system, which can b
 git clone https://github.com/juliodeoliveira/MVC-project
 ```
 
-When everything is done you need to go to root folder from project and create the database:
-```bash
-cd database && php migrations.php && cd ../
-```
-
 Once the download is complete, go to the folder named `MVC-project` and install all the dependencies using the command below:
 ```bash
 cd MVC-project && composer install
 ```
 
-Once all the dependencies have been installed you will need to configure your `.env` file, you can do this by simply editing and renaming the `.env.example` file in the root of the project. If your database is also correct, you just need to start the project with the command below:
+When everything is done you need to go to root folder from project and create the database:
+```bash
+cd database && php migrations.php && cd ../
+```
+
+Once all the dependencies have been installed and the database has been created you will need to configure your `.env` file, you can do this by simply editing and renaming the `.env.example` file in the root of the project. If your database is also correct, you just need to start the project with the command below:
 ```bash
 php -S localhost:5500 -t public
 ```

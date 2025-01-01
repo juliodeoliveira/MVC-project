@@ -13,6 +13,11 @@ Once the packages have been installed, we can move on to the system, which can b
 git clone https://github.com/juliodeoliveira/MVC-project
 ```
 
+When everything is done you need to go to root folder from project and create the database:
+```bash
+cd database && php migrations.php && cd ../
+```
+
 Once the download is complete, go to the folder named `MVC-project` and install all the dependencies using the command below:
 ```bash
 cd MVC-project && composer install

@@ -6,6 +6,7 @@ use App\Repositories\ProjectsRepository;
 
 use App\Models\Projects;
 use App\Models\ToDoList;
+use App\Models\Photos;
 
 class ProjectsController
 {
@@ -92,5 +93,34 @@ class ProjectsController
      {
           $getLast = new ProjectsRepository();
           return $getLast->lastTaskId();
+     }
+
+     // Images
+     public function processPhoto(): void
+     {
+
+          //TODO: se o nome da foto ja existe no banco de dados ela nao deve ser inserida
+
+          // This path refers to public, the folder that you required in the command php -S localhost -t public
+          $destinyFolder = "./assets/projectPhotos/$_POST[projectIdPhoto]";
+          if (!file_exists($destinyFolder)) {
+               mkdir($destinyFolder, 0777, true);
+          }
+
+          $tempName = $_FILES['projectPhoto']['tmp_name'];
+          $finalDestiny = $destinyFolder . "/" . basename($_FILES['projectPhoto']['name']);
+          
+          move_uploaded_file($tempName, $finalDestiny);
+
+          $photos = new Photos($_FILES['projectPhoto']['name'], $finalDestiny, (int) $_POST["projectIdPhoto"]);
+
+          $addPhoto = new ProjectsRepository();
+          $addPhoto->addProjectPhoto($photos);
+     }
+
+     public function showPhotos(int $projectId): array 
+     {
+          $photos = new ProjectsRepository();
+          return $photos->showProjectPhotos($projectId);
      }
 }

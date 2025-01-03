@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 namespace App\Repositories;
 use App\Connection;
+use App\Models\Photos;
 use App\Models\Projects;
 use App\Models\ToDoList;
 use PDO;
@@ -147,6 +148,26 @@ class ProjectsRepository
         $lastId = $this->connection->prepare("SELECT id FROM project_tasks ORDER BY id DESC LIMIT 1");
         $lastId->execute();
         $result = $lastId->fetchColumn();
+        return $result;
+    }
+
+    public function addProjectPhoto(Photos $photos): void 
+    {   
+        $add = $this->connection->prepare("INSERT INTO project_pictures VALUES (0, :projectId, :photoName, :photoDescription, :photoPath);");
+        $add->bindValue(":projectId", $photos->getProjectId());
+        $add->bindValue(":photoName", $photos->getPhotoName());
+        $add->bindValue(":photoDescription", $photos->getPhotoName());
+        $add->bindValue(":photoPath", $photos->getNewPhotoPath());
+        $add->execute();
+    }
+
+    public function showProjectPhotos(int $projectId)
+    {
+        $search = $this->connection->prepare("SELECT photo_path, photo_name FROM project_pictures WHERE project_id = :projectId");
+        $search->bindValue(":projectId", $projectId);
+        $search->execute();
+        $result = $search->fetchAll(PDO::FETCH_ASSOC);
+
         return $result;
     }
 }

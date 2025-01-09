@@ -75,9 +75,18 @@ elseif (str_contains($uri, "/save-todo")) {
     $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
 }
 elseif ($uri == "/processPhoto") {
-    $addPhoto = new ProjectsController();
-    $addPhoto->processPhoto();
-    header("Location: " . $_SERVER['HTTP_REFERER']);
+    $managePhoto = new ProjectsController();
+    
+    var_dump($_POST["job"]);
+    exit();
+
+    if ($_POST["job"] ==  "insert") {
+        $managePhoto->processPhoto();
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+    } elseif ($_POST["job"] == "delete") {
+        $managePhoto->deletePhoto();
+        
+    }
 
 }
 

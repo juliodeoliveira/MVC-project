@@ -123,4 +123,9 @@ class ProjectsController
           $photos = new ProjectsRepository();
           return $photos->showProjectPhotos($projectId);
      }
+
+     public function deletePhoto() 
+     {
+          //TODO: aqui nesse ponto só passar o caminho da foto ja tem o nome, o problema vai ser se vier com imagem repetida
+     }
 }

@@ -28,56 +28,8 @@ $allProjects = $projectController->allProjects($getIdbyURI);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Projetos</title>
-    <style>
-        .carousel {
-            position: relative;
-            width: 600px;
-            height: 400px;
-            overflow: hidden;
-            background-color: #ccc;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .carousel-images {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-
-        .carousel-images img {
-            max-width: 100%;
-            max-height: 100%;
-            margin: auto;
-            object-fit: contain;
-            background-color: #eee;
-            flex-shrink: 0;
-            margin-left: 20px;
-        }
-
-        .carousel button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .carousel button:hover {
-            background: rgba(0, 0, 0, 0.7);
-        }
-
-        .carousel button.prev {
-            left: 10px;
-        }
-
-        .carousel button.next {
-            right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/css/carroussel.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Projetos de <?=$client->getEnterpriseName()?></h1>
@@ -120,11 +72,15 @@ $allProjects = $projectController->allProjects($getIdbyURI);
                     }
                 ?>
 
-                <form action="/processPhoto" method="POST" enctype="multipart/form-data">
+                <form id="imageSubmit" action="/processPhoto" method="POST" enctype="multipart/form-data">
                     <label for="file-upload" class="custom-upload">
                         Adicione uma foto para o projeto!
                     </label>
+
+                    <!-- // TODO: Para maior seguranca, adicionar um js que quando o formulario for enviado ele troca o valor do input para o que precisa ser, o valor padrao e em js e valor que deve ser vem em php -->
                     <input type="hidden" name="projectIdPhoto" value="<?=$project->getId()?>">
+
+                    <input type="hidden" name="job" value="insert">
 
                     <input type="file" id="file-upload" name="projectPhoto" accept=".jpg, .jpeg, .png, .gif">
                     <button type="submit">Enviar</button>
@@ -139,35 +95,8 @@ $allProjects = $projectController->allProjects($getIdbyURI);
 
     <a href="/create-project/<?=$client->getId()?>">Criar projeto</a>
 
-    //TODO: Colocar um hover e quando o mouse passar em cima ele mostra o botao de apagar a foto
-    <script>
-        // Function to initialize a carousel
-        function initCarousel(carousel) {
-            const imagesContainer = carousel.querySelector('.carousel-images');
-            const images = imagesContainer.querySelectorAll('img');
-            const prevButton = carousel.querySelector('.prev');
-            const nextButton = carousel.querySelector('.next');
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/js/loadCarousel.js"></script>
 
-            let currentIndex = 0;
-
-            function updateCarousel() {
-                const offset = -currentIndex * 45;
-                imagesContainer.style.transform = `translateX(${offset}%)`;
-            }
-
-            prevButton.addEventListener('click', () => {
-                currentIndex = (currentIndex === 0) ? images.length - 1 : currentIndex - 1;
-                updateCarousel();
-            });
-
-            nextButton.addEventListener('click', () => {
-                currentIndex = (currentIndex === images.length - 1) ? 0 : currentIndex + 1;
-                updateCarousel();
-            });
-        }
-
-        // Inicializar todos os carrosséis na página
-        document.querySelectorAll('.carousel').forEach(initCarousel);
-    </script>
 </body>
 </html>

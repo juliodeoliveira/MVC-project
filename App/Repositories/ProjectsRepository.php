@@ -170,4 +170,29 @@ class ProjectsRepository
 
         return $result;
     }
+
+    public function lastPhotoId()
+    {
+        $lastId = $this->connection->prepare("SELECT id FROM project_pictures ORDER BY id DESC LIMIT 1");
+        $lastId->execute();
+        $result = $lastId->fetchColumn();
+        return $result;
+    }
+
+    public function deletePhoto(int $photoId)
+    {
+
+        $delete = $this->connection->prepare("DELETE FROM project_pictures WHERE id = :id");
+        $delete->bindValue(":id", $photoId);
+        $delete->execute();
+        
+        $checkId = "SELECT COUNT(*) AS total FROM project_pictures";
+        $stmt = $this->connection->query($checkId);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result['total'] == 0) {
+            $resetId = "ALTER TABLE project_pictures AUTO_INCREMENT = 1";
+            $this->connection->exec($resetId);
+        } 
+    }
 }

@@ -107,8 +107,12 @@ class ProjectsController
                mkdir($destinyFolder, 0777, true);
           }
 
+          $getId = new ProjectsRepository();
+          $lastPhotoId = $getId->lastPhotoId() + 1;
+          $_FILES['projectPhoto']['name'] = $lastPhotoId. "_" . basename($_FILES['projectPhoto']['name']);
+
           $tempName = $_FILES['projectPhoto']['tmp_name'];
-          $finalDestiny = $destinyFolder . "/" . basename($_FILES['projectPhoto']['name']);
+          $finalDestiny = $destinyFolder . "/" . $_FILES['projectPhoto']['name'];
           
           move_uploaded_file($tempName, $finalDestiny);
 
@@ -124,8 +128,14 @@ class ProjectsController
           return $photos->showProjectPhotos($projectId);
      }
 
-     public function deletePhoto() 
+     public function deletePhoto(string $imageSrc) 
      {
-          //TODO: aqui nesse ponto só passar o caminho da foto ja tem o nome, o problema vai ser se vier com imagem repetida
+          $id = strpos(basename($imageSrc), "_");
+          $photoId = (int) substr(basename($imageSrc), 0, $id);
+
+          $deletePhoto = new ProjectsRepository();
+          $deletePhoto->deletePhoto($photoId);
+
+          unlink(str_replace("http://localhost:5500", ".", $imageSrc));
      }
 }

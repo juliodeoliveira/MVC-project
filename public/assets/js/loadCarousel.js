@@ -1,6 +1,5 @@
 
 function confirmDeleteImage(img, images) {
-    console.log('Image clicked:', img.src);
     Swal.fire({
         title: "Deseja deletar a imagem?",
         text: "Você não poderá reverter essa ação!",
@@ -27,15 +26,14 @@ function confirmDeleteImage(img, images) {
                 }
             });
 
-            //TODO: aqui vai ter uma requisicao ajax e que vai ter uma flagzinha dizendo que eu quero deletar a imagem
         }
     }).then(() => {
         $.ajax({
             url: 'http://localhost:5500/processPhoto',
             type: 'POST',
-            data: { valor: img.src, job: "delete" },
+            data: { imageSrc: img.src, job: "delete" },
             success: function(response) {
-                console.log(response);
+                // console.log(response);
                 
             },
             error: function(xhr, status, error) {

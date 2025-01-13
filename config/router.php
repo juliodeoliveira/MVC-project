@@ -76,16 +76,12 @@ elseif (str_contains($uri, "/save-todo")) {
 }
 elseif ($uri == "/processPhoto") {
     $managePhoto = new ProjectsController();
-    
-    var_dump($_POST["job"]);
-    exit();
 
     if ($_POST["job"] ==  "insert") {
         $managePhoto->processPhoto();
         header("Location: " . $_SERVER['HTTP_REFERER']);
     } elseif ($_POST["job"] == "delete") {
-        $managePhoto->deletePhoto();
-        
+        $managePhoto->deletePhoto($_POST["imageSrc"]);
     }
 
 }

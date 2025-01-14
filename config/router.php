@@ -82,6 +82,8 @@ elseif ($uri == "/processPhoto") {
         header("Location: " . $_SERVER['HTTP_REFERER']);
     } elseif ($_POST["job"] == "delete") {
         $managePhoto->deletePhoto($_POST["imageSrc"]);
+    } else {
+        header("Location: /");
     }
 
 }

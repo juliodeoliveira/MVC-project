@@ -4,6 +4,9 @@ require "../bootstrap.php";
 use App\Controllers\ClientController;
 use App\Controllers\ContainerController;
 use App\Controllers\ProjectsController;
+use App\Controllers\TasksController;
+use App\Controllers\PhotosController;
+
 use App\Models\Client;
 use App\Functions\URI;
 use App\Models\Projects;
@@ -69,13 +72,13 @@ elseif (str_contains($uri, "/to-do-list")) {
     $display->toDoList();
 }
 elseif (str_contains($uri, "/save-todo")) {
-    $addToDo = new ProjectsController();
+    $addToDo = new TasksController();
 
     $toDoList = json_decode($_POST['valor'], true);
     $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
 }
 elseif ($uri == "/processPhoto") {
-    $managePhoto = new ProjectsController();
+    $managePhoto = new PhotosController();
 
     if ($_POST["job"] ==  "insert") {
         $managePhoto->processPhoto();

@@ -17,8 +17,10 @@ use App\Models\Projects;
 
 use App\Controllers\ProjectsController;
 $projectController = new ProjectsController();
-
 $allProjects = $projectController->allProjects($getIdbyURI);
+
+use App\Controllers\PhotosController;
+$allPhotos = new PhotosController();
 
 ?>
 <!DOCTYPE html>
@@ -53,7 +55,7 @@ $allProjects = $projectController->allProjects($getIdbyURI);
                 <h2>Fotos do projeto:</h2>
                 <?php
                     
-                    $allPhotos = $projectController->showPhotos($project->getId());
+                    $allPhotos = $allPhotos->showPhotos($project->getId());
                     if (count($allPhotos) == 0) {
                         echo "<p>O projeto ainda não tem nenhuma foto!</p>";
                     } else {

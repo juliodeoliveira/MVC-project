@@ -1,7 +1,9 @@
 <?php
 
 use App\Controllers\ProjectsController;
+use App\Controllers\TasksController;
 use App\Functions\URI;
+
 $uri = URI::uriExplode();
 $projectID = $uri[sizeof($uri)-1];
 
@@ -27,7 +29,7 @@ $projectID = $uri[sizeof($uri)-1];
     <div class="tasks">
         <?php
 
-            $controller = new ProjectsController();
+            $controller = new TasksController();
             $currentTasks = $controller->allTasks($projectID);
 
             $tasksToJson = [];

@@ -21,7 +21,6 @@
             use App\Controllers\ProjectsController;
             
             $project = new ProjectsController();
-
             
             $listingClients = new ClientController();
             $allClients = $listingClients->allClients();
@@ -29,7 +28,9 @@
             
             foreach ($allClients as $clients) {
                 dump($clients->getId());
-                $countProjects = count($project->allProjects($clients->getId()));
+                
+                // TODO: consertar esse contador, ele precisa atualizar antes, se tem um projeto atrasado ele já mostra aqui quantos tinha antes de apagar o atrasado
+                // $countProjects = count($project->allProjects($clients->getId()));
 
                 ?>
                 <h1>Nome da empresa: <?=$clients->getEnterpriseName()?></h1>

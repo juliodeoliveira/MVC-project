@@ -20,6 +20,7 @@ $getIdbyURI = (int) $uriExplode[sizeof($uriExplode)-1];
 </head>
 <body>
     <h1>Criando um projeto novo</h1>
+    <p><strong>ATENCÃO</strong>: assim que a data de término chegar o projeto será apagado!</p>
     <form action="/create/<?=$getIdbyURI?>" method="POST" id="signForm">
         <input type="text" require name="title" required id="title" placeholder="Título do projeto *">
         <textarea name="description" id="description" placeholder="Descrição"></textarea>

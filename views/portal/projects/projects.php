@@ -20,7 +20,7 @@ $projectController = new ProjectsController();
 $allProjects = $projectController->allProjects($getIdbyURI);
 
 use App\Controllers\PhotosController;
-$allPhotos = new PhotosController();
+$photosController = new PhotosController();
 
 ?>
 <!DOCTYPE html>
@@ -44,7 +44,8 @@ $allPhotos = new PhotosController();
    <ul>
     <?php
         foreach ($allProjects as $project) {
-            dump($project);
+            
+            $checkDays = $projectController->checkProjectDeadline($project) ?? "Atrasado!";
             ?>
                 <h1>Título do projeto: <?=$project->getTitle()?></h1>
                 <li>Descrição: <?=$project->getDescription()?></li>
@@ -52,10 +53,12 @@ $allPhotos = new PhotosController();
                 <li>Data de término: <?=$project->getEndDate()?></li>
                 <li>Serviço: <?=$project->getService()?></li>
 
+                <li>Prazo: <?=$checkDays?></li>
+
                 <h2>Fotos do projeto:</h2>
                 <?php
                     
-                    $allPhotos = $allPhotos->showPhotos($project->getId());
+                    $allPhotos = $photosController->showPhotos($project->getId());
                     if (count($allPhotos) == 0) {
                         echo "<p>O projeto ainda não tem nenhuma foto!</p>";
                     } else {

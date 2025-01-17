@@ -30,6 +30,11 @@ $projectID = $uri[sizeof($uri)-1];
         <?php
 
             $controller = new TasksController();
+
+            // TODO: antes disso aqui rodar uma verificacao do prazo do projeto
+            // Um metodo da classe TaskController que vai retornar do Repositorio, 
+            // se o prazo venceu o controller retorna false (nao pode seguir para as tarefas)
+
             $currentTasks = $controller->allTasks($projectID);
 
             $tasksToJson = [];

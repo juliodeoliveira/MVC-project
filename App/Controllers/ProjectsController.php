@@ -40,4 +40,26 @@ class ProjectsController
           $repository = new ProjectsRepository();
           $repository->insert($newProject);
      }
+
+     public function checkProjectDeadline(Projects $project)
+     {
+          $projectRepository = new ProjectsRepository();
+
+          $teste = $projectRepository->show($project->getId());
+          // dump($project->getEndDate());
+          // dump("Atual: " . date('Y-m-d'));
+          
+          if ($project->getEndDate() < date('Y-m-d')) {
+               // TODO: aqui ele vai ser deletado, mas caso nao seja desejado, adicionar um botao para que quando o prazo vencer, adicionar mais 30 dias de prazo
+               $projectRepository->delete($project);
+               header("Location: /project/" . $project->getClientId());
+          } else {
+
+               $actualDate = new \DateTime(date('Y-m-d'));
+               $finalDate = new \DateTime($project->getEndDate());
+               
+               $days = $actualDate->diff($finalDate)->days;
+               return $days > 1 ? $days . " dias" : $days . " dia";
+          }
+     }
 }

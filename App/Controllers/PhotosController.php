@@ -41,7 +41,8 @@ class PhotosController
         return $photos->showProjectPhotos($projectId);
     }
 
-    public function deletePhoto(string $imageSrc) 
+    //TODO: verificar aqui o que esta acontecendo que a foto nem sempre é unlinkada
+    public function deletePhoto(string $imageSrc)
     {
         $id = strpos(basename($imageSrc), "_");
         $photoId = (int) substr(basename($imageSrc), 0, $id);

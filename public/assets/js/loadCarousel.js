@@ -37,7 +37,6 @@ function confirmDeleteImage(img, images) {
                 
             },
             error: function(xhr, status, error) {
-                
                 console.error('Erro na requisição:', status, error);
             }
         });

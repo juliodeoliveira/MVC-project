@@ -17,7 +17,8 @@ class PhotosRepository
 
     public function addProjectPhoto(Photos $photos): void 
     {   
-        $add = $this->connection->prepare("INSERT INTO project_pictures VALUES (0, :projectId, :photoName, :photoDescription, :photoPath);");
+        $add = $this->connection->prepare("INSERT INTO project_pictures VALUES (:id, :projectId, :photoName, :photoDescription, :photoPath);");
+        $add->bindValue(":id", $photos->getPhotoId());
         $add->bindValue(":projectId", $photos->getProjectId());
         $add->bindValue(":photoName", $photos->getPhotoName());
         $add->bindValue(":photoDescription", $photos->getPhotoName());
@@ -43,9 +44,8 @@ class PhotosRepository
         return $result;
     }
 
-    public function deletePhoto(int $photoId)
-    {
-
+    public function deletingPhoto(int $photoId)
+    {        
         $delete = $this->connection->prepare("DELETE FROM project_pictures WHERE id = :id");
         $delete->bindValue(":id", $photoId);
         $delete->execute();

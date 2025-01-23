@@ -28,9 +28,6 @@
             
             foreach ($allClients as $clients) {
                 dump($clients->getId());
-                
-                // TODO: consertar esse contador, ele precisa atualizar antes, se tem um projeto atrasado ele já mostra aqui quantos tinha antes de apagar o atrasado
-                // $countProjects = count($project->allProjects($clients->getId()));
 
                 ?>
                 <h1>Nome da empresa: <?=$clients->getEnterpriseName()?></h1>
@@ -46,7 +43,7 @@
                     <li>Estado: <?=$clients->getState()?></li>
                     <a href="/editing/<?=$clients->getId()?>">Editar informações</a>
                     <br>
-                    <a href="/project/<?=$clients->getId()?>">Ver <?=$countProjects?> projetos</a>
+                    <a href="/project/<?=$clients->getId()?>">Ver <?=$project->countProjects($clients->getId())?> projetos</a>
                 </ul>
                 
                 <br>

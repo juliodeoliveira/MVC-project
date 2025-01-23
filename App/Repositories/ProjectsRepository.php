@@ -94,7 +94,5 @@ class ProjectsRepository
         $delete->bindValue(":id", $project->getId());
         $delete->execute();
 
-        // TODO: preciso mesmo rodar uma query para pegar os ids de projeto e depois verficar e apagar?
-    
     }
 }

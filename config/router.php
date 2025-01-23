@@ -79,8 +79,8 @@ elseif (str_contains($uri, "/save-todo")) {
 }
 elseif ($uri == "/processPhoto") {
     $managePhoto = new PhotosController();
-
-    if ($_POST["job"] ==  "insert") {
+    
+    if ($_POST["job"] == "insert") {
         $managePhoto->processPhoto();
         header("Location: " . $_SERVER['HTTP_REFERER']);
     } elseif ($_POST["job"] == "delete") {

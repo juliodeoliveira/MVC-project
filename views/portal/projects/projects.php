@@ -45,7 +45,8 @@ $photosController = new PhotosController();
     <?php
         foreach ($allProjects as $project) {
             
-            $checkDays = $projectController->checkProjectDeadline($project) ?? "Atrasado!";
+            $checkDays = $projectController->checkProjectDeadline($project);
+            
             ?>
                 <h1>Título do projeto: <?=$project->getTitle()?></h1>
                 <li>Descrição: <?=$project->getDescription()?></li>
@@ -53,7 +54,7 @@ $photosController = new PhotosController();
                 <li>Data de término: <?=$project->getEndDate()?></li>
                 <li>Serviço: <?=$project->getService()?></li>
 
-                <li>Prazo: <?=$checkDays?></li>
+                <li>Prazo: <?=$checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
 
                 <h2>Fotos do projeto:</h2>
                 <?php

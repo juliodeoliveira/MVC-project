@@ -45,21 +45,37 @@ class ProjectsController
      {
           $projectRepository = new ProjectsRepository();
 
-          $teste = $projectRepository->show($project->getId());
-          // dump($project->getEndDate());
-          // dump("Atual: " . date('Y-m-d'));
+          $actualDate = new \DateTime(date('Y-m-d'));
+          $finalDate = new \DateTime($project->getEndDate());
           
+          // TODO: Trocar essas chaves de arrays por Interfaces
           if ($project->getEndDate() < date('Y-m-d')) {
-               // TODO: aqui ele vai ser deletado, mas caso nao seja desejado, adicionar um botao para que quando o prazo vencer, adicionar mais 30 dias de prazo
-               $projectRepository->delete($project);
-               header("Location: /project/" . $project->getClientId());
-          } else {
+               $lateDays = $actualDate->diff($finalDate)->days;
 
-               $actualDate = new \DateTime(date('Y-m-d'));
-               $finalDate = new \DateTime($project->getEndDate());
-               
+               if ($lateDays > 15) {
+                    $projectRepository->delete($project);
+                    return ["days" => "", "deadline" => "deleted"];
+               }
+
+               return ["days" => $lateDays, "deadline" => "late"];
+
+          } else {
                $days = $actualDate->diff($finalDate)->days;
-               return $days > 1 ? $days . " dias" : $days . " dia";
+               return ["days" => $days, "deadline" => "early"];
           }
+     }
+
+     public function countProjects(int $clientId): int
+     {
+          $projects = $this->allProjects($clientId);
+          $counter = 0;
+          foreach ($projects as $project) {
+               $deadline = $this->checkProjectDeadline($project);
+               if ($deadline["deadline"] != "deleted") {
+                    $counter += 1;
+               }
+          }
+          
+          return $counter;
      }
 }

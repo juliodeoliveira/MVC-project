@@ -100,7 +100,7 @@ $router->add('POST', '/save-todo', function () {
     $addToDo = new TasksController();
 
     $toDoList = json_decode($_POST['valor'], true);
-    $addToDo->saveToDoList($projectId, $toDoList); 
+    $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
 });
 
 $router->add('POST', '/process-photo', function () {

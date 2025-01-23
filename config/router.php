@@ -1,4 +1,5 @@
 <?php
+
 require "../bootstrap.php";
 
 use App\Controllers\ClientController;
@@ -8,35 +9,44 @@ use App\Controllers\TasksController;
 use App\Controllers\PhotosController;
 
 use App\Models\Client;
-use App\Functions\URI;
-use App\Models\Projects;
 
-$uri = URI::uri();
-$uriExplodes = URI::uriExplode();
+use App\Functions\Router;
 
-if ($uri == '/signin-client') {
+// Instancia o roteador
+$router = new Router();
+
+// Define as rotas
+$router->add('GET', '/', function () {
+    require_once "../views/portal/home.php";
+});
+
+$router->add('GET', '/signin-client', function () {
     $newClient = new ContainerController();
     $newClient->signinClient();
-}
-elseif ($uri == '/sign-client') {
+});
+
+$router->add('POST', '/write-client', function () {
     $write = new ClientController();
     $write->signClient();
     header("Location: /success");
-}
-elseif ($uri == "/success") {
-    // dd("Hello there! Everything is quite fine here, diferent from your house, every parent went for a side and you look like kinda disolated, I am really sorry...");
+});
+
+$router->add('GET', '/success', function () {
     $success = new ContainerController();
     $success->success();
-}
-elseif ($uri == "/list-customers") {
+});
+
+$router->add('GET', '/list-customers', function () {
     $display = new ContainerController();
     $display->listCustomers();
-}
-elseif (str_contains($uri, "/editing")) {
+});
+
+$router->add('GET', '/editing', function () {
     $display = new ContainerController();
     $display->edition();
-}
-elseif(str_contains($uri, "/edit")) {
+});
+
+$router->add('POST', '/edit', function () {
     $model = new Client($_POST["enterpriseName"], $_POST["email"]);
 
     $update = new ClientController();
@@ -44,40 +54,56 @@ elseif(str_contains($uri, "/edit")) {
 
     $success = new ContainerController();
     $success->success();
-}
-elseif(str_contains($uri, "/project")) {
+});
+
+$router->add('GET', '/project', function () {
     $display = new ContainerController();
     $display->listProjects();
-}
-elseif (str_contains($uri, "/create-project")) {
+});
+
+$router->add('GET', '/create-project', function () {
     $display = new ContainerController();
     $display->createProject();
-}
-elseif (str_contains($uri, "/create")) {
+});
+
+$router->add('POST', '/create', function () {
+    $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
+
+    $id = end($uriExplodes);
+
     $creation = new ProjectsController();
-    $creation->createProject($uriExplodes[sizeof($uriExplodes)-1]);
+    $creation->createProject($id);
+
     header("Location: /success");
-}
-elseif (str_contains($uri, "/search-projects")) {
+});
+
+$router->add('POST', '/search-projects', function () {
     $display = new ContainerController();
     $display->findProject();
-}
-elseif (str_contains($uri, "/search-clients")) {
+});
+
+$router->add('POST', '/search-clients', function () {
     $display = new ContainerController();
     $display->findClients();
-}
+});
 
-elseif (str_contains($uri, "/to-do-list")) {
+$router->add('GET', '/to-do-list', function () {
     $display = new ContainerController();
     $display->toDoList();
-}
-elseif (str_contains($uri, "/save-todo")) {
+});
+
+$router->add('POST', '/save-todo', function () {
+    $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
+
+    $projectId = end($uriExplodes);
+
     $addToDo = new TasksController();
 
     $toDoList = json_decode($_POST['valor'], true);
     $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
-}
-elseif ($uri == "/processPhoto") {
+});
+
+$router->add('POST', '/process-photo', function () {
     $managePhoto = new PhotosController();
     
     if ($_POST["job"] == "insert") {
@@ -88,11 +114,6 @@ elseif ($uri == "/processPhoto") {
     } else {
         header("Location: /");
     }
+});
 
-}
-
-elseif ($uri == "/") {
-    require_once "../views/portal/home.php";
-} else {
-    require_once "../views/portal/notfound.php";
-}
+$router->dispatch();

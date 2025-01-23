@@ -29,7 +29,7 @@ function confirmDeleteImage(img, images) {
         }
     }).then(() => {
         $.ajax({
-            url: 'http://localhost:5500/processPhoto',
+            url: 'http://localhost:5500/process-photo',
             type: 'POST',
             data: { imageSrc: img.src, job: "delete" },
             success: function(response) {

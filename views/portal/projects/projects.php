@@ -78,7 +78,7 @@ $photosController = new PhotosController();
                     }
                 ?>
 
-                <form id="imageSubmit" action="/processPhoto" method="POST" enctype="multipart/form-data">
+                <form id="imageSubmit" action="/process-photo" method="POST" enctype="multipart/form-data">
                     <label for="file-upload" class="custom-upload">
                         Adicione uma foto para o projeto!
                     </label>

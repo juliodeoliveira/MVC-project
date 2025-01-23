@@ -16,7 +16,7 @@
 <body>
 
 <!-- //! Estado deve ser select, depois implementação de API dos correios para preencher campos com base no CEP --> 
-    <form action="/sign-client" method="POST" id="signForm">
+    <form action="/write-client" method="POST" id="signForm">
         <!-- //TODO: Aqui, para melhorar a usabilidade, deve ser feito com que cada input seja mostrado por vez na tela,
                 preencheu um, próximo input como se fosse uma troca de página, um input por vez -->
         <input type="text"  name="enterpriseName" required id="enterprisename" placeholder="Nome da empresa *">

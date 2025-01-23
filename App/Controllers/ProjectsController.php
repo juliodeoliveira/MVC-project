@@ -6,6 +6,7 @@ use App\Repositories\ProjectsRepository;
 
 use App\Models\Projects;
 use App\Models\ToDoList;
+use App\Models\Photos;
 
 class ProjectsController
 {
@@ -40,45 +41,41 @@ class ProjectsController
           $repository->insert($newProject);
      }
 
-     // This name's supposed to be temporary
-     public function arrayMaker(int $projectId, array $todolist)
+     public function checkProjectDeadline(Projects $project)
      {
-          $tasksObject = [];
-          foreach ($todolist as $task) {
-               //var_dump($task);
-               $projectTask = new ToDolist();
-               $projectTask->setId($task["id"]);
-               $projectTask->setTaskProjectId($projectId);
-               $projectTask->setTaskDescription($task["description"]);
-               $projectTask->setTaskMarked($task["checked"]);
+          $projectRepository = new ProjectsRepository();
 
-               $tasksObject[] = $projectTask;
+          $actualDate = new \DateTime(date('Y-m-d'));
+          $finalDate = new \DateTime($project->getEndDate());
+          
+          // TODO: Trocar essas chaves de arrays por Interfaces
+          if ($project->getEndDate() < date('Y-m-d')) {
+               $lateDays = $actualDate->diff($finalDate)->days;
+
+               if ($lateDays > 15) {
+                    $projectRepository->delete($project);
+                    return ["days" => "", "deadline" => "deleted"];
+               }
+
+               return ["days" => $lateDays, "deadline" => "late"];
+
+          } else {
+               $days = $actualDate->diff($finalDate)->days;
+               return ["days" => $days, "deadline" => "early"];
           }
-
-          return $tasksObject;
      }
 
-     public function saveToDoList(int $projectId, array $toDoList)
+     public function countProjects(int $clientId): int
      {
-          // $project = new ToDoList();
-          // echo "ID do projeto: $projectId\n";
-
-          $test = new ProjectsController();
-          $tasks = $test->arrayMaker($projectId, $toDoList);
-          //var_dump($tasks);
-
-          // there is no validation, not even a single one
-          foreach ($tasks as $task) {
-               $insert = new ProjectsRepository();
-               $insert->insertTask($task);
+          $projects = $this->allProjects($clientId);
+          $counter = 0;
+          foreach ($projects as $project) {
+               $deadline = $this->checkProjectDeadline($project);
+               if ($deadline["deadline"] != "deleted") {
+                    $counter += 1;
+               }
           }
-
-          // First things first add a insert method, then one to find and other other to get all task
-          // I can have an array of objects
-          // insert -> see -> update
-
-          // var_dump("List de Tarefas: ");
-          // var_dump($toDoList);
-
+          
+          return $counter;
      }
 }

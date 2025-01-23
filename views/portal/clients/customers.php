@@ -17,12 +17,10 @@
     <a href="/">Voltar para a tela inicial</a>
     <ul>
         <?php
-            //TODO: Adicionar um pequeno texto que mostra quantos projetos eu tenho
             use App\Controllers\ClientController;
             use App\Controllers\ProjectsController;
             
             $project = new ProjectsController();
-
             
             $listingClients = new ClientController();
             $allClients = $listingClients->allClients();
@@ -30,7 +28,6 @@
             
             foreach ($allClients as $clients) {
                 dump($clients->getId());
-                $countProjects = count($project->allProjects($clients->getId()));
 
                 ?>
                 <h1>Nome da empresa: <?=$clients->getEnterpriseName()?></h1>
@@ -46,7 +43,7 @@
                     <li>Estado: <?=$clients->getState()?></li>
                     <a href="/editing/<?=$clients->getId()?>">Editar informações</a>
                     <br>
-                    <a href="/project/<?=$clients->getId()?>">Ver <?=$countProjects?> projetos</a>
+                    <a href="/project/<?=$clients->getId()?>">Ver <?=$project->countProjects($clients->getId())?> projetos</a>
                 </ul>
                 
                 <br>

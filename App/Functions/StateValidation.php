@@ -2,9 +2,6 @@
 
 namespace App\Functions;
 
-/**
- * Júlio
- */
 class StateValidation
 {
     public static function validate($value): bool

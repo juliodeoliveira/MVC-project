@@ -4,11 +4,12 @@ require "../bootstrap.php";
 use App\Controllers\ClientController;
 use App\Controllers\ContainerController;
 use App\Controllers\ProjectsController;
+use App\Controllers\TasksController;
+use App\Controllers\PhotosController;
+
 use App\Models\Client;
 use App\Functions\URI;
 use App\Models\Projects;
-
-use function PHPSTORM_META\type;
 
 $uri = URI::uri();
 $uriExplodes = URI::uriExplode();
@@ -71,12 +72,22 @@ elseif (str_contains($uri, "/to-do-list")) {
     $display->toDoList();
 }
 elseif (str_contains($uri, "/save-todo")) {
-    // TODO: Call controller function that calls repository that writes in database
-    $addToDo = new ProjectsController();
+    $addToDo = new TasksController();
 
-    // Agora eu preciso verificar o que está causando a duplicacao quando marco uma tarefa como feita
     $toDoList = json_decode($_POST['valor'], true);
     $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
+}
+elseif ($uri == "/processPhoto") {
+    $managePhoto = new PhotosController();
+    
+    if ($_POST["job"] == "insert") {
+        $managePhoto->processPhoto();
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+    } elseif ($_POST["job"] == "delete") {
+        $managePhoto->deletePhoto($_POST["imageSrc"]);
+    } else {
+        header("Location: /");
+    }
 
 }
 

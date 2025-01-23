@@ -13,43 +13,43 @@ class ToDoList
         
     }
 
-    public function setId(int $id)
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setTaskProjectId(int $projectId)
+    public function setTaskProjectId(int $projectId): void
     {
         $this->taskProjectId = $projectId;
     }
 
-    public function setTaskDescription(string $description)
+    public function setTaskDescription(string $description): void
     {
         $this->taskDescription = $description;
     }
 
-    public function setTaskMarked(bool $marked)
+    public function setTaskMarked(bool $marked): void
     {
         $this->taskMarked = $marked;
     }
 
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getTaskProjectId()
+    public function getTaskProjectId(): int
     {
         return $this->taskProjectId;
     }
 
-    public function getTaskDescription()
+    public function getTaskDescription(): string
     {
         return $this->taskDescription;
     }
 
-    public function getTaskMarked()
+    public function getTaskMarked(): bool
     {
         return $this->taskMarked;
     }

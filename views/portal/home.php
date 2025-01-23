@@ -13,10 +13,6 @@
     </header>
     <main>
 
-        <h1>Feliz Natal!</h1>
-        <p>O gerenciador de projetos te deseja um Feliz Natal e boas festas!</p>
-        <img src="https://cdn-icons-png.freepik.com/256/2358/2358079.png" alt="Árvore de natal">
-
         <h1>Olá, Mundo!</h1>
         <p>Esta é uma página inicial simples criada com HTML e CSS. Ela tem um layout básico com um cabeçalho, um corpo principal e um rodapé.</p>
         <a href="/signin-client">Clique aqui para cadastrar um novo cliente!</a>

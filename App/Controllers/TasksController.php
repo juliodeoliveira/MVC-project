@@ -45,9 +45,6 @@ class TasksController
         // I can have an array of objects
         // insert -> see -> update
 
-        // var_dump("List de Tarefas: ");
-        // var_dump($toDoList);
-
     }
 
     public function allTasks($projectId) {

@@ -41,7 +41,6 @@ class TasksRepository
 
         // TODO: O problema disso é que vai "atualizar" tudo, já que se eu apenas marcar uma tarefa como feita, todas as outras ainda vao existir, REFATORAR DEPOIS
 
-        //! preciso pegar um id diferente, já que projetos diferentes vao ter um id comecando com 0 aí da problema la na hora de escrever na tabela
         if (in_array($list->getId(), $idOnly)) {
 
             // TODO: isso pode ser a funcao saveToDo
@@ -51,6 +50,8 @@ class TasksRepository
             $updateTask->execute();
             
         } else {
+            $newId = $list->getId()+1;
+
             $insert = $this->connection->prepare("INSERT INTO project_tasks VALUES (:taskId, :projectId, :taskDescription, :taskStatus)");
             $insert->bindValue(":taskId", $list->getId());
             $insert->bindValue(":projectId", $list->getTaskProjectId());

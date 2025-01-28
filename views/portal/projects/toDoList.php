@@ -31,10 +31,6 @@ $projectID = $uri[sizeof($uri)-1];
 
             $controller = new TasksController();
 
-            // TODO: antes disso aqui rodar uma verificacao do prazo do projeto
-            // Um metodo da classe TaskController que vai retornar do Repositorio, 
-            // se o prazo venceu o controller retorna false (nao pode seguir para as tarefas)
-
             $currentTasks = $controller->allTasks($projectID);
 
             $tasksToJson = [];
@@ -72,7 +68,8 @@ $projectID = $uri[sizeof($uri)-1];
             <?php
                 $lastId = $controller->lastTaskId();
             ?>
-            var id = <?=$lastId?>;
+            var id = <?=$lastId + 1?>;
+            console.log(id);
             $("input[type=checkbox]").each(function(index) {
                 if ($(this).is(':checked')) {
                    newObject = {id: id, description: taskName, checked: true};
@@ -113,7 +110,6 @@ $projectID = $uri[sizeof($uri)-1];
                 success: function(response) {
                     console.log(response);
                     Swal.fire({
-                        position: "center-center",
                         icon: "success",
                         title: "Seu trabalho foi salvo com sucesso!",
                         showConfirmButton: false,
@@ -122,7 +118,6 @@ $projectID = $uri[sizeof($uri)-1];
                 },
                 error: function(xhr, status, error) {
                     Swal.fire({
-                        position: "center-center",
                         icon: "error",
                         title: "Não foi possível salvar seu trabalho!",
                         showConfirmButton: false,

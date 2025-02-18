@@ -25,20 +25,24 @@ function searchClient(Client $client, $haystack) {
     <title>Document</title>
 </head>
 <body>
-    <h1>Resultados da busca: <?=$_POST["searchClients"]?></h1>
+    <h1>Resultados da busca: <?=$_GET["s"]?></h1>
 
-    <form action="/search-clients/<?=$getClientIdByURI[sizeof($getClientIdByURI)-1]?>" method="post">
-        <input type="text" name="searchClients" id="searchProject" placeholder="Pesquise seus projetos" value="<?=$_POST['searchClients']?>">
+    <form action="/search-clients/<?=$getClientIdByURI[sizeof($getClientIdByURI)-1]?>/" method="GET">
+        <input type="text" name="s" id="searchProject" placeholder="Pesquise seus projetos" value="<?=$_GET['s']?>">
         <input type="submit" value="Pesquisar">
     </form>
-    <a href="/">Voltar para a tela inicial</a>
+    <a href="/list-customers">Voltar</a>
     <hr>
     <?php
         $count = 0;
+
+        use App\Controllers\ProjectsController;
+        $project = new ProjectsController();
+
         foreach ($allClients as $client) {
-            if (searchClient($client, $_POST["searchClients"])) {
+            if (searchClient($client, $_GET["s"])) {
             ?>
-                 <h1>Nome da empresa: <?=$client->getEnterpriseName()?></h1>
+                <h1>Nome da empresa: <?=$client->getEnterpriseName()?></h1>
                 <h1>Email: <?=$client->getEmail()?></h1>
                 <ul>
                     <li>N° de telefone: <?=$client->getPhoneNumber()?></li>
@@ -50,6 +54,9 @@ function searchClient(Client $client, $haystack) {
                     <li>Cidade: <?=$client->getCity()?></li>
                     <li>Estado: <?=$client->getState()?></li>
                 </ul>
+                <a href="/project/<?=$client->getId()?>">Ver <?=$project->countProjects($client->getId())?> projetos</a>
+
+                <hr>
                 <?php
                 $count++;
             }

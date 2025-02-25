@@ -7,6 +7,9 @@ use App\Functions\URI;
 $uri = URI::uriExplode();
 $projectID = $uri[sizeof($uri)-1];
 
+session_start();
+# Variable to reload the page to show the actual project status
+$_SESSION["reloadPage"] = true;
 
 ?>
 <!DOCTYPE html>

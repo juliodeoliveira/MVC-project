@@ -8,8 +8,8 @@
 </head>
 <body>
     <h1>Lista de clientes cadastrados</h1>
-    <form action="/search-clients" method="post">
-        <input type="text" name="searchClients" id="searchClients" placeholder="Pesquise por clientes">
+    <form action="/search-clients/" method="GET">
+        <input type="text" name="s" id="searchClients" placeholder="Pesquise por clientes">
         <input type="submit" value="Pesquisar">
     </form>
 
@@ -26,24 +26,24 @@
             $allClients = $listingClients->allClients();
             dump($allClients);
             
-            foreach ($allClients as $clients) {
-                dump($clients->getId());
+            foreach ($allClients as $client) {
+                dump($client->getId());
 
                 ?>
-                <h1>Nome da empresa: <?=$clients->getEnterpriseName()?></h1>
-                <h1>Email: <?=$clients->getEmail()?></h1>
+                <h1>Nome da empresa: <?=$client->getEnterpriseName()?></h1>
+                <h1>Email: <?=$client->getEmail()?></h1>
                 <ul>
-                    <li>N° de telefone: <?=$clients->getPhoneNumber()?></li>
-                    <li>CEP: <?=$clients->getCep()?></li>
-                    <li>Rua: <?=$clients->getStreet()?></li>
-                    <li>N° da casa: <?=$clients->getHouseNumber()?></li>
-                    <li>Complemento: <?=$clients->getComplement()?></li>
-                    <li>Bairro: <?=$clients->getNeighborhood()?></li>
-                    <li>Cidade: <?=$clients->getCity()?></li>
-                    <li>Estado: <?=$clients->getState()?></li>
-                    <a href="/editing/<?=$clients->getId()?>">Editar informações</a>
+                    <li>N° de telefone: <?=$client->getPhoneNumber()?></li>
+                    <li>CEP: <?=$client->getCep()?></li>
+                    <li>Rua: <?=$client->getStreet()?></li>
+                    <li>N° da casa: <?=$client->getHouseNumber()?></li>
+                    <li>Complemento: <?=$client->getComplement()?></li>
+                    <li>Bairro: <?=$client->getNeighborhood()?></li>
+                    <li>Cidade: <?=$client->getCity()?></li>
+                    <li>Estado: <?=$client->getState()?></li>
+                    <a href="/editing/<?=$client->getId()?>">Editar informações</a>
                     <br>
-                    <a href="/project/<?=$clients->getId()?>">Ver <?=$project->countProjects($clients->getId())?> projetos</a>
+                    <a href="/project/<?=$client->getId()?>">Ver <?=$project->countProjects($client->getId())?> projetos</a>
                 </ul>
                 
                 <br>

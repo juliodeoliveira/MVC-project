@@ -21,12 +21,12 @@ class TasksRepository
         // if se no indice checked do arrya  ta diferente do que tava, pega o select que vai ter o valor antigo
         
         $save = $this->connection->prepare("UPDATE project_tasks SET task_description = :description, task_status = :checked WHERE task_project_id = :projectId");
-        foreach ($toDoList as $todo) {
-        //     $save->bindValue(":descripton", $todo["name"]);
-        // //    $save->bindValue("");
-        //     $save->bindValue(":checked", $todo["checked"] ? 'true' : 'false');
-        //     $save->execute();
-        }  
+        // foreach ($toDoList as $todo) {
+        // //     $save->bindValue(":descripton", $todo["name"]);
+        // // //    $save->bindValue("");
+        // //     $save->bindValue(":checked", $todo["checked"] ? 'true' : 'false');
+        // //     $save->execute();
+        // }  
     }
 
     public function insertTask(ToDoList $list): void
@@ -89,5 +89,24 @@ class TasksRepository
         $lastId->execute();
         $result = $lastId->fetchColumn();
         return $result;
+    }
+
+    public function tasksRatio(int $projectId)
+    {
+        $marked = $this->connection->prepare("SELECT 
+                                                COUNT(*) AS total_tasks,
+                                                COUNT(CASE WHEN task_status = 1 THEN 1 END) AS done_tasks
+                                            FROM project_tasks
+                                            WHERE task_project_id = :id");
+        $marked->bindValue(":id", $projectId);
+        $marked->execute();
+        
+        $ratio = $marked->fetch(PDO::FETCH_ASSOC);
+        
+        // if ($ratio["total_tasks"] == 0) {
+        //     return false;
+        // }
+
+        return $ratio;
     }
 }

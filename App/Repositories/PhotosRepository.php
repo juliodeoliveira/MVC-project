@@ -16,8 +16,8 @@ class PhotosRepository
     }
 
     public function addProjectPhoto(Photos $photos): void 
-    {   
-        $add = $this->connection->prepare("INSERT INTO project_pictures VALUES (:id, :projectId, :photoName, :photoDescription, :photoPath);");
+    {
+        $add = $this->connection->prepare("INSERT INTO project_pictures (id, project_id, photo_name, photo_description, photo_path) VALUES (:id, :projectId, :photoName, :photoDescription, :photoPath);");
         $add->bindValue(":id", $photos->getPhotoId());
         $add->bindValue(":projectId", $photos->getProjectId());
         $add->bindValue(":photoName", $photos->getPhotoName());

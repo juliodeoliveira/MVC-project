@@ -52,7 +52,7 @@ class TasksRepository
         } else {
             $newId = $list->getId()+1;
 
-            $insert = $this->connection->prepare("INSERT INTO project_tasks VALUES (:taskId, :projectId, :taskDescription, :taskStatus)");
+            $insert = $this->connection->prepare("INSERT INTO project_tasks (id, task_project_id, task_description, task_status) VALUES (:taskId, :projectId, :taskDescription, :taskStatus)");
             $insert->bindValue(":taskId", $list->getId());
             $insert->bindValue(":projectId", $list->getTaskProjectId());
             $insert->bindValue(":taskDescription", $list->getTaskDescription());

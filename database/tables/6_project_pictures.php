@@ -8,6 +8,7 @@ return [
         "photo_name" => "TEXT NOT NULL",
         "photo_description" => "LONGTEXT",
         "photo_path" => "LONGTEXT",
+        "created_at" => "TIMESTAMP DEFAULT CURRENT_TIMESTAMP"
     ],
 
     "foreign_keys" => [

@@ -94,5 +94,9 @@ class ProjectsRepository
         $delete->bindValue(":id", $project->getId());
         $delete->execute();
 
+        $delete = $this->connection->prepare("DELETE FROM project_documents WHERE document_project_id = :id");
+        $delete->bindValue(":id", $project->getId());
+        $delete->execute();
+
     }
 }

@@ -7,6 +7,7 @@ use App\Controllers\ContainerController;
 use App\Controllers\ProjectsController;
 use App\Controllers\TasksController;
 use App\Controllers\PhotosController;
+use App\Controllers\DocumentController;
 
 use App\Models\Client;
 
@@ -114,6 +115,46 @@ $router->add('POST', '/process-photo', function () {
     } else {
         header("Location: /");
     }
+});
+
+$router->add('POST', "/process-document", function () {
+    $manageDoc = new DocumentController();
+    $manageDoc->saveDocument();
+
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+});
+
+$router->add('GET', '/download', function() {
+    if (!isset($_GET["file"])) {
+        http_response_code(400);
+        echo "Arquivo não encontrado";
+
+        //TODO: Achar uma maneira melhor de disparar o erro 404
+        require_once "../views/portal/notfound.php";
+        exit();
+    }
+
+    $path = $_GET['file'];
+    $file = basename($_GET['file']);
+
+    //TODO: apagar esses registros quando o projeto vencer
+    //TODO: Transformar isso em um metodo do controller
+    
+    if (file_exists($path)) {
+        header("Content-Description: File Transfer");
+        header("Content-Type: aplication/octet-stream");
+        header("Content-Disposition: attachment; filename=\"$file\" ");
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate");
+        header("Pragma: public");
+        header("Content-Length: " . filesize($path));
+        readfile($path);
+        exit;
+    } else {
+        http_response_code(404);
+        require_once "../views/portal/notfound.php";
+    }
+
 });
 
 $router->dispatch();

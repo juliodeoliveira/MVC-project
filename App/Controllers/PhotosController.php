@@ -86,6 +86,8 @@ class PhotosController
     public function showPhotos(int $projectId): array 
     {
         $photos = new PhotosRepository();
+
+        // TODO: precisa retornar um objeto!!!
         return $photos->showProjectPhotos($projectId);
     }
 

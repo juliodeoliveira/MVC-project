@@ -86,8 +86,6 @@ class PhotosController
     public function showPhotos(int $projectId): array 
     {
         $photos = new PhotosRepository();
-
-        // TODO: precisa retornar um objeto!!!
         return $photos->showProjectPhotos($projectId);
     }
 
@@ -102,5 +100,17 @@ class PhotosController
         unlink(str_replace("http://localhost:5500", ".", $imageSrc));
 
         $this->deleteEmptyDirs("./assets/projectPhotos");
+    }
+
+    public function deleteAllPhotos(int $folderId): void
+    {
+        if (file_exists("./assets/projectPhotos/$folderId")) {
+            $filesPath = array_diff(scandir("./assets/projectPhotos/$folderId"), array('.', '..'));
+    
+            foreach ($filesPath as $file) {
+                unlink("./assets/projectPhotos/$folderId/".$file);
+            }
+            rmdir("./assets/projectPhotos/$folderId");
+        }
     }
 }

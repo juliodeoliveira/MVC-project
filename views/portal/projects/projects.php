@@ -67,13 +67,16 @@ use App\Controllers\DocumentController;
                         echo "<p>O projeto ainda não tem nenhuma foto!</p>";
                     } else {
                         $carouselId = "carousel-" . $project->getId();
+
                         echo "<div class='carousel' id='$carouselId'>
                                 <div class='carousel-images'>";
+
                         foreach ($allPhotos as $photo) {
                             // Remove the dot from the original path
-                            $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo["photo_path"], 1);
-                            echo "<img src='$treatedPath' alt='$photo[photo_name]'>";
+                            $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo->getNewPhotoPath(), 1);
+                            echo "<img src='$treatedPath' alt='$photo->getPhotoName()'>";
                         }
+                        
                         echo "</div>
                                 <button class='prev'>&#10094;</button>
                                 <button class='next'>&#10095;</button>

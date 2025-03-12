@@ -12,7 +12,7 @@
         <h1>Bem-vindo à Home Page</h1>
     </header>
     <main>
-<!-- //TODO: adicionar um migrations do log no database/tables -->
+<!-- //TODO: adicionar um migrations do log no database/tables (scheduled to do when branch is created)-->
         <h1>Olá, Mundo!</h1>
         <p>Esta é uma página inicial simples criada com HTML e CSS. Ela tem um layout básico com um cabeçalho, um corpo principal e um rodapé.</p>
         <a href="/signin-client">Clique aqui para cadastrar um novo cliente!</a>

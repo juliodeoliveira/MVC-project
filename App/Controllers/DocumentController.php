@@ -60,4 +60,53 @@ class DocumentController
         $documents = new DocumentRepository();
         return $documents->showProjectDocuments($projectId);
     }
+
+    public function deleteDocuments(string $documentSrc)
+    {        
+        $id = strpos(basename($documentSrc), "_");
+        $documentId = (int) substr(basename($documentSrc), 0, $id);
+
+        $deleteDocuments = new DocumentRepository();
+        $deleteDocuments->deletingDocuments($documentId);
+
+        unlink(str_replace("http://localhost:5500", ".", $documentSrc));
+
+        $this->deleteEmptyDirs("./assets/projectDocument");
+    }
+
+    public function deleteAllDocuments(int $folderId): void
+    {   
+        if (file_exists("./assets/projectDocuments/$folderId")) {
+            $filesPath = array_diff(scandir("./assets/projectDocuments/$folderId"), array('.', '..'));
+    
+            foreach ($filesPath as $file) {
+                unlink("./assets/projectDocuments/$folderId/".$file);
+            }
+            rmdir("./assets/projectDocuments/$folderId/");
+        }
+    }
+
+    public function downloadDocument()
+    {
+        $path = $_GET['file'];
+        $file = basename($_GET['file']);
+
+        //TODO: apagar esses registros quando o projeto vencer
+        //TODO: Transformar isso em um metodo do controller
+        
+        if (file_exists($path)) {
+            header("Content-Description: File Transfer");
+            header("Content-Type: aplication/octet-stream");
+            header("Content-Disposition: attachment; filename=\"$file\" ");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate");
+            header("Pragma: public");
+            header("Content-Length: " . filesize($path));
+            readfile($path);
+            exit;
+        } else {
+            http_response_code(404);
+            require_once "../views/portal/notfound.php";
+        }
+    }
 }

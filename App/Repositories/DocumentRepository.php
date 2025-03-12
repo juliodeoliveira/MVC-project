@@ -50,4 +50,20 @@ class DocumentRepository
 
         return $documents;
     }
+
+    public function deletingDocuments(int $documentId)
+    {        
+        $delete = $this->connection->prepare("DELETE FROM project_documents WHERE id = :id");
+        $delete->bindValue(":id", $documentId);
+        $delete->execute();
+        
+        $checkId = "SELECT COUNT(*) AS total FROM project_documents";
+        $stmt = $this->connection->query($checkId);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result['total'] == 0) {
+            $resetId = "ALTER TABLE project_documents AUTO_INCREMENT = 1";
+            $this->connection->exec($resetId);
+        } 
+    }
 }

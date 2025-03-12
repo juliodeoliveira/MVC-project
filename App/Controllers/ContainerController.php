@@ -48,6 +48,11 @@ class ContainerController
         require_once "../views/portal/projects/toDoList.php";
     }
 
+    public function notFound(): void
+    {
+        require_once "../views/portal/notfound.php";
+    }
+
     
 
 }

@@ -43,23 +43,29 @@ class ProjectsController
 
      public function checkProjectDeadline(Projects $project)
      {
-          $projectRepository = new ProjectsRepository();
-
+          
           $actualDate = new \DateTime(date('Y-m-d'));
           $finalDate = new \DateTime($project->getEndDate());
           
           // TODO: Trocar essas chaves de arrays por Interfaces
           if ($project->getEndDate() < date('Y-m-d')) {
                $lateDays = $actualDate->diff($finalDate)->days;
-
                if ($lateDays > 15) {
+                    $projectRepository = new ProjectsRepository();
                     $projectRepository->delete($project);
+
+                    $projectDocuments = new DocumentController();
+                    $projectDocuments->deleteAllDocuments($project->getId());
+
+                    $projectPhoto = new PhotosController();
+                    $projectPhoto->deleteAllPhotos($project->getId());
+                    
                     return ["days" => "", "deadline" => "deleted"];
                }
 
                return ["days" => $lateDays, "deadline" => "late"];
 
-          } else {
+          } else {               
                $days = $actualDate->diff($finalDate)->days;
                return ["days" => $days, "deadline" => "early"];
           }
@@ -69,7 +75,9 @@ class ProjectsController
      {
           $projects = $this->allProjects($clientId);
           $counter = 0;
+
           foreach ($projects as $project) {
+               //! Needs to update in realtime, so the number appears correclty and delete a project
                $deadline = $this->checkProjectDeadline($project);
                if ($deadline["deadline"] != "deleted") {
                     $counter += 1;

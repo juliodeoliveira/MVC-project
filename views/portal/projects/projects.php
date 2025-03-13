@@ -24,6 +24,8 @@ $allProjects = $projectController->allProjects($getIdbyURI);
 use App\Controllers\PhotosController;
 $photosController = new PhotosController();
 
+use App\Controllers\DocumentController;
+
 session_start();
 // Session value from toDoList.php
 $reloadPage = $_SESSION["reloadPage"] ?? null;
@@ -43,6 +45,8 @@ if (isset($getIdbyURI) && $reloadPage === true) {
     
     <title>Projetos</title>
     <link rel="stylesheet" href="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/css/carroussel.css">
+    <link rel="stylesheet" href="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/css/documentList.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Projetos de <?=$client->getEnterpriseName()?></h1>
@@ -76,13 +80,16 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                         echo "<p>O projeto ainda não tem nenhuma foto!</p>";
                     } else {
                         $carouselId = "carousel-" . $project->getId();
+
                         echo "<div class='carousel' id='$carouselId'>
                                 <div class='carousel-images'>";
+
                         foreach ($allPhotos as $photo) {
                             // Remove the dot from the original path
-                            $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo["photo_path"], 1);
-                            echo "<img src='$treatedPath' alt='$photo[photo_name]'>";
+                            $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo->getNewPhotoPath(), 1);
+                            echo "<img src='$treatedPath' alt='$photo->getPhotoName()'>";
                         }
+                        
                         echo "</div>
                                 <button class='prev'>&#10094;</button>
                                 <button class='next'>&#10095;</button>
@@ -101,8 +108,38 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                     <input type="hidden" name="job" value="insert">
 
                     <input type="file" id="file-upload" name="projectPhoto" accept=".jpg, .jpeg, .png, .gif">
-                    <button type="submit">Enviar</button>
+                    <button type="submit">Enviar foto</button>
+
                 </form>
+
+                <form action="/process-document" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="projectIdDocument" value="<?=$project->getId()?>">
+                    <input type="file" accecpt=".txt, .pdf, .docx" name="projectDocument" id="project-document">
+                    <button type="submit">Enviar documento</button>
+                </form>
+
+                <?php 
+                    $documents = new DocumentController();
+                    $documents = $documents->showDocuments($project->getId());
+                    if (count($documents) > 0) {
+                        ?>
+                        <div class="container">
+                            <ul class="lista-documentos">
+                                <?php
+                                foreach ($documents as $document) {
+                                    ?>
+                                        <li class="documento-item"><?=$document->getDocumentName()?></li>
+                                        <a href="/download/?file=<?php echo urlencode($document->getNewDocumentPath()); ?>" class="botao-download">Baixar</a>
+                                    <?php
+                                }
+                                ?>
+                                <input type="hidden" name="projectIdDocument" value="<?=$project->getId()?>">
+                            </ul>
+                        </div>
+                        <?php
+                    }
+                ?>
+                
 
                 <a href="/to-do-list/<?=$project->getId()?>">Lista de tarefas</a>
                 <hr>
@@ -116,7 +153,7 @@ if (isset($getIdbyURI) && $reloadPage === true) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/js/loadCarousel.js"></script>
-
+  
     <!-- Maintain scroll at the same position -->
     <script>
         window.addEventListener("beforeunload", function () {

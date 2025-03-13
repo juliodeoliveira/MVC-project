@@ -16,8 +16,8 @@ class PhotosRepository
     }
 
     public function addProjectPhoto(Photos $photos): void 
-    {   
-        $add = $this->connection->prepare("INSERT INTO project_pictures VALUES (:id, :projectId, :photoName, :photoDescription, :photoPath);");
+    {
+        $add = $this->connection->prepare("INSERT INTO project_pictures (id, project_id, photo_name, photo_description, photo_path) VALUES (:id, :projectId, :photoName, :photoDescription, :photoPath);");
         $add->bindValue(":id", $photos->getPhotoId());
         $add->bindValue(":projectId", $photos->getProjectId());
         $add->bindValue(":photoName", $photos->getPhotoName());
@@ -28,12 +28,18 @@ class PhotosRepository
 
     public function showProjectPhotos(int $projectId)
     {
-        $search = $this->connection->prepare("SELECT photo_path, photo_name FROM project_pictures WHERE project_id = :projectId");
+        $search = $this->connection->prepare("SELECT * FROM project_pictures WHERE project_id = :projectId");
         $search->bindValue(":projectId", $projectId);
         $search->execute();
         $result = $search->fetchAll(PDO::FETCH_ASSOC);
 
-        return $result;
+        $photosObject = [];
+        foreach ($result as $photo) {
+            $newPhoto = new Photos($photo["photo_name"], $photo["photo_path"], (int) $photo["project_id"], (int) $photo["id"]);
+            $photosObject[] = $newPhoto;
+        }
+
+        return $photosObject;
     }
 
     public function lastPhotoId()

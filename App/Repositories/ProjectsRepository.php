@@ -81,7 +81,7 @@ class ProjectsRepository
 
     public function delete(Projects $project)
     {
-        //TODO: tomar cuidado com isso aqui pelo fato dos ids derem problemas mais pra frente
+        //! tomar cuidado com isso aqui pelo fato dos ids derem problemas mais pra frente
         $delete = $this->connection->prepare("DELETE FROM projects WHERE id = :id");
         $delete->bindValue(":id", $project->getId());
         $delete->execute();
@@ -91,6 +91,10 @@ class ProjectsRepository
         $delete->execute();
 
         $delete = $this->connection->prepare("DELETE FROM project_pictures WHERE project_id = :id");
+        $delete->bindValue(":id", $project->getId());
+        $delete->execute();
+
+        $delete = $this->connection->prepare("DELETE FROM project_documents WHERE document_project_id = :id");
         $delete->bindValue(":id", $project->getId());
         $delete->execute();
 

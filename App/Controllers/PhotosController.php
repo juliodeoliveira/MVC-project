@@ -101,4 +101,16 @@ class PhotosController
 
         $this->deleteEmptyDirs("./assets/projectPhotos");
     }
+
+    public function deleteAllPhotos(int $folderId): void
+    {
+        if (file_exists("./assets/projectPhotos/$folderId")) {
+            $filesPath = array_diff(scandir("./assets/projectPhotos/$folderId"), array('.', '..'));
+    
+            foreach ($filesPath as $file) {
+                unlink("./assets/projectPhotos/$folderId/".$file);
+            }
+            rmdir("./assets/projectPhotos/$folderId");
+        }
+    }
 }

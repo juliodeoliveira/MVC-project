@@ -7,6 +7,7 @@ use App\Controllers\ContainerController;
 use App\Controllers\ProjectsController;
 use App\Controllers\TasksController;
 use App\Controllers\PhotosController;
+use App\Controllers\DocumentController;
 
 use App\Models\Client;
 
@@ -114,6 +115,26 @@ $router->add('POST', '/process-photo', function () {
     } else {
         header("Location: /");
     }
+});
+
+$router->add('POST', "/process-document", function () {
+    $manageDoc = new DocumentController();
+    $manageDoc->saveDocument();
+
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+});
+
+$router->add('GET', '/download', function() {
+    if (!isset($_GET["file"])) {
+        http_response_code(400);
+
+        $display = new ContainerController();
+        $display->notFound();
+        exit();
+    }
+
+    $download = new DocumentController();
+    $download->downloadDocument();
 });
 
 $router->dispatch();

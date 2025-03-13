@@ -28,22 +28,13 @@ class TasksController
 
     public function saveToDoList(int $projectId, array $toDoList)
     {
-        // $project = new ToDoList();
-        // echo "ID do projeto: $projectId\n";
-
         $test = new TasksController();
         $tasks = $test->arrayMaker($projectId, $toDoList);
-        //var_dump($tasks);
 
-        // there is no validation, not even a single one
         foreach ($tasks as $task) {
             $insert = new TasksRepository();
             $insert->insertTask($task);
         }
-
-        // First things first add a insert method, then one to find and other other to get all task
-        // I can have an array of objects
-        // insert -> see -> update
 
     }
 
@@ -58,4 +49,6 @@ class TasksController
         $getLast = new TasksRepository();
         return $getLast->lastTaskId();
     }
+
+    
 }

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Repositories\ProjectsRepository;
+use App\Repositories\TasksRepository;
 
 use App\Models\Projects;
 use App\Models\ToDoList;
@@ -85,5 +86,24 @@ class ProjectsController
           }
           
           return $counter;
+     }
+
+     public function checkProjectStatus(Projects $project)
+     {
+          //TODO: escrever quando ele foi concluido, no arquivo log, mas acho que seria interessante para o relatorio
+          // ia ser muito foda tambem se eu retornasse algo como se um aviso, "olha, voce nao adicionou uma lista de tarefas!", nao só para as tarefas
+          $getMarked = new TasksRepository();
+
+          $ratio = $getMarked->tasksRatio($project->getId());
+
+          // dd($ratio);
+
+          if ($ratio["total_tasks"] > $ratio["done_tasks"] && $ratio["done_tasks"] > 0) {
+               return "Em andamento";
+          } else if ($ratio["total_tasks"] == $ratio["done_tasks"] && $ratio) {
+               return "Concluído";
+          } else {
+               return "Não iniciado";
+          }
      }
 }

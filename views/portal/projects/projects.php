@@ -1,5 +1,7 @@
 <?php
 
+
+
 use App\Functions\LoadEnv;
 
 use App\Repositories\ClientRepository;
@@ -24,6 +26,16 @@ $photosController = new PhotosController();
 
 use App\Controllers\DocumentController;
 
+session_start();
+// Session value from toDoList.php
+$reloadPage = $_SESSION["reloadPage"] ?? null;
+if (isset($getIdbyURI) && $reloadPage === true) {
+    unset($_SESSION["reloadPage"]);
+
+    header("Location: /project/$getIdbyURI");
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -39,8 +51,8 @@ use App\Controllers\DocumentController;
 <body>
     <h1>Projetos de <?=$client->getEnterpriseName()?></h1>
 
-    <form action="/search-projects/<?=$client->getId()?>" method="post">
-        <input type="text" name="searchProject" id="searchProject" placeholder="Pesquise seus projetos">
+    <form action="/search-projects/<?=$client->getId()?>/" method="GET">
+        <input type="text" name="s" id="searchProject" placeholder="Pesquise seus projetos">
         <input type="submit" value="Pesquisar">
     </form>
 
@@ -55,7 +67,8 @@ use App\Controllers\DocumentController;
                 <li>Descrição: <?=$project->getDescription()?></li>
                 <li>Data de início: <?=$project->getStartDate()?></li>
                 <li>Data de término: <?=$project->getEndDate()?></li>
-                <li>Serviço: <?=$project->getService()?></li>
+                <li>Serviço: <?=$project->getService()?></li>                
+                <li>Status: <?=$projectController->checkProjectStatus($project)?></li>
 
                 <li>Prazo: <?=$checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
 
@@ -137,8 +150,23 @@ use App\Controllers\DocumentController;
 
     <a href="/create-project/<?=$client->getId()?>">Criar projeto</a>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/js/loadCarousel.js"></script>
-    
+  
+    <!-- Maintain scroll at the same position -->
+    <script>
+        window.addEventListener("beforeunload", function () {
+            localStorage.setItem("scrollPosition", window.scrollY);
+        });
+
+        window.addEventListener("load", function () {
+            const scrollPosition = localStorage.getItem("scrollPosition");
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition));
+                localStorage.removeItem("scrollPosition");
+            }
+        });
+    </script>
 </body>
 </html>

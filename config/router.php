@@ -78,12 +78,12 @@ $router->add('POST', '/create', function () {
     header("Location: /success");
 });
 
-$router->add('POST', '/search-projects', function () {
+$router->add('GET', '/search-projects', function () {
     $display = new ContainerController();
     $display->findProject();
 });
 
-$router->add('POST', '/search-clients', function () {
+$router->add('GET', '/search-clients', function () {
     $display = new ContainerController();
     $display->findClients();
 });

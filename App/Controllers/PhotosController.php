@@ -50,7 +50,7 @@ class PhotosController
         // Só tenta remover o diretório se ele não for o diretório raiz
         if (empty($remainingItems) && $dir !== $rootDir) {
             rmdir($dir);
-            echo "Diretório vazio removido: $dir\n";
+            // echo "Diretório vazio removido: $dir\n";
         }
     }
 

@@ -1,7 +1,4 @@
 <?php
-
-
-
 use App\Functions\LoadEnv;
 
 use App\Repositories\ClientRepository;
@@ -67,10 +64,11 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                 <li>Descrição: <?=$project->getDescription()?></li>
                 <li>Data de início: <?=$project->getStartDate()?></li>
                 <li>Data de término: <?=$project->getEndDate()?></li>
-                <li>Serviço: <?=$project->getService()?></li>                
-                <li>Status: <?=$projectController->checkProjectStatus($project)?></li>
+                <li>Serviço: <?=$project->getService()?></li>             
+                
+                <li>Status: <?=$projectStatus = $projectController->checkProjectStatus($project)?></li>
 
-                <li>Prazo: <?=$checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
+                <li>Prazo: <?=$projectDays = $checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
 
                 <h2>Fotos do projeto:</h2>
                 <?php
@@ -118,6 +116,25 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                     <button type="submit">Enviar documento</button>
                 </form>
 
+                <form action="/report" method="POST">
+                    <button type="submit">Gerar relatório</button>
+                    <?php 
+                        $array = [
+                            "client" => $client->getEnterpriseName(),
+                            "title" => $project->getTitle(),
+                            "status" => $projectStatus,
+
+                            "startDate" => $project->getStartDate(),
+                            "endDate" => $project->getEndDate(),
+
+                            "service" => $project->getService(),
+
+                            // Responsavel pelo projeto ainda nao adicionado por falta de login
+                        ];
+                    ?>
+                    <input type="hidden" name="projectInfo" value=<?= json_encode($array) ?> >
+                </form>
+
                 <?php 
                     $documents = new DocumentController();
                     $documents = $documents->showDocuments($project->getId());
@@ -139,7 +156,6 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                         <?php
                     }
                 ?>
-                
 
                 <a href="/to-do-list/<?=$project->getId()?>">Lista de tarefas</a>
                 <hr>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório</title>
+    <style>
+        /* Reset básico para remover margens e paddings padrão */
+        body, h1, ul, li {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Estilo geral do corpo */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        /* Container principal */
+        .report-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Estilo do título */
+        h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        /* Estilo da lista */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        /* Estilo dos itens da lista */
+        li {
+            background-color: #ecf0f1;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #3498db;
+            transition: background-color 0.3s ease;
+        }
+
+        li:hover {
+            background-color: #d5d8dc;
+        }
+
+        /* Estilo dos textos dentro dos itens */
+        li strong {
+            color: #3498db;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            .report-container {
+                padding: 15px;
+            }
+
+            li {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <h1>Nome da empresa: {{ CLIENTE }}</h1>
+        <ul>
+            <li><strong>Nome do projeto:</strong> {{ NOMEPROJETO }}</li>
+            <li><strong>Status do projeto:</strong> {{ STATUS }}</li>
+            <li><strong>Data de início:</strong> {{ DATAINICIO }}</li>
+            <li><strong>Data de término:</strong> {{ DATAFINAL }}</li>
+            <li><strong>Serviço:</strong> {{ SERVICO }}</li>
+        </ul>
+    </div>
+</body>
+</html>

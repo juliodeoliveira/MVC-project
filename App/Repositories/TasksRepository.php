@@ -107,6 +107,8 @@ class TasksRepository
         //     return false;
         // }
 
+        // TODO: tem que escrever quando o projeto foi concluído e depois, verificar o tempo gasto, desde a data de início (system-log)
+
         return $ratio;
     }
 }

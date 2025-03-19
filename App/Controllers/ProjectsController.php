@@ -96,8 +96,6 @@ class ProjectsController
 
           $ratio = $getMarked->tasksRatio($project->getId());
 
-          // dd($ratio);
-
           if ($ratio["total_tasks"] > $ratio["done_tasks"] && $ratio["done_tasks"] > 0) {
                return "Em andamento";
           } else if ($ratio["total_tasks"] == $ratio["done_tasks"] && $ratio) {

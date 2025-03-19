@@ -8,6 +8,7 @@ use App\Controllers\ProjectsController;
 use App\Controllers\TasksController;
 use App\Controllers\PhotosController;
 use App\Controllers\DocumentController;
+use App\Controllers\ReportController;
 
 use App\Models\Client;
 
@@ -135,6 +136,11 @@ $router->add('GET', '/download', function() {
 
     $download = new DocumentController();
     $download->downloadDocument();
+});
+
+$router->add('POST', '/report', function() {
+    $createReport = new ReportController();
+    $createReport->createProjectReport();
 });
 
 $router->dispatch();

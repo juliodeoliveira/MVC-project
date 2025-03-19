@@ -116,6 +116,8 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                     <button type="submit">Enviar documento</button>
                 </form>
 
+                //! Eu provavelmente nao preciso de boa parte dos forms, já que tenho todos os valores que preciso sendo tirados dos Models
+
                 <form action="/report" method="POST">
                     <button type="submit">Gerar relatório</button>
                     <?php 

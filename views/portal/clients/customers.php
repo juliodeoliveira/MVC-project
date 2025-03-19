@@ -44,6 +44,8 @@
                     <a href="/editing/<?=$client->getId()?>">Editar informações</a>
                     <br>
                     <a href="/project/<?=$client->getId()?>">Ver <?=$project->countProjects($client->getId())?> projetos</a>
+                    <br>
+                    <a href="/client-report/<?=$client->getId()?>">Gerar relatório</a>
                 </ul>
                 
                 <br>

@@ -143,4 +143,9 @@ $router->add('POST', '/report', function() {
     $createReport->createProjectReport();
 });
 
+$router->add("GET", "/client-report", function() {
+    $createReport = new ReportController();
+    $createReport->createClientReport();
+});
+
 $router->dispatch();

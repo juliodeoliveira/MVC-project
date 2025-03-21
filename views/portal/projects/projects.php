@@ -58,15 +58,15 @@ if (isset($getIdbyURI) && $reloadPage === true) {
         foreach ($allProjects as $project) {
             
             $checkDays = $projectController->checkProjectDeadline($project);
-            
+            $projectController->checkProjectStatus($project);
+
             ?>
                 <h1>Título do projeto: <?=$project->getTitle()?></h1>
                 <li>Descrição: <?=$project->getDescription()?></li>
                 <li>Data de início: <?=$project->getStartDate()?></li>
                 <li>Data de término: <?=$project->getEndDate()?></li>
-                <li>Serviço: <?=$project->getService()?></li>             
-                
-                <li>Status: <?=$projectStatus = $projectController->checkProjectStatus($project)?></li>
+                <li>Serviço: <?=$project->getService()?></li>   
+                <li>Status: <?=$project->getStatus()?></li>
 
                 <li>Prazo: <?=$projectDays = $checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
 
@@ -85,7 +85,7 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                         foreach ($allPhotos as $photo) {
                             // Remove the dot from the original path
                             $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo->getNewPhotoPath(), 1);
-                            echo "<img src='$treatedPath' alt='$photo->getPhotoName()'>";
+                            echo "<img src='$treatedPath' alt='" . $photo->getPhotoName() . "'>";
                         }
                         
                         echo "</div>
@@ -116,26 +116,7 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                     <button type="submit">Enviar documento</button>
                 </form>
 
-                //! Eu provavelmente nao preciso de boa parte dos forms, já que tenho todos os valores que preciso sendo tirados dos Models
-
-                <form action="/report" method="POST">
-                    <button type="submit">Gerar relatório</button>
-                    <?php 
-                        $array = [
-                            "client" => $client->getEnterpriseName(),
-                            "title" => $project->getTitle(),
-                            "status" => $projectStatus,
-
-                            "startDate" => $project->getStartDate(),
-                            "endDate" => $project->getEndDate(),
-
-                            "service" => $project->getService(),
-
-                            // Responsavel pelo projeto ainda nao adicionado por falta de login
-                        ];
-                    ?>
-                    <input type="hidden" name="projectInfo" value=<?= json_encode($array) ?> >
-                </form>
+                <a href="/project-report/<?=$project->getId()?>">Gerar relatório</a>
 
                 <?php 
                     $documents = new DocumentController();

@@ -138,7 +138,7 @@ $router->add('GET', '/download', function() {
     $download->downloadDocument();
 });
 
-$router->add('POST', '/report', function() {
+$router->add('GET', '/project-report', function() {
     $createReport = new ReportController();
     $createReport->createProjectReport();
 });

@@ -1,7 +1,4 @@
 <?php
-
-
-
 use App\Functions\LoadEnv;
 
 use App\Repositories\ClientRepository;
@@ -61,16 +58,17 @@ if (isset($getIdbyURI) && $reloadPage === true) {
         foreach ($allProjects as $project) {
             
             $checkDays = $projectController->checkProjectDeadline($project);
-            
+            $projectController->checkProjectStatus($project);
+
             ?>
                 <h1>Título do projeto: <?=$project->getTitle()?></h1>
                 <li>Descrição: <?=$project->getDescription()?></li>
                 <li>Data de início: <?=$project->getStartDate()?></li>
                 <li>Data de término: <?=$project->getEndDate()?></li>
-                <li>Serviço: <?=$project->getService()?></li>                
-                <li>Status: <?=$projectController->checkProjectStatus($project)?></li>
+                <li>Serviço: <?=$project->getService()?></li>   
+                <li>Status: <?=$project->getStatus()?></li>
 
-                <li>Prazo: <?=$checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
+                <li>Prazo: <?=$projectDays = $checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
 
                 <h2>Fotos do projeto:</h2>
                 <?php
@@ -87,7 +85,7 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                         foreach ($allPhotos as $photo) {
                             // Remove the dot from the original path
                             $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo->getNewPhotoPath(), 1);
-                            echo "<img src='$treatedPath' alt='$photo->getPhotoName()'>";
+                            echo "<img src='$treatedPath' alt='" . $photo->getPhotoName() . "'>";
                         }
                         
                         echo "</div>
@@ -118,6 +116,8 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                     <button type="submit">Enviar documento</button>
                 </form>
 
+                <a href="/project-report/<?=$project->getId()?>">Gerar relatório</a>
+
                 <?php 
                     $documents = new DocumentController();
                     $documents = $documents->showDocuments($project->getId());
@@ -139,7 +139,6 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                         <?php
                     }
                 ?>
-                
 
                 <a href="/to-do-list/<?=$project->getId()?>">Lista de tarefas</a>
                 <hr>

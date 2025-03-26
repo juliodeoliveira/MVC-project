@@ -11,6 +11,7 @@ return [
         "service" => "TEXT NOT NULL",
         "customer_id" => "BIGINT NOT NULL DEFAULT 0",
         "created_at" => "timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP",
+        "status" => "VARCHAR(15)"
     ],
 
     "foreign_keys" => [

@@ -13,7 +13,7 @@ class ProjectsController
 {
      public function findProject(int $id): Projects | null
      {
-          $project = new ProjectsRepository;
+          $project = new ProjectsRepository();
           $find = $project->show($id);
           
           return $find;
@@ -37,6 +37,7 @@ class ProjectsController
           $newProject = new Projects($_POST['title'], $_POST["startDate"], $_POST["endDate"], $_POST["service"]);
           $newProject->setDescription($_POST["description"]);
           $newProject->setClientId($customerId);
+          $newProject->setStatus("Não iniciado");
 
           $repository = new ProjectsRepository();
           $repository->insert($newProject);
@@ -96,14 +97,17 @@ class ProjectsController
 
           $ratio = $getMarked->tasksRatio($project->getId());
 
-          // dd($ratio);
+          $updateStatus = new ProjectsRepository();
 
           if ($ratio["total_tasks"] > $ratio["done_tasks"] && $ratio["done_tasks"] > 0) {
-               return "Em andamento";
-          } else if ($ratio["total_tasks"] == $ratio["done_tasks"] && $ratio) {
-               return "Concluído";
+               $updateStatus->projectStatusOngoing($project->getId());
+               $project->setStatus("Em andamento");
+          } else if ($ratio["total_tasks"] == $ratio["done_tasks"] && $ratio && $ratio["total_tasks"] > 0) {
+               $updateStatus->projectStatusDone($project->getId());
+               $project->setStatus("Concluído");
           } else {
-               return "Não iniciado";
+               $updateStatus->projectStatusNotStarted($project->getId());
+               $project->setStatus("Não iniciado");
           }
      }
 }

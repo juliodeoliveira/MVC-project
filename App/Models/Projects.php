@@ -10,6 +10,7 @@ class Projects
     private string $startDate;
     private string $endDate;
     private string $service;
+    private string $status;
     
     private int $id;
     
@@ -61,6 +62,11 @@ class Projects
         return $this->clientId;
     }
 
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
     public function setId(int $id): void
     {
         $this->id = $id;
@@ -94,6 +100,11 @@ class Projects
     public function setClientId(int $clientId): void
     {
         $this->clientId = $clientId;
+    }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
     }
 
 }

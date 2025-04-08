@@ -9,6 +9,7 @@ use App\Controllers\TasksController;
 use App\Controllers\PhotosController;
 use App\Controllers\DocumentController;
 use App\Controllers\ReportController;
+use App\Controllers\UserController;
 
 use App\Models\Client;
 
@@ -146,6 +147,16 @@ $router->add('GET', '/project-report', function() {
 $router->add("GET", "/client-report", function() {
     $createReport = new ReportController();
     $createReport->createClientReport();
+});
+
+$router->add("GET", "/sign-in", function() {
+    $display = new ContainerController();
+    $display->registerUser();
+});
+
+$router->add("POST", "/sign-user", function() {
+    $register = new UserController();
+    $register->registerUser();
 });
 
 $router->dispatch();

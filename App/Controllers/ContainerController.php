@@ -53,6 +53,9 @@ class ContainerController
         require_once "../views/portal/notfound.php";
     }
 
-    
+    public function registerUser(): void
+    {
+        require_once "../views/portal/users/registerUser.php";
+    }
 
 }

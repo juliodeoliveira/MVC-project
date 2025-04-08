@@ -17,6 +17,7 @@
         <p>Esta é uma página inicial simples criada com HTML e CSS. Ela tem um layout básico com um cabeçalho, um corpo principal e um rodapé.</p>
         <a href="/signin-client">Clique aqui para cadastrar um novo cliente!</a>
         <a href="/list-customers">Clique aqui para ver os clientes!</a>
+        <a href="/sign-in">Criar usuário</a>
     </main>
     <footer>
         <p>&copy; 2024 Minha Página Simples</p>

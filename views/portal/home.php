@@ -12,12 +12,24 @@
         <h1>Bem-vindo à Home Page</h1>
     </header>
     <main>
-<!-- //TODO: adicionar um migrations do log no database/tables (scheduled to do when branch is created)-->
+        <?php
+            $loggedUser = $_SESSION["usernameLogged"] ?? "Convidado";
+        ?>
+        <p>Logado como: <?=$loggedUser?></p>
         <h1>Olá, Mundo!</h1>
         <p>Esta é uma página inicial simples criada com HTML e CSS. Ela tem um layout básico com um cabeçalho, um corpo principal e um rodapé.</p>
         <a href="/signin-client">Clique aqui para cadastrar um novo cliente!</a>
         <a href="/list-customers">Clique aqui para ver os clientes!</a>
-        <a href="/sign-in">Criar usuário</a>
+        
+        <?php 
+            if (!empty($_SESSION["usernameLogged"])) {
+                echo "<a href='/logout'>Fazer logout</a>";
+            } else {
+                echo "<a href='/login'>Logar em uma conta existente</a>";
+                echo "<a href='/sign-in'>Criar usuário</a>";
+            }
+        ?>
+
     </main>
     <footer>
         <p>&copy; 2024 Minha Página Simples</p>

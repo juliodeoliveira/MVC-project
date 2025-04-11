@@ -54,4 +54,15 @@ class UserRepository
             return false;
         }
     }
+
+    public function findEmail(string $userEmail): User
+    {
+        $find = $this->connection->prepare("SELECT * FROM users WHERE email = :email");
+        $find->bindValue(":email", $userEmail);
+        $find->execute();
+        $result = $find->fetch(PDO::FETCH_ASSOC);
+
+        $foudedUser = new User($result["username"], $result["email"], $result["password"]);
+        return $foudedUser;
+    }
 }

@@ -28,13 +28,13 @@ class ClientController
         $newClient->setCity($_POST["city"]);
         $newClient->setComplement($_POST["complement"]);
         
-        SigninValidation::validate($newClient);
-
         if (StateValidation::validate($_POST["state"])) {
             $newClient->setState($_POST["state"]);
         } else {
             $newClient->setState("");
         }
+        
+        SigninValidation::validate($newClient);
 
         $repository = new ClientRepository();
         $repository->insert($newClient);

@@ -9,46 +9,57 @@ use App\Controllers\TasksController;
 use App\Controllers\PhotosController;
 use App\Controllers\DocumentController;
 use App\Controllers\ReportController;
+use App\Controllers\UserController;
 
 use App\Models\Client;
 
 use App\Functions\Router;
+use App\Middleware\AuthMiddleware;
 
 // Instancia o roteador
 $router = new Router();
 
 // Define as rotas
 $router->add('GET', '/', function () {
+    $verifyAuth = AuthMiddleware::verifyAuth();
+    $_SESSION["usernameLogged"] = $verifyAuth->name ?? null;
+
     require_once "../views/portal/home.php";
 });
 
-$router->add('GET', '/signin-client', function () {
+$router->add('GET', '/signin-client', function () {// Testado
     $newClient = new ContainerController();
     $newClient->signinClient();
+    AuthMiddleware::verifyAuth();
 });
 
-$router->add('POST', '/write-client', function () {
+$router->add('POST', '/write-client', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $write = new ClientController();
     $write->signClient();
     header("Location: /success");
 });
 
-$router->add('GET', '/success', function () {
+$router->add('GET', '/success', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $success = new ContainerController();
     $success->success();
 });
 
-$router->add('GET', '/list-customers', function () {
+$router->add('GET', '/list-customers', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->listCustomers();
 });
 
-$router->add('GET', '/editing', function () {
+$router->add('GET', '/editing', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->edition();
 });
 
 $router->add('POST', '/edit', function () {
+    AuthMiddleware::verifyAuth();
     $model = new Client($_POST["enterpriseName"], $_POST["email"]);
 
     $update = new ClientController();
@@ -58,17 +69,20 @@ $router->add('POST', '/edit', function () {
     $success->success();
 });
 
-$router->add('GET', '/project', function () {
+$router->add('GET', '/project', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->listProjects();
 });
 
-$router->add('GET', '/create-project', function () {
+$router->add('GET', '/create-project', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->createProject();
 });
 
 $router->add('POST', '/create', function () {
+    AuthMiddleware::verifyAuth();
     $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
 
     $id = end($uriExplodes);
@@ -79,22 +93,26 @@ $router->add('POST', '/create', function () {
     header("Location: /success");
 });
 
-$router->add('GET', '/search-projects', function () {
+$router->add('GET', '/search-projects', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->findProject();
 });
 
-$router->add('GET', '/search-clients', function () {
+$router->add('GET', '/search-clients', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->findClients();
 });
 
-$router->add('GET', '/to-do-list', function () {
+$router->add('GET', '/to-do-list', function () { // Testado
+    AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->toDoList();
 });
 
 $router->add('POST', '/save-todo', function () {
+    AuthMiddleware::verifyAuth();
     $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
 
     $projectId = end($uriExplodes);
@@ -106,6 +124,7 @@ $router->add('POST', '/save-todo', function () {
 });
 
 $router->add('POST', '/process-photo', function () {
+    AuthMiddleware::verifyAuth();
     $managePhoto = new PhotosController();
     
     if ($_POST["job"] == "insert") {
@@ -119,13 +138,15 @@ $router->add('POST', '/process-photo', function () {
 });
 
 $router->add('POST', "/process-document", function () {
+    AuthMiddleware::verifyAuth();
     $manageDoc = new DocumentController();
     $manageDoc->saveDocument();
 
     header("Location: " . $_SERVER['HTTP_REFERER']);
 });
 
-$router->add('GET', '/download', function() {
+$router->add('GET', '/download', function() { // Testado
+    AuthMiddleware::verifyAuth();
     if (!isset($_GET["file"])) {
         http_response_code(400);
 
@@ -138,14 +159,46 @@ $router->add('GET', '/download', function() {
     $download->downloadDocument();
 });
 
-$router->add('GET', '/project-report', function() {
+$router->add('GET', '/project-report', function() { // Testado
+    AuthMiddleware::verifyAuth();
     $createReport = new ReportController();
     $createReport->createProjectReport();
 });
 
-$router->add("GET", "/client-report", function() {
+$router->add("GET", "/client-report", function() { // Testado
+    AuthMiddleware::verifyAuth();
     $createReport = new ReportController();
     $createReport->createClientReport();
+});
+
+$router->add("GET", "/sign-in", function() {
+    $display = new ContainerController();
+    $display->registerUser();
+});
+
+$router->add("POST", "/sign-user", function() {
+    // AuthMiddleware::verifyAuth();
+    $register = new UserController();
+    $register->registerUser();
+});
+
+$router->add("GET", "/login", function() {
+    $display = new ContainerController();
+    $display->login();
+});
+
+$router->add("POST", "/login-user", function() {
+    $userController = new UserController();
+    $userController->loginUser();
+    AuthMiddleware::verifyAuth();
+});
+
+$router->add("GET", "/logout", function() {
+    session_start();
+    session_unset();
+    session_destroy();
+    header("Location: /");
+    exit();
 });
 
 $router->dispatch();

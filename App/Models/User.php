@@ -8,7 +8,10 @@ class User
     private string $username;
     private string $email;
     private string $password;
-    private ?string $role;
+    // Todo: role precisa receber uma string e adicionar um array que vai ter todas as permissoes
+    //! $roles nao vai mais usar array...
+    private string $role;
+    private array $permissions = [];
 
     public function __construct(string $username, string $email, string $password)
     {
@@ -37,9 +40,14 @@ class User
         return $this->password;
     }
 
-    public function getRole(): string | null
+    public function getRole(): string
     {
         return $this->role;
+    }
+
+    public function getPermissions(): array
+    {
+        return $this->permissions;
     }
 
     public function setId(int $id): void
@@ -65,5 +73,16 @@ class User
     public function setRole(string $role): void
     {
         $this->role = $role;
+    }
+
+    public function setPermissions(array $permissions): void
+    {
+        $this->permissions = $permissions;
+    }
+
+    public function addPermission(string $permission): void {
+        if (!in_array($permission, $this->permissions)) {
+            $this->permissions[] = $permission;
+        }
     }
 }

@@ -14,6 +14,7 @@
     <main>
         <?php
             $loggedUser = $_SESSION["usernameLogged"] ?? "Convidado";
+            
         ?>
         <p>Logado como: <?=$loggedUser?></p>
         <h1>Olá, Mundo!</h1>

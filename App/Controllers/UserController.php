@@ -18,7 +18,7 @@ class UserController
         $userPasskey = $_POST["userPasskey"];
 
         $errors = [];
-        $_SESSION['old'] = $_POST;
+        $_SESSION['email'] = $_POST["userEmail"];
 
         if (empty($userName)) {
             $errors[] = "Nome obrigatório";
@@ -50,7 +50,7 @@ class UserController
             exit();
         }        
 
-        unset($_SESSION['errors'], $_SESSION["old"]);
+        unset($_SESSION['errors'], $_SESSION["email"]);
 
         $userRepository->insert($user);
 
@@ -77,7 +77,7 @@ class UserController
         $userPasskey = $_POST["userPasskey"];
 
         $errors = [];
-        $_SESSION['old'] = $_POST;
+        $_SESSION['email'] = $_POST["userEmail"];
 
         if (!filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Email inválido";
@@ -91,21 +91,28 @@ class UserController
         
         if (empty($findEmail)) {
             $errors[] = "Usuário e/ou senha inválidos";
-        }
-
-        if (!password_verify($userPasskey, $findEmail->getPassword())) {
-            $errors[] = "Usuário e/ou senha inválidos";
-        }
-        
-        if (!empty($errors)) {
             $_SESSION["errors"] = $errors;
             header("Location: /login");
             exit();
         }
 
+        if (!password_verify($userPasskey, $findEmail->getPassword())) {
+            $errors[] = "Usuário e/ou senha inválidos";
+            $_SESSION["errors"] = $errors;
+            header("Location: /login");
+            exit();
+        }
+        
+        // if (!empty($errors)) {
+        //     $_SESSION["errors"] = $errors;
+        //     header("Location: /login");
+        //     exit();
+        // }
+
         $payload = [
             "sub" => $userEmail,
             "name" => $findEmail->getUsername(),
+            "userId" => $findEmail->getId(),
             "iat" => time(),
             "exp" => time() + 3600
         ];
@@ -113,7 +120,53 @@ class UserController
         $jwt = JWT::encode($payload, LoadEnv::fetchEnv("JWT_SECRET"), 'HS256');
 
         $_SESSION["jwt"] = $jwt;
-        header("Location: /");
-        exit();
+        // header("Location: /");
+        // exit();
+    }
+
+    // public function instanceUser() {
+    //     $userEmail = $_POST["userEmail"];
+    //     $userPasskey = password_hash($_POST["userPasskey"], PASSWORD_DEFAULT);
+    //     new User($userEmail, $userPasskey);
+    // }
+
+    public function findUser(string $userName): User
+    {
+        $findName = new UserRepository();
+        return $findName->findUserName($userName);
+    }
+
+    // TODO: talvez seria melhor se pegasse o id pelo retorno do middleware ao inves do $_SESSION
+    public function checkPermission(int $userId, string $permissionName): bool
+    {
+        // session_start();
+        // $findUser = $this->findUser($_SESSION["usernameLogged"]);
+
+        $permission = new UserRepository();
+        return $permission->userHasPermission($userId, $permissionName);
+    }
+
+    public function allPermissions(): array
+    {
+        $permissions = new UserRepository();
+        return $permissions->getAllPermissions();
+    }
+
+    public function checkUserRole(int $userId, $role): bool
+    {
+        $checkRole = new UserRepository();
+        return $checkRole->checkRole($userId, $role);
+    }
+
+    public function getAllPermissionsNames(): array
+    {
+        $allNames = new UserRepository();
+
+        $allPermissions = [];
+        $permissions = $allNames->allPermissionsNames();
+        foreach ($permissions as $permission) {
+            $allPermissions[] = $permission["name"];
+        }
+        return $allPermissions;
     }
 }

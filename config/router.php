@@ -22,6 +22,7 @@ $router = new Router();
 // Define as rotas
 $router->add('GET', '/', function () {
     $verifyAuth = AuthMiddleware::verifyAuth();
+    // ? aqui nao pode passar só o nome de usuário?
     $_SESSION["usernameLogged"] = $verifyAuth->name ?? null;
 
     require_once "../views/portal/home.php";
@@ -190,7 +191,52 @@ $router->add("GET", "/login", function() {
 $router->add("POST", "/login-user", function() {
     $userController = new UserController();
     $userController->loginUser();
+    // instanciar a classe User model aqui, mas antes tem que remover o header: / do loginUser
+    //TODO: Vai ser melhor se eu só redirecionar mesmo e na home.php chamar o getID, aí ele faz uma query e pega o id de tal usuario
+    // $_SESSION["user_info"] = $userController->instanceUser();
+
     AuthMiddleware::verifyAuth();
+
+    header("Location: /");
+    exit();
+});
+
+$router->add("GET", "/admin", function() {
+    $middle = AuthMiddleware::verifyAuth();
+    $userController = new UserController();
+
+    if ($userController->checkUserRole($middle->userId, "admin")) {
+        $display = new ContainerController();
+        $display->admin();
+    } else {
+        header("Location: /");
+        exit();
+    }
+});
+
+$router->add("GET", "/edit-permissions", function() {
+    $middle = AuthMiddleware::verifyAuth();
+    $userController = new UserController();
+
+    if ($userController->checkPermission($middle->userId, "manage_permissions")) {
+        $display = new ContainerController();
+        $display->editPermissions();
+    } else {
+        header("Location: /");
+        exit();
+    }
+});
+
+$router->add("POST", "/update-user", function() {
+    $middle = AuthMiddleware::verifyAuth();
+    $userController = new UserController();
+
+    // TODO: Só precisa alterar no banco de dados
+    if ($userController->checkPermission($middle->userId, "manage_permissions")) {
+        dump($_POST);
+    } else {
+        echo "<h1>Ce nao tem permissao muleque! rala!</h1>";
+    }
 });
 
 $router->add("GET", "/logout", function() {

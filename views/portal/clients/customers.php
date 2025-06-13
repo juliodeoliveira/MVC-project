@@ -19,12 +19,20 @@
         <?php
             use App\Controllers\ClientController;
             use App\Controllers\ProjectsController;
-            
+            use App\Controllers\UserController;
+
             $project = new ProjectsController();
             
             $listingClients = new ClientController();
             $allClients = $listingClients->allClients();
             dump($allClients);
+
+            // TODO: pesquisar pelo nome de usuario, ja que nao repete (detalhe que eu tenho que modificar la no banco de dados), no banco de dados e retorna id para verificar suas permissoes...
+            dump($_SESSION["usernameLogged"]);
+
+            // $find = new UserController();
+            // dump($find->checkPermission("view_project"));
+
             
             foreach ($allClients as $client) {
                 dump($client->getId());

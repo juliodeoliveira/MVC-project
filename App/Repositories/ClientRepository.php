@@ -103,4 +103,24 @@ class ClientRepository
 
         return $clients;
     }
+
+    public function userHasPermission($userId, $permissionName) {
+        $stmt = $this->connection->prepare("
+            SELECT COUNT(*) AS total
+            FROM user_role ur
+            JOIN role_permission rp ON ur.role_id = rp.role_id
+            JOIN permissions p ON rp.permission_id = p.id
+            WHERE ur.user_id = ? AND p.nome = ?
+        ");
+        $stmt->execute([$userId, $permissionName]);
+        return $stmt->fetchColumn() > 0;
+    }
+
+    // if (userHasPermission($userId, 'edit_project', $pdo)) {
+    //     dump("Pode editar o projeto!");
+    // } else {
+    //     dump("Acesso negado");
+    //     // 
+    // }
+    
 }

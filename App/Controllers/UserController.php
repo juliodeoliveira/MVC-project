@@ -169,4 +169,26 @@ class UserController
         }
         return $allPermissions;
     }
+
+    public function updatePermissions()
+    {
+        // dd($_POST["permissions"]);
+        // TODO: Testar isso tudo!
+
+        $permissionInfo = new UserRepository();
+        $allPermissionInfo = $permissionInfo->permissionInfo();
+
+        $userId = $_POST["user_id"];
+        $permissionsIds = [];
+
+        // pega id de cada permissao que foi editada la no front
+        foreach($allPermissionInfo as $permission) {
+            if (in_array($permission["name"], $_POST["permissions"] ?? [])) {
+                $permissionsIds[] = $permission["id"];
+            }
+        }
+
+        $permissionInfo->updateUserPermissions($userId, $permissionsIds);
+        
+    }
 }

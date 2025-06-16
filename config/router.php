@@ -233,7 +233,7 @@ $router->add("POST", "/update-user", function() {
 
     // TODO: Só precisa alterar no banco de dados
     if ($userController->checkPermission($middle->userId, "manage_permissions")) {
-        dump($_POST);
+        $userController->updatePermissions();
     } else {
         echo "<h1>Ce nao tem permissao muleque! rala!</h1>";
     }

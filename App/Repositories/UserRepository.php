@@ -112,7 +112,22 @@ class UserRepository
             LEFT JOIN roles r ON ur.role_id = r.id
             LEFT JOIN role_permission rp ON r.id = rp.role_id
             LEFT JOIN permissions p ON rp.permission_id = p.id
-            ORDER BY u.id;
+
+            UNION
+
+            SELECT 
+                u.id AS user_id,
+                u.username,
+                u.email,
+                r.name AS role,
+                p.name AS permission
+            FROM users u
+            LEFT JOIN user_role ur ON u.id = ur.user_id
+            LEFT JOIN roles r ON ur.role_id = r.id
+            LEFT JOIN user_permission up ON u.id = up.user_id
+            LEFT JOIN permissions p ON up.permission_id = p.id
+
+            ORDER BY user_id;
         ");
 
         $permissions->execute();
@@ -164,5 +179,37 @@ class UserRepository
         $query->execute();        
 
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function permissionInfo() {
+        $query = $this->connection->prepare("SELECT * FROM permissions");
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateUserPermissions(int $userId, array $permissionsIds)
+    {
+        $this->connection->beginTransaction();
+
+        //TODO: deu problema! nao atualiza nada na pagina admin, ta editando uma tabela que n tem relacao nenhuma! a pagina de admin nao pesquisa NADA na user_permission
+        try {
+            $query = $this->connection->prepare("DELETE FROM user_permission WHERE user_id = :userId");
+            $query->bindValue(":userId", $userId);
+            $query->execute();
+
+            $query = $this->connection->prepare("INSERT INTO user_permission (user_id, permission_id) VALUES (:userId, :permissionId)");
+            foreach ($permissionsIds as $permissionId) {
+                $query->bindValue(":userId", $userId);
+                $query->bindValue(":permissionId", $permissionId);
+                $query->execute();
+            }
+
+            $this->connection->commit();
+
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
     }
 }

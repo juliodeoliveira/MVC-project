@@ -1,6 +1,5 @@
 <?php
 use App\Controllers\UserController;
-use App\Controllers\PermissionController; // controlador de permissões, supondo que você tenha ele
 
 $controller = new UserController();
 $usersList = $controller->allPermissions();
@@ -118,11 +117,11 @@ $allPermissions = $permissionController->getAllPermissionsNames();
 
             <div class="permissions-box">
                 <strong>Permissões:</strong><br>
-                <?php foreach ($allPermissions as $permission): ?>
+                <?php foreach ($allPermissions as $permissionName): ?>
                     <label>
-                        <input type="checkbox" name="permissions[]" value="<?= htmlspecialchars($permission) ?>"
-                            <?= in_array($permission, $user->getPermissions()) ? 'checked' : '' ?>>
-                        <?= htmlspecialchars($permission) ?>
+                        <input type="checkbox" name="permissions[]" value="<?= htmlspecialchars($permissionName) ?>"
+                            <?= in_array($permissionName, $user->getPermissions()) ? 'checked' : '' ?>>
+                        <?= htmlspecialchars($permissionName) ?>
                     </label>
                 <?php endforeach; ?>
             </div>

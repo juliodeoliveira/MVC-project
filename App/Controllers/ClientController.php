@@ -80,11 +80,4 @@ class ClientController
 
         return $clients;
     }
-
-    // public function checkUserPermission() {
-    //     $checka = new ClientRepository();
-
-    //     // TODO: Vou precisar de um model para usuario
-    //     // return $checka->userHasPermission();
-    // }
 }

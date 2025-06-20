@@ -1,5 +1,6 @@
 <?php
-
+// TODO: Separar as rotas de acordo com as responsabilidades. Ex.: rotas de usuario: UserRoutes.php
+//? Seria interessante se um usuario tentar acessar uma página eu mostrar pra ele que a pagina nao existe ao inves de redirecionar ele?
 require "../bootstrap.php";
 
 use App\Controllers\ClientController;
@@ -16,13 +17,10 @@ use App\Models\Client;
 use App\Functions\Router;
 use App\Middleware\AuthMiddleware;
 
-// Instancia o roteador
 $router = new Router();
 
-// Define as rotas
 $router->add('GET', '/', function () {
     $verifyAuth = AuthMiddleware::verifyAuth();
-    // ? aqui nao pode passar só o nome de usuário?
     $_SESSION["usernameLogged"] = $verifyAuth->name ?? null;
 
     require_once "../views/portal/home.php";
@@ -106,7 +104,7 @@ $router->add('GET', '/search-clients', function () { // Testado
     $display->findClients();
 });
 
-$router->add('GET', '/to-do-list', function () { // Testado
+$router->add('GET', '/to-do-list', function () { 
     AuthMiddleware::verifyAuth();
     $display = new ContainerController();
     $display->toDoList();
@@ -116,11 +114,10 @@ $router->add('POST', '/save-todo', function () {
     AuthMiddleware::verifyAuth();
     $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
 
-    $projectId = end($uriExplodes);
+    // $projectId = end($uriExplodes);
+    $toDoList = json_decode($_POST['valor'], true);
 
     $addToDo = new TasksController();
-
-    $toDoList = json_decode($_POST['valor'], true);
     $addToDo->saveToDoList($uriExplodes[sizeof($uriExplodes)-1], $toDoList); 
 });
 
@@ -146,7 +143,7 @@ $router->add('POST', "/process-document", function () {
     header("Location: " . $_SERVER['HTTP_REFERER']);
 });
 
-$router->add('GET', '/download', function() { // Testado
+$router->add('GET', '/download', function() {
     AuthMiddleware::verifyAuth();
     if (!isset($_GET["file"])) {
         http_response_code(400);
@@ -160,13 +157,13 @@ $router->add('GET', '/download', function() { // Testado
     $download->downloadDocument();
 });
 
-$router->add('GET', '/project-report', function() { // Testado
+$router->add('GET', '/project-report', function() { 
     AuthMiddleware::verifyAuth();
     $createReport = new ReportController();
     $createReport->createProjectReport();
 });
 
-$router->add("GET", "/client-report", function() { // Testado
+$router->add("GET", "/client-report", function() {
     AuthMiddleware::verifyAuth();
     $createReport = new ReportController();
     $createReport->createClientReport();
@@ -205,22 +202,9 @@ $router->add("GET", "/admin", function() {
     $middle = AuthMiddleware::verifyAuth();
     $userController = new UserController();
 
-    if ($userController->checkUserRole($middle->userId, "admin")) {
-        $display = new ContainerController();
-        $display->admin();
-    } else {
-        header("Location: /");
-        exit();
-    }
-});
-
-$router->add("GET", "/edit-permissions", function() {
-    $middle = AuthMiddleware::verifyAuth();
-    $userController = new UserController();
-
     if ($userController->checkPermission($middle->userId, "manage_permissions")) {
         $display = new ContainerController();
-        $display->editPermissions();
+        $display->admin();
     } else {
         header("Location: /");
         exit();
@@ -231,12 +215,12 @@ $router->add("POST", "/update-user", function() {
     $middle = AuthMiddleware::verifyAuth();
     $userController = new UserController();
 
-    // TODO: Só precisa alterar no banco de dados
     if ($userController->checkPermission($middle->userId, "manage_permissions")) {
         $userController->updatePermissions();
-    } else {
-        echo "<h1>Ce nao tem permissao muleque! rala!</h1>";
     }
+
+    header("Location: ". $_SERVER['HTTP_REFERER']);
+    exit();
 });
 
 $router->add("GET", "/logout", function() {

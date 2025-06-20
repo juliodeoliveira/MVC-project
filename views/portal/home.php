@@ -14,7 +14,6 @@
     <main>
         <?php
             $loggedUser = $_SESSION["usernameLogged"] ?? "Convidado";
-            
         ?>
         <p>Logado como: <?=$loggedUser?></p>
         <h1>Olá, Mundo!</h1>
@@ -25,9 +24,10 @@
         <?php 
             if (!empty($_SESSION["usernameLogged"])) {
                 echo "<a href='/logout'>Fazer logout</a>";
+                echo "<a href='/admin'>Página de administração</a>";
             } else {
-                echo "<a href='/login'>Logar em uma conta existente</a>";
-                echo "<a href='/sign-in'>Criar usuário</a>";
+                echo "<a href='/login'>Fazer login</a>";
+                echo "<a href='/sign-in'>Criar conta</a>";
             }
         ?>
 

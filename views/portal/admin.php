@@ -2,18 +2,25 @@
 use App\Controllers\UserController;
 
 $controller = new UserController();
-$usersList = $controller->allPermissions();
+$usersList = $controller->getAllUsers();
 
-// Buscamos todas as permissões disponíveis
 $permissionController = new UserController();
 $allPermissions = $permissionController->getAllPermissionsNames(); 
 
-// este método deve retornar algo como:
-// [
-//   ['id' => 1, 'name' => 'editar_tarefa'],
-//   ['id' => 2, 'name' => 'deletar_usuario'],
-//   ...
-// ]
+$viewPermissions = [
+    "create_project" => "Criar projeto",
+    "delete_project" => "Deletar projeto",
+    "edit_project" => "Editar projeto",
+    "manage_permissions" => "Gerenciar permissões",
+    "view_project" => "Visualizar projeto"
+];
+
+$viewRole = [
+    "admin" => "Administrador",
+    "editor" => "Editor",
+    "user" => "Usuário"
+];
+
 ?>
 
 <!DOCTYPE html>
@@ -86,34 +93,18 @@ $allPermissions = $permissionController->getAllPermissionsNames();
         <div class="username"><?= htmlspecialchars($user->getUsername()) ?></div>
         <div class="email"><?= htmlspecialchars($user->getEmail()) ?></div>
 
-        <div><strong>Role atual:</strong>
+        <div><strong>Cargo atual:</strong>
             <?php if ($user->getRole() != "roleless"): ?>
-                <span class="label label-role"><?= htmlspecialchars($user->getRole()) ?></span>
+                <span class="label label-role"><?= htmlspecialchars($viewRole[$user->getRole()]) ?></span>
             <?php else: ?>
                 <span class="label label-role">Sem cargo</span>
             <?php endif; ?>
         </div>
 
-        <div><strong>Permissões:</strong><br>
-            <?php if (!empty($user->getPermissions())): ?>
-                <?php foreach ($user->getPermissions() as $perm): ?>
-                    <span class="label label-permission"><?= htmlspecialchars($perm) ?></span>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <em>Sem permissões</em>
-            <?php endif; ?>
-        </div>
-
         <form action="/update-user" method="POST">
             <input type="hidden" name="user_id" value="<?= htmlspecialchars($user->getId()) ?>">
-
-            <label for="role">Alterar Role:</label>
-            <select name="role">
-                <option value="">Sem Cargo</option>
-                <option value="admin" <?= $user->getRole() == "admin" ? "selected" : "" ?>>Admin</option>
-                <option value="editor" <?= $user->getRole() == "editor" ? "selected" : "" ?>>Editor</option>
-                <option value="user" <?= $user->getRole() == "user" ? "selected" : "" ?>>User</option>
-            </select>
+            <input type="hidden" name="username" value="<?= htmlspecialchars($user->getUsername()) ?>">
+            <input type="hidden" name="userEmail" value="<?= htmlspecialchars($user->getEmail())?>">
 
             <div class="permissions-box">
                 <strong>Permissões:</strong><br>
@@ -121,7 +112,7 @@ $allPermissions = $permissionController->getAllPermissionsNames();
                     <label>
                         <input type="checkbox" name="permissions[]" value="<?= htmlspecialchars($permissionName) ?>"
                             <?= in_array($permissionName, $user->getPermissions()) ? 'checked' : '' ?>>
-                        <?= htmlspecialchars($permissionName) ?>
+                        <?= $viewPermissions[$permissionName] ?>
                     </label>
                 <?php endforeach; ?>
             </div>

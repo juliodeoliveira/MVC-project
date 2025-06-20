@@ -86,48 +86,33 @@ class UserRepository
 
     public function userHasPermission($userId, $permissionName): bool 
     {
-        $stmt = $this->connection->prepare("
+        $query = $this->connection->prepare("
             SELECT COUNT(*) AS total
-            FROM user_role ur
-            JOIN role_permission rp ON ur.role_id = rp.role_id
-            JOIN permissions p ON rp.permission_id = p.id
-            WHERE ur.user_id = ? AND p.name = ?
+            FROM user_permission up
+            JOIN permissions p ON up.permission_id = p.id
+            WHERE up.user_id = :userId AND p.name = :permissionName
         ");
 
-        $stmt->execute([$userId, $permissionName]);
-        return $stmt->fetchColumn() > 0;
+        $query->bindValue(":userId", $userId);
+        $query->bindValue(":permissionName", $permissionName);
+
+        $query->execute();
+
+        return $query->fetchColumn() > 0;
     }
 
-    public function getAllPermissions()
+    public function getAllUsersPermissions()
     {
         $permissions = $this->connection->prepare("
             SELECT 
                 u.id AS user_id,
                 u.username,
                 u.email,
-                r.name AS role,
                 p.name AS permission
             FROM users u
-            LEFT JOIN user_role ur ON u.id = ur.user_id
-            LEFT JOIN roles r ON ur.role_id = r.id
-            LEFT JOIN role_permission rp ON r.id = rp.role_id
-            LEFT JOIN permissions p ON rp.permission_id = p.id
-
-            UNION
-
-            SELECT 
-                u.id AS user_id,
-                u.username,
-                u.email,
-                r.name AS role,
-                p.name AS permission
-            FROM users u
-            LEFT JOIN user_role ur ON u.id = ur.user_id
-            LEFT JOIN roles r ON ur.role_id = r.id
             LEFT JOIN user_permission up ON u.id = up.user_id
             LEFT JOIN permissions p ON up.permission_id = p.id
-
-            ORDER BY user_id;
+            ORDER BY u.id;
         ");
 
         $permissions->execute();
@@ -140,7 +125,6 @@ class UserRepository
             if (!isset($usersList[$userId])) {                
                 $newUser = new User($user["username"], $user["email"], "password");
                 $newUser->setId($user["user_id"]);
-                $newUser->setRole($user["role"] ?? "roleless");
 
                 $usersList[$userId] = $newUser;
             }
@@ -155,24 +139,6 @@ class UserRepository
         return $usersList;
     }
 
-    public function checkRole(int $userId, string $role) 
-    {
-        $query = $this->connection->prepare("
-            SELECT COUNT(*) as total
-            FROM user_role ur
-            JOIN roles r ON ur.role_id = r.id
-            WHERE ur.user_id = :userId AND r.name = :userRole"
-        );
-
-        $query->bindValue(":userId", $userId);
-        $query->bindValue(":userRole", $role);
-        $query->execute();
-
-        $result = $query->fetch(PDO::FETCH_ASSOC);
-
-        return $result["total"] > 0;
-    }
-
     public function allPermissionsNames(): array
     {
         $query = $this->connection->prepare("SELECT name FROM permissions");
@@ -181,7 +147,7 @@ class UserRepository
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function permissionInfo() {
+    public function permissionsInfo() {
         $query = $this->connection->prepare("SELECT * FROM permissions");
         $query->execute();
 

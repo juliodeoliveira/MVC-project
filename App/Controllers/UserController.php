@@ -81,10 +81,7 @@ class UserController
 
         if (!filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Email inválido";
-        }
-        if (strlen($userPasskey) < 8) {
-            $errors[] = "A senha deve conter pelo menos 8 caracteres";
-        }        
+        }       
 
         $checkEmail = new UserRepository();
         $findEmail = $checkEmail->findEmail($userEmail);

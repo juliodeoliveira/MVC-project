@@ -12,7 +12,12 @@ $viewPermissions = [
     "delete_project" => "Deletar projeto",
     "edit_project" => "Editar projeto",
     "manage_permissions" => "Gerenciar permissões",
-    "view_project" => "Visualizar projeto"
+    "view_projects" => "Visualizar projeto",
+    "create_client" => "Criar Clientes",
+    "edit_client" => "Editar Clientes",
+    "view_clients" => "Visualizar Clientes",
+    "download_document" => "Baixar Documentos",
+    "download_reports" => "Baixar Relatórios"
 ];
 
 $viewRole = [

@@ -28,7 +28,7 @@ class AdminRoutes
             $userController = new UserController();
         
             if ($userController->checkPermission($middle->userId, "manage_permissions")) {
-                $userController->updatePermissions();
+                $userController->updatePermissions($_POST["user_id"], $_POST["permissions"]);
             }
         
             header("Location: ". $_SERVER['HTTP_REFERER']);

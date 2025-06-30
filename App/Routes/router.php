@@ -4,7 +4,7 @@
 // TODO: tem que fazer o script que cria o banco de dados automaticamente, migrations, para as tabelas de permissao e provavelmente a de usuarios tambem
 
 require "../vendor/autoload.php";
-
+          
 use App\Functions\Router;
 
 use App\Routes\ClientRoutes;

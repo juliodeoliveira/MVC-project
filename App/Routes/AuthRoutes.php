@@ -19,9 +19,10 @@ class AuthRoutes
         });
         
         $router->add("POST", "/sign-user", function() {
-            // AuthMiddleware::verifyAuth();
             $register = new UserController();
             $register->registerUser();
+            
+            AuthMiddleware::verifyAuth();
         });
         
         $router->add("GET", "/login", function() {

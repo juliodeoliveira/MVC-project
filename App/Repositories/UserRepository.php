@@ -158,7 +158,9 @@ class UserRepository
     {
         $this->connection->beginTransaction();
 
-        //TODO: deu problema! nao atualiza nada na pagina admin, ta editando uma tabela que n tem relacao nenhuma! a pagina de admin nao pesquisa NADA na user_permission
+        // dump($permissionsIds);
+        // dd($userId);
+
         try {
             $query = $this->connection->prepare("DELETE FROM user_permission WHERE user_id = :userId");
             $query->bindValue(":userId", $userId);
@@ -177,5 +179,21 @@ class UserRepository
             $this->connection->rollBack();
             throw $e;
         }
+    }
+
+    public function getUserId(string $userEmail): int
+    {
+        $query = $this->connection->prepare("SELECT id FROM users WHERE email = :userEmail");
+        $query->bindValue(":userEmail", $userEmail);
+        $query->execute();
+
+        return $query->fetchColumn();
+    }
+
+    public function countUsers(): int
+    {
+        $query = $this->connection->prepare("SELECT COUNT(*) AS total FROM users");
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC)['total'];
     }
 }

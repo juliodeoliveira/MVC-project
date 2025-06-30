@@ -54,9 +54,17 @@ class UserController
 
         $userRepository->insert($user);
 
+        $userId = $userRepository->getUserId($userEmail);
+        $user->setId($userId);
+
+        if ($userRepository->countUsers() === 1) {
+            $this->updatePermissions($user->getId(), ["manage_permissions"]);
+        }
+
         $payload = [
             "sub" => $userEmail,
             "name" => $user->getUsername(),
+            "userId" => $user->getId(),
             "iat" => time(),
             "exp" => time() + 3600
         ];
@@ -149,16 +157,16 @@ class UserController
         return $allPermissions;
     }
 
-    public function updatePermissions()
+    public function updatePermissions($userId, $permissions)
     {
         $permissionInfo = new UserRepository();
         $allPermissionInfo = $permissionInfo->permissionsInfo();
 
-        $userId = $_POST["user_id"];
+        // $userId = $_POST["user_id"];
         $permissionsIds = [];
 
         foreach($allPermissionInfo as $permission) {
-            if (in_array($permission["name"], $_POST["permissions"] ?? [])) {
+            if (in_array($permission["name"], $permissions ?? [])) {
                 $permissionsIds[] = $permission["id"];
             }
         }

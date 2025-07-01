@@ -20,7 +20,7 @@ cd MVC-project && composer install
 
 When everything is done you need to go to root folder from project and create the database:
 ```bash
-cd database && php migrations.php && cd ../
+cd database && php migrations.php && php seeder.php && cd ../
 ```
 
 Once all the dependencies have been installed and the database has been created you will need to configure your `.env` file, you can do this by simply editing and renaming the `.env.example` file in the root of the project. If your database is also correct, you just need to start the project with the command below:

@@ -63,4 +63,9 @@ class ContainerController
         require_once "../views/portal/users/loginUser.php";
     }
 
+    public function admin(): void
+    {
+        require_once "../views/portal/admin.php";
+    }
+
 }

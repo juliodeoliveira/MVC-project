@@ -9,7 +9,6 @@ use App\Functions\StateValidation;
 
 class ClientController
 {
-
     public function signClient(): void 
     {
         $_POST['enterpriseName'] = trim($_POST['enterpriseName']);
@@ -68,6 +67,9 @@ class ClientController
     {
         $showClients = new ClientRepository();
         $clientsObject = $showClients->all();
+
+        // usuario teste@teste.com teste123
+
         return $clientsObject;
     }
 

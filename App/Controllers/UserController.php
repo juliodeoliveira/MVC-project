@@ -18,7 +18,7 @@ class UserController
         $userPasskey = $_POST["userPasskey"];
 
         $errors = [];
-        $_SESSION['old'] = $_POST;
+        $_SESSION['email'] = $_POST["userEmail"];
 
         if (empty($userName)) {
             $errors[] = "Nome obrigatório";
@@ -50,13 +50,21 @@ class UserController
             exit();
         }        
 
-        unset($_SESSION['errors'], $_SESSION["old"]);
+        unset($_SESSION['errors'], $_SESSION["email"]);
 
         $userRepository->insert($user);
+
+        $userId = $userRepository->getUserId($userEmail);
+        $user->setId($userId);
+
+        if ($userRepository->countUsers() === 1) {
+            $this->updatePermissions($user->getId(), ["manage_permissions"]);
+        }
 
         $payload = [
             "sub" => $userEmail,
             "name" => $user->getUsername(),
+            "userId" => $user->getId(),
             "iat" => time(),
             "exp" => time() + 3600
         ];
@@ -77,27 +85,24 @@ class UserController
         $userPasskey = $_POST["userPasskey"];
 
         $errors = [];
-        $_SESSION['old'] = $_POST;
+        $_SESSION['email'] = $_POST["userEmail"];
 
         if (!filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
             $errors[] = "Email inválido";
-        }
-        if (strlen($userPasskey) < 8) {
-            $errors[] = "A senha deve conter pelo menos 8 caracteres";
-        }        
+        }       
 
         $checkEmail = new UserRepository();
         $findEmail = $checkEmail->findEmail($userEmail);
         
         if (empty($findEmail)) {
             $errors[] = "Usuário e/ou senha inválidos";
+            $_SESSION["errors"] = $errors;
+            header("Location: /login");
+            exit();
         }
 
         if (!password_verify($userPasskey, $findEmail->getPassword())) {
             $errors[] = "Usuário e/ou senha inválidos";
-        }
-        
-        if (!empty($errors)) {
             $_SESSION["errors"] = $errors;
             header("Location: /login");
             exit();
@@ -106,6 +111,7 @@ class UserController
         $payload = [
             "sub" => $userEmail,
             "name" => $findEmail->getUsername(),
+            "userId" => $findEmail->getId(),
             "iat" => time(),
             "exp" => time() + 3600
         ];
@@ -113,7 +119,78 @@ class UserController
         $jwt = JWT::encode($payload, LoadEnv::fetchEnv("JWT_SECRET"), 'HS256');
 
         $_SESSION["jwt"] = $jwt;
-        header("Location: /");
-        exit();
+    }
+
+    public function findUser(string $userName): User
+    {
+        $findName = new UserRepository();
+        return $findName->findUserName($userName);
+    }
+
+    // TODO: talvez seria melhor se pegasse o id pelo retorno do middleware ao inves do $_SESSION
+    public function checkPermission(int $userId, string $permissionName): bool
+    {
+        $permission = new UserRepository();
+        return $permission->userHasPermission($userId, $permissionName);
+    }
+
+    public function getAllUsers(): array
+    {
+        $permissions = new UserRepository();
+        $allUsers = $permissions->getAllUsersPermissions();
+        foreach ($allUsers as $user) {
+            $user->setRole($this->roleConfigurator($user));
+        }
+
+        return $allUsers;
+    }
+
+    public function getAllPermissionsNames(): array
+    {
+        $allPermissions = [];
+
+        $allNames = new UserRepository();
+        $permissions = $allNames->allPermissionsNames();
+        foreach ($permissions as $permission) {
+            $allPermissions[] = $permission["name"];
+        }
+        return $allPermissions;
+    }
+
+    public function updatePermissions($userId, $permissions)
+    {
+        $permissionInfo = new UserRepository();
+        $allPermissionInfo = $permissionInfo->permissionsInfo();
+
+        // $userId = $_POST["user_id"];
+        $permissionsIds = [];
+
+        foreach($allPermissionInfo as $permission) {
+            if (in_array($permission["name"], $permissions ?? [])) {
+                $permissionsIds[] = $permission["id"];
+            }
+        }
+
+        $permissionInfo->updateUserPermissions($userId, $permissionsIds);
+    }
+
+    public function roleConfigurator(User $user): string
+    {
+        $newUserRole = "user";
+        $roleRules = [
+            'admin' => ['create_project', 'delete_project', 'edit_project', 'manage_permissions'],
+            'editor' => ['create_project', 'edit_project'],
+            'user'   => ['view_project'],
+        ];
+
+        foreach ($roleRules as $role => $requiredPerms) {
+            if (empty(array_diff($requiredPerms, $user->getPermissions()))) {
+                $newUserRole = $role;
+                break;
+            }
+        }
+
+        $user->setRole($newUserRole);
+        return $user->getRole();
     }
 }

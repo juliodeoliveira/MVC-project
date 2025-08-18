@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Middleware\AuthMiddleware;
 use App\Repositories\ProjectsRepository;
 use App\Repositories\TasksRepository;
 
@@ -34,13 +35,24 @@ class ProjectsController
                exit();
           }
 
+          // TODO: Aqui tem que adicionar a funcao para escrever na tabela de project_leaders
+
           $newProject = new Projects($_POST['title'], $_POST["startDate"], $_POST["endDate"], $_POST["service"]);
           $newProject->setDescription($_POST["description"]);
           $newProject->setClientId($customerId);
           $newProject->setStatus("Não iniciado");
-
+            
           $repository = new ProjectsRepository();
-          $repository->insert($newProject);
+          $lastId = $repository->insert($newProject);
+          $newProject->setId($lastId);
+          
+          // $userId = new ();
+          //? acredito que seja melhor criar um método apenas para pegar informacoes de usuário
+          // $userId = AuthMiddleware::verifyAuth();
+          
+          foreach ($_POST["project_leaders"] as $leader) {
+              $repository->addLeader($newProject->getId(), (int) $leader);
+          }
      }
 
      public function checkProjectDeadline(Projects $project)

@@ -11,6 +11,7 @@ class Projects
     private string $endDate;
     private string $service;
     private string $status;
+    private array $leaders;
     
     private int $id;
     
@@ -67,6 +68,11 @@ class Projects
         return $this->status;
     }
 
+    public function getLeaders(): array
+    {
+        return $this->leaders;
+    }
+
     public function setId(int $id): void
     {
         $this->id = $id;
@@ -105,6 +111,11 @@ class Projects
     public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function setLeaders(array $leaders): void
+    {
+        $this->leaders = $leaders;
     }
 
 }

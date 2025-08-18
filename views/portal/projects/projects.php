@@ -68,7 +68,7 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                 <li>Descrição: <?=$project->getDescription()?></li>
                 <li>Data de início: <?=$project->getStartDate()?></li>
                 <li>Data de término: <?=$project->getEndDate()?></li>
-                <li>Serviço: <?=$project->getService()?></li>   
+                <li>Serviço: <?=$project->getService()?></li> 
                 <li>Status: <?=$project->getStatus()?></li>
 
                 <?php if (!empty($project->getLeaders())): ?>
@@ -155,6 +155,7 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                 ?>
 
                 <a href="/to-do-list/<?=$project->getId()?>">Lista de tarefas</a>
+                <a href="/edit-project/<?=$project->getId()?>">Editar informacoes do projeto</a>
                 <hr>
             <?php
         }

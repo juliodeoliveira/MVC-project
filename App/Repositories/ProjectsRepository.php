@@ -36,28 +36,64 @@ class ProjectsRepository
 
     }
 
-    public function update()
+    public function update(Projects $project)
     {
+        $updateProject = $this->connection->prepare("UPDATE projects 
+                                                    SET title = :projectTitle, 
+                                                        description = :projectDescription,
+                                                        start_date = :startDate, 
+                                                        end_date = :endDate, 
+                                                        service = :service
+                                                    WHERE id = :id");
 
+        $updateProject->bindValue(":projectTitle", $project->getTitle());
+        $updateProject->bindValue(":projectDescription", $project->getDescription());
+        $updateProject->bindValue(":startDate", $project->getStartDate());
+        $updateProject->bindValue(":endDate", $project->getEndDate());
+        $updateProject->bindValue(":service", $project->getService());
+        $updateProject->bindValue(":id", $project->getId());
+
+        $updateProject->execute();
     }
 
     public function show(int $id): Projects | null
     {
-        //! Troquei a query que tinha customer_id por id, se vier a aparecer algum bug relacionado já sei onde procurar
-        $search = $this->connection->prepare("SELECT * FROM projects WHERE id = :id");
-        $search->bindValue(":id", $id, PDO::PARAM_INT);
-        $search->execute();
-        $result = $search->fetch(PDO::FETCH_ASSOC);
+        $stmt = $this->connection->prepare("
+            SELECT 
+                p.id, p.title, p.start_date, p.end_date, p.service,
+                p.description, p.customer_id, p.status,
+                l.username AS leader_name
+            FROM projects p
+            LEFT JOIN project_leaders pl ON p.id = pl.project_id
+            LEFT JOIN users l ON l.id = pl.user_id
+            WHERE p.id = :id
+        ");
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+        $stmt->execute();
 
-        if ($result === false) {
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$rows) {
             return null;
         }
 
-        $project = new Projects($result['title'], $result['start_date'], $result['end_date'], $result['service']);
-        $project->setId($result['id']);
-        $project->setDescription($result['description']);
-        $project->setClientId($result['customer_id']);
-        $project->setStatus($result['status']);
+        // Dados do projeto (vem repetido nas linhas, mas é o mesmo projeto)
+        $first = $rows[0];
+
+        $project = new Projects(
+            $first['title'],
+            $first['start_date'],
+            $first['end_date'],
+            $first['service']
+        );
+
+        $project->setId($first['id']);
+        $project->setDescription($first['description']);
+        $project->setClientId($first['customer_id']);
+        $project->setStatus($first['status']);
+
+        $leaders = array_filter(array_column($rows, 'leader_name'));
+        $project->setLeaders($leaders);
 
         return $project;
     }
@@ -130,6 +166,13 @@ class ProjectsRepository
         $query = $this->connection->prepare("INSERT INTO project_leaders (project_id, user_id) VALUES (:projectId, :userId)");
         $query->bindValue(":projectId", $projectId);
         $query->bindValue(":userId", $userId);
+        $query->execute();
+    }
+
+    public function clearLeaders(int $projectId): void
+    {
+        $query = $this->connection->prepare("DELETE FROM project_leaders WHERE project_id = :project_id");
+        $query->bindValue(":project_id", $projectId);
         $query->execute();
     }
 

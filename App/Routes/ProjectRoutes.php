@@ -58,7 +58,6 @@ class ProjectRoutes
                 header("Location: /");
                 exit();
             }
-        
         });
         
         $router->add('GET', '/search-projects', function () {
@@ -69,6 +68,39 @@ class ProjectRoutes
                 $display->findProject();
             } else {
                 header("Location: /list-customers");
+                exit();
+            }
+        });
+
+        $router->add('GET', '/edit-project', function () {
+            $middle = AuthMiddleware::verifyAuth();
+            $userController = new UserController();
+
+            if ($userController->checkPermission($middle->userId, "edit_project")) {
+                $display = new ContainerController();
+                $display->editProject();
+            } else {
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+                exit();
+            }
+        });
+
+        $router->add('POST', '/project-edit', function () {
+            $middle = AuthMiddleware::verifyAuth();
+            $userController = new UserController();
+
+            $project = new ProjectsController();
+            $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
+            $getIdbyURI = end($uriExplodes);
+            $project = $project->findProject($getIdbyURI);
+
+            if ($userController->checkPermission($middle->userId, "edit_project")) {
+                $projectController = new ProjectsController();
+                $projectController = $projectController->updateProject($project);
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
+                exit();
+            } else {
+                header("Location: " . $_SERVER["HTTP_REFERER"]);
                 exit();
             }
         });

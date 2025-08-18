@@ -72,10 +72,14 @@ class ClientRoutes
             $userController = new UserController();
 
             if ($userController->checkPermission($middle->userId, "edit_client")) {
-                $model = new Client($_POST["enterpriseName"], $_POST["email"]);
-            
                 $update = new ClientController();
-                $update->updateClient($model);
+
+                $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
+                $id = end($uriExplodes);
+
+                $client = $update->findClients($id);
+            
+                $update->updateClient($client);
             
                 $success = new ContainerController();
                 $success->success();

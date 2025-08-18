@@ -42,8 +42,8 @@ class ClientController
     public function updateClient(Client $client): void 
     {
         $newClient = new Client(
-            $_POST["enterpriseName"] ?? $client->getEnterpriseName(), 
-            $_POST["email"] ?? $client->getEmail()
+            empty($_POST["enterpriseName"]) ? $client->getEnterpriseName() : $_POST["enterpriseName"], 
+            empty($_POST["email"]) ? $client->getEmail() : $_POST["email"]
         );
 
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);

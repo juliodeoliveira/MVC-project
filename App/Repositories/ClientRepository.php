@@ -36,7 +36,18 @@ class ClientRepository
 
     public function update(Client $client): void
     {
-        $updateValues = $this->connection->prepare("UPDATE customers SET enterprise_name = :enterpriseName, email = :email, phone_number = :phoneNumber, cep = :cep, street = :street, house_number = :houseNumber, complement = :complement, neighborhood = :neighborhood, city = :city, state = :state WHERE id = :id");
+        $updateValues = $this->connection->prepare("UPDATE customers 
+                                                    SET enterprise_name = :enterpriseName, 
+                                                        email = :email, 
+                                                        phone_number = :phoneNumber, 
+                                                        cep = :cep, 
+                                                        street = :street, 
+                                                        house_number = :houseNumber, 
+                                                        complement = :complement, 
+                                                        neighborhood = :neighborhood, 
+                                                        city = :city, 
+                                                        state = :state 
+                                                    WHERE id = :id");
         
         $updateValues->bindValue(":enterpriseName", $client->getEnterpriseName());
         $updateValues->bindValue(":email", $client->getEmail());

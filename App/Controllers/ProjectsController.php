@@ -2,13 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Middleware\AuthMiddleware;
 use App\Repositories\ProjectsRepository;
 use App\Repositories\TasksRepository;
 
 use App\Models\Projects;
-use App\Models\ToDoList;
-use App\Models\Photos;
 
 class ProjectsController
 {
@@ -121,5 +118,38 @@ class ProjectsController
                $updateStatus->projectStatusNotStarted($project->getId());
                $project->setStatus("Não iniciado");
           }
+     }
+
+     public function updateProject(Projects $project): void
+     {
+          //! Aqui eu tenho que tomar cuidado pra nao apagar informacoes que nao devem ser apagadas, como as obriogatorias aqui desses argumentos
+          // TODO: instanciar o Projects la na view, antes de ser editado é uma solucao para ter os dados antigos ainda
+          // dd(empty($_POST["title"]));
+          $newProject = new Projects(
+               empty($_POST["title"]) ? $project->getTitle() : $_POST["title"],
+               empty($_POST["startDate"]) ? $project->getStartDate() : $_POST["startDate"],
+               empty($_POST["endDate"]) ? $project->getEndDate() : $_POST["endDate"],
+               empty($_POST["service"]) ? $project->getService() : $_POST["service"],
+          );
+
+          $uriExplodes = explode('/', $_SERVER['REQUEST_URI']);
+          $getIdbyURI = end($uriExplodes);
+
+          
+          $newProject->setId($getIdbyURI);
+          $newProject->setLeaders($_POST["project_leaders"] ?? []);
+          $newProject->setDescription($_POST["description"]);
+
+          $updateProject = new ProjectsRepository();
+          $updateProject->update($newProject);
+
+          $updateProject->clearLeaders($getIdbyURI);
+
+          if (!empty($_POST["project_leaders"])) {
+               foreach ($_POST["project_leaders"] as $leader) {
+                   $updateProject->addLeader($newProject->getId(), (int) $leader);
+               }
+          }
+
      }
 }

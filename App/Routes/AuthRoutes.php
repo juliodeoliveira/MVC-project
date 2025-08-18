@@ -11,8 +11,6 @@ class AuthRoutes
 {
     public function register(Router $router) 
     {
-
-        // * AUTH
         $router->add("GET", "/sign-in", function() {
             $display = new ContainerController();
             $display->registerUser();

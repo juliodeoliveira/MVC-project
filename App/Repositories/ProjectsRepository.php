@@ -64,20 +64,42 @@ class ProjectsRepository
 
     public function all(int $clientId): array
     {
-        $search = $this->connection->prepare("SELECT * FROM projects WHERE customer_id = :id");
+        $search = $this->connection->prepare("SELECT 
+                                                projects.*, 
+                                                users.username AS leader_name
+                                            FROM 
+                                                projects
+                                            LEFT JOIN 
+                                                project_leaders ON projects.id = project_leaders.project_id
+                                            LEFT JOIN 
+                                                users ON project_leaders.user_id = users.id
+                                            WHERE 
+                                                projects.customer_id = :id");
         $search->bindValue(":id", $clientId, PDO::PARAM_INT);
         $search->execute();
         $result = $search->fetchAll(PDO::FETCH_ASSOC);
 
         $projects = [];
+
         foreach ($result as $row) {
-            $project = new Projects($row["title"], $row["start_date"], $row["end_date"], $row["service"]);
-            $project->setId($row['id']);
-            $project->setDescription($row['description']);
-            $project->setClientId($row['customer_id']);
-            $project->setStatus($row['status']);
-            
-            $projects[] = $project;
+            $projectId = $row['id'];
+
+            if (!isset($projects[$projectId])) {
+                $project = new Projects($row["title"], $row["start_date"], $row["end_date"], $row["service"]);
+                $project->setId($projectId);
+                $project->setDescription($row['description']);
+                $project->setClientId($row['customer_id']);
+                $project->setStatus($row['status']);
+                $project->setLeaders([]); 
+
+                $projects[$projectId] = $project;
+            }
+
+            if (!empty($row['leader_name'])) {
+                $leaders = $projects[$projectId]->getLeaders();
+                $leaders[] = $row['leader_name'];
+                $projects[$projectId]->setLeaders($leaders);
+            }
         }
 
         return $projects;
@@ -101,6 +123,14 @@ class ProjectsRepository
         $delete = $this->connection->prepare("DELETE FROM project_documents WHERE document_project_id = :id");
         $delete->bindValue(":id", $project->getId());
         $delete->execute();
+    }
+
+    public function addLeader(int $projectId, int $userId)
+    {
+        $query = $this->connection->prepare("INSERT INTO project_leaders (project_id, user_id) VALUES (:projectId, :userId)");
+        $query->bindValue(":projectId", $projectId);
+        $query->bindValue(":userId", $userId);
+        $query->execute();
     }
 
     public function projectStatusOngoing(int $projectId)

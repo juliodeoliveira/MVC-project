@@ -60,6 +60,9 @@ if (isset($getIdbyURI) && $reloadPage === true) {
             $checkDays = $projectController->checkProjectDeadline($project);
             $projectController->checkProjectStatus($project);
 
+            // TODO: mudar para o endforeach, por exemplo, parece ser melhor
+            // TODO: próxima funcionalidade é editar os projetos
+
             ?>
                 <h1>Título do projeto: <?=$project->getTitle()?></h1>
                 <li>Descrição: <?=$project->getDescription()?></li>
@@ -67,6 +70,17 @@ if (isset($getIdbyURI) && $reloadPage === true) {
                 <li>Data de término: <?=$project->getEndDate()?></li>
                 <li>Serviço: <?=$project->getService()?></li>   
                 <li>Status: <?=$project->getStatus()?></li>
+
+                <?php if (!empty($project->getLeaders())): ?>
+                    <li>Responsáveis pelo projeto:</li>
+                    <ul>
+                        <?php foreach ($project->getLeaders() as $leaderName): ?>
+                            <li><?=$leaderName?></li>
+                        <?php endforeach ?>
+                    </ul>
+
+                <?php endif; ?>
+                
 
                 <li>Prazo: <?=$projectDays = $checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
 

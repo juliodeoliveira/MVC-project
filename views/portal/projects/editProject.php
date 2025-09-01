@@ -23,7 +23,7 @@ $project = $project->findProject($getIdbyURI);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar novo projeto</title>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 </head>
@@ -66,11 +66,11 @@ $project = $project->findProject($getIdbyURI);
     <script src="./../assets/js/validateCaracters.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script>
-      new TomSelect('#userSelect', {
-        maxItems: null,
-        create: false,
-        persist: false
-      });
+        new TomSelect('#userSelect', {
+            maxItems: null,
+            create: false,
+            persist: false
+        });
     </script>
 </body>
 </html>

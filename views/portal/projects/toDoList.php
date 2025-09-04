@@ -1,6 +1,5 @@
 <?php
 
-use App\Controllers\ProjectsController;
 use App\Controllers\TasksController;
 use App\Functions\URI;
 
@@ -31,14 +30,13 @@ $_SESSION["reloadPage"] = true;
 
     <div class="tasks">
         <?php
-
             $controller = new TasksController();
-
             $currentTasks = $controller->allTasks($projectID);
-
             $tasksToJson = [];
+        ?>
 
-            foreach ($currentTasks as $tasks) {
+        <?php foreach ($currentTasks as $tasks): ?>
+            <?php 
                 $description = $tasks->getTaskDescription();
                 $isMarked = $tasks->getTaskMarked();
                 $taskId = $tasks->getId();
@@ -47,16 +45,18 @@ $_SESSION["reloadPage"] = true;
                     "description" => $description,
                     "checked" => $isMarked
                 ]; 
-                echo "<br>";
-                if ($isMarked) {
-                    echo "<input class='goal' type='checkbox' value='$description' checked>$description";
-                } else {
-                    echo "<input class='goal' type='checkbox' value='$description'>$description";
-                }
-            }
+            ?>
 
-            $jsonTasks = json_encode($tasksToJson);
-        ?>
+            <br>
+
+            <?php if ($isMarked): ?>
+                <input class='goal' type='checkbox' value='<?= $description ?>' checked><?= $description ?>
+            <?php else: ?>
+                <input class='goal' type='checkbox' value='<?= $description ?>'><?= $description ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php $jsonTasks = json_encode($tasksToJson); ?>
     </div>
 
     <script>
@@ -72,7 +72,6 @@ $_SESSION["reloadPage"] = true;
                 $lastId = $controller->lastTaskId();
             ?>
             var id = <?=$lastId + 1?>;
-            console.log(id);
             $("input[type=checkbox]").each(function(index) {
                 if ($(this).is(':checked')) {
                    newObject = {id: id, description: taskName, checked: true};
@@ -133,5 +132,6 @@ $_SESSION["reloadPage"] = true;
 
         });
     </script>
+
 </body>
 </html>

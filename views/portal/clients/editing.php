@@ -59,13 +59,13 @@
 
         <select name="state" id="state">
             <option value="<?=$client->getState()?>"><?=StateValidation::replaceState($client->getState())?></option>
-           
-            <?php
-                $states = json_decode(file_get_contents("./../config/json/states.json"), true);
-                foreach ($states as $options) {
-                    echo "<option value='$options[UF]'>$options[Nome] - $options[UF]</option>";
-                }
-            ?>
+
+            <?php  $states = json_decode(file_get_contents("./../config/json/states.json"), true); ?> 
+            
+            <?php foreach ($states as $options): ?>
+                <option value='<?= $options["UF"] ?>'> <?= $options["Nome"] ?> - <?= $options["UF"] ?></option>
+            <?php endforeach; ?>
+
         </select>
         
         <br>

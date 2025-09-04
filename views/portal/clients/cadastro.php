@@ -31,12 +31,12 @@
        
         <select name="state" id="state" placeholde="Selecione o estado">
             <option value="">Selecione o estado: </option>
-            <?php
-                $states = json_decode(file_get_contents("./../config/json/states.json"), true);
-                foreach ($states as $options) {
-                    echo "<option value='$options[UF]'>$options[Nome] - $options[UF]</option>";
-                }
-            ?>
+            <?php $states = json_decode(file_get_contents("./../config/json/states.json"), true); ?>
+
+            <?php foreach ($states as $options): ?>
+                <option value='<?=$options["UF"]?>'><?=$options["Nome"]?> - <?=$options["UF"]?></option>
+            <?php endforeach ?>
+
         </select>
         <textarea name="complement" id="complement" placeholder="Complemento"></textarea>
         <input type="submit" value="Enviar">

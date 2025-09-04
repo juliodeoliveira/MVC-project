@@ -51,68 +51,69 @@ function searchProjects(Projects $project, $haystack) {
         $results = array_filter($getProjects, function ($project) use ($search) {
             return searchProjects($project, $search);
         });
-
-        if (!empty($results)) {
-            foreach ($results as $project) {
-                $checkDays = $projectController->checkProjectDeadline($project);
-                ?>                
-                    <h1>Título do projeto: <?=$project->getTitle()?></h1>
-                    <ul>
-                    <li>Descrição: <?=$project->getDescription()?></li>
-                    <li>Data de início: <?=$project->getStartDate()?></li>
-                    <li>Data de término: <?=$project->getEndDate()?></li>
-                    <li>Serviço: <?=$project->getService()?></li>
-                    <li>Status: <?=$projectController->checkProjectStatus($project)?></li>
-                    <li>Prazo: <?=$checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias"?></li>
-
-                    <h2>Fotos do projeto:</h2>
-
-                    <?php
-                        $allPhotos = $photosController->showPhotos($project->getId());
-                        if (count($allPhotos) == 0) {
-                            echo "<p>O projeto ainda não tem nenhuma foto!</p>";
-                        } else {
-                            $carouselId = "carousel-" . $project->getId();
-                            echo "<div class='carousel' id='$carouselId'>
-                                    <div class='carousel-images'>";
-                            foreach ($allPhotos as $photo) {
-                                // Remove the dot from the original path
-                                $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo["photo_path"], 1);
-                                echo "<img src='$treatedPath' alt='$photo[photo_name]'>";
-                            }
-                            echo "</div>
-                                    <button class='prev'>&#10094;</button>
-                                    <button class='next'>&#10095;</button>
-                                </div>";
-                        }
-                    ?>
-                    
-                    <form id="imageSubmit" action="/process-photo" method="POST" enctype="multipart/form-data">
-                        <label for="file-upload" class="custom-upload">
-                            Adicione uma foto para o projeto!
-                        </label>
-
-                        <!-- // TODO: Para maior seguranca, adicionar um js que quando o formulario for enviado ele troca o valor do input para o que precisa ser, o valor padrao e em js e valor que deve ser vem em php -->
-                        <input type="hidden" name="projectIdPhoto" value="<?=$project->getId()?>">
-
-                        <input type="hidden" name="job" value="insert">
-
-                        <input type="file" id="file-upload" name="projectPhoto" accept=".jpg, .jpeg, .png, .gif">
-                        <button type="submit">Enviar</button>
-                    </form>
-
-                    <a href="/to-do-list/<?=$project->getId()?>">Lista de tarefas</a>
-
-                    </ul>
-                    <hr>
-                <?php
-            }
-        } else {
-            ?>
-                <h2>Não foi encontrado nenhum resultado relacionado à pesquisa!</h2>
-            <?php
-        }
     ?>
+
+    <?php if (!empty($results)): ?>
+        <?php foreach ($results as $project): ?>
+            <?php $checkDays = $projectController->checkProjectDeadline($project); ?>
+            
+                <h1>Título do projeto: <?= $project->getTitle() ?> </h1>
+                <ul>
+                <li>Descrição: <?= $project->getDescription() ?> </li>
+                <li>Data de início: <?= $project->getStartDate() ?> </li>
+                <li>Data de término: <?= $project->getEndDate() ?> </li>
+                <li>Serviço: <?= $project->getService() ?> </li>
+                <li>Status: <?= $projectController->checkProjectStatus($project) ?> </li>
+                <li>Prazo: <?= $checkDays["deadline"] == "late" ? $checkDays["days"]. " dias atrasados" : $checkDays["days"] . " dias" ?> </li>
+
+                <h2>Fotos do projeto:</h2>
+
+                <?php $allPhotos = $photosController->showPhotos($project->getId()); ?>
+                    
+                    <?php if (count($allPhotos) == 0): ?>
+                        <p>O projeto ainda não tem nenhuma foto!</p>
+                    <?php else: ?>
+                    <?php if ("12" == "2") {
+                        
+                    } ?>
+                        <?php $carouselId = "carousel-" . $project->getId(); ?>
+                            <div class='carousel' id='<?= $carouselId ?>'>
+                            <div class='carousel-images'>
+                        <?php foreach ($allPhotos as $photo): ?>
+                            <?php // Remove the dot from the original path ?>
+                            <?php $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo->getNewPhotoPath(), 1); ?>
+                            
+                            <img src='<?= $treatedPath ?>' alt='<?= $photo->getPhotoName() ?>'>
+                        <?php endforeach; ?>
+                            </div>
+                                <button class='prev'>&#10094;</button>
+                                <button class='next'>&#10095;</button>
+                            </div>
+                    <?php endif ?>
+                
+                <form id="imageSubmit" action="/process-photo" method="POST" enctype="multipart/form-data">
+                    <label for="file-upload" class="custom-upload">
+                        Adicione uma foto para o projeto!
+                    </label>
+
+                    <!-- // TODO: Para maior seguranca, adicionar um js que quando o formulario for enviado ele troca o valor do input para o que precisa ser, o valor padrao e em js e valor que deve ser vem em php -->
+                    <input type="hidden" name="projectIdPhoto" value="<?=$project->getId()?>">
+
+                    <input type="hidden" name="job" value="insert">
+
+                    <input type="file" id="file-upload" name="projectPhoto" accept=".jpg, .jpeg, .png, .gif">
+                    <button type="submit">Enviar</button>
+                </form>
+
+                <a href="/to-do-list/<?=$project->getId()?>">Lista de tarefas</a>
+
+                </ul>
+                <hr>
+            <?php endforeach; ?>
+                
+        <?php else: ?>    
+            <h2>Não foi encontrado nenhum resultado relacionado à pesquisa!</h2>
+    <?php endif; ?>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

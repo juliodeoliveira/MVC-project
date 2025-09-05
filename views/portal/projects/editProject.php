@@ -23,7 +23,7 @@ $project = $project->findProject($getIdbyURI);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar novo projeto</title>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
 </head>
@@ -40,23 +40,32 @@ $project = $project->findProject($getIdbyURI);
         <label for="endDate">Data de término: </label>
         <input type="date" required name="endDate" id="endDate" value="<?=$project->getEndDate()?>">
 
-        <label for="userSelect">Usuário responsável pelo projeto:</label>
-        <select id="userSelect" name="project_leaders[]" multiple>
-        <?php
+        <?php  
             $allUsers = new UserController();
             $allUsers = $allUsers->getAllUsers();
+            dump($allUsers);
 
-            $selectedLeaders = $project->getLeaders(); 
-
-            foreach ($allUsers as $user) {
-                $username = $user->getUsername();
-                $userId = $user->getId();
-
-                $isSelected = in_array($username, $selectedLeaders) ? "selected" : "";
-
-                echo "<option value='$userId' $isSelected>$username</option>";
-            }
         ?>
+        <label for="userSelect">Usuário responsável pelo projeto:</label>
+        <select id="userSelect" name="project_leaders[]" multiple>
+            <?php
+                $allUsers = new UserController();
+                $allUsers = $allUsers->getAllUsers();
+                
+                $selectedLeaders = $project->getLeaders(); 
+            ?>
+
+            <?php foreach ($allUsers as $user): ?>
+                <?php 
+                    $username = $user->getUsername();
+                    $userId = $user->getId();
+                 
+                    $isSelected = in_array($username, $selectedLeaders) ? "selected" : "";
+                    
+                ?>          
+                <option value='<?= $userId ?>' <?= $isSelected ?>> <?= $username ?> </option>
+                
+            <?php endforeach; ?>
         </select>
 
         <input type="text" required name="service" id="service" placeholder="Serviço *" value="<?=$project->getService()?>">
@@ -66,11 +75,11 @@ $project = $project->findProject($getIdbyURI);
     <script src="./../assets/js/validateCaracters.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script>
-      new TomSelect('#userSelect', {
-        maxItems: null,
-        create: false,
-        persist: false
-      });
+        new TomSelect('#userSelect', {
+            maxItems: null,
+            create: false,
+            persist: false
+        });
     </script>
 </body>
 </html>

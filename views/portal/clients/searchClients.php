@@ -35,39 +35,34 @@ function searchClient(Client $client, $haystack) {
     <hr>
     <?php
         $count = 0;
-
         use App\Controllers\ProjectsController;
-        $project = new ProjectsController();
-
-        foreach ($allClients as $client) {
-            if (searchClient($client, $_GET["s"])) {
-            ?>
-                <h1>Nome da empresa: <?=$client->getEnterpriseName()?></h1>
-                <h1>Email: <?=$client->getEmail()?></h1>
-                <ul>
-                    <li>N° de telefone: <?=$client->getPhoneNumber()?></li>
-                    <li>CEP: <?=$client->getCep()?></li>
-                    <li>Rua: <?=$client->getStreet()?></li>
-                    <li>N° da casa: <?=$client->getHouseNumber()?></li>
-                    <li>Complemento: <?=$client->getComplement()?></li>
-                    <li>Bairro: <?=$client->getNeighborhood()?></li>
-                    <li>Cidade: <?=$client->getCity()?></li>
-                    <li>Estado: <?=$client->getState()?></li>
-                </ul>
-                <a href="/project/<?=$client->getId()?>">Ver <?=$project->countProjects($client->getId())?> projetos</a>
-
-                <hr>
-                <?php
-                $count++;
-            }
-        }
-
-        if ($count == 0) {
-            ?>
-                <h2>Não foi encontrado nenhum resultado para a pesquisa</h2>
-            <?php
-        }
-        dump($allClients);
+        $project = new ProjectsController(); 
     ?>
+
+    <?php foreach ($allClients as $client): ?>
+        <?php if (searchClient($client, $_GET["s"])): ?>
+        
+            <h1>Nome da empresa: <?=$client->getEnterpriseName()?></h1>
+            <h1>Email: <?=$client->getEmail()?></h1>
+            <ul>
+                <li>N° de telefone: <?=$client->getPhoneNumber()?></li>
+                <li>CEP: <?=$client->getCep()?></li>
+                <li>Rua: <?=$client->getStreet()?></li>
+                <li>N° da casa: <?=$client->getHouseNumber()?></li>
+                <li>Complemento: <?=$client->getComplement()?></li>
+                <li>Bairro: <?=$client->getNeighborhood()?></li>
+                <li>Cidade: <?=$client->getCity()?></li>
+                <li>Estado: <?=$client->getState()?></li>
+            </ul>
+            <a href="/project/<?=$client->getId()?>">Ver <?=$project->countProjects($client->getId())?> projetos</a>
+
+            <hr>
+            <?php $count++; ?>
+        <?php endif; ?>
+    <?php endforeach; ?>
+
+    <?php if ($count == 0): ?>
+        <h2>Não foi encontrado nenhum resultado para a pesquisa</h2>
+    <?php endif; ?>
 </body>
 </html>

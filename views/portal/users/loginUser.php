@@ -18,13 +18,13 @@ $oldValues = $_SESSION["old"] ?? null;
 
         <input type="submit" value="Login">
 
-        <?php if (!empty($_SESSION['errors'])) {?>
+        <?php if (!empty($_SESSION['errors'])): ?>
             <ul style="color: red;">
-                <?php foreach ($_SESSION["errors"] as $error) {?>
-                    <li><?=$error?></li>
-                <?php } ?>
+                <?php foreach ($_SESSION["errors"] as $error): ?>
+                    <li><?= $error ?></li>
+                <?php endforeach ?>
             </ul>
-        <?php } ?>
+        <?php endif; ?>
         
         <?php unset($_SESSION['errors'], $_SESSION['old']) ?>
     </form>

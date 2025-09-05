@@ -37,15 +37,17 @@ $getIdbyURI = (int) $uriExplode[sizeof($uriExplode)-1];
 
         <label for="userSelect">Usuário responsável pelo projeto:</label>
         <select id="userSelect" name="project_leaders[]" multiple>
+            
             <?php
                 $allUsers = new UserController;
                 $allUsers = $allUsers->getAllUsers();
-                foreach ($allUsers as $user) {
-                    $username = $user->getUsername();
-                    $userId = $user->getId();
-                    echo "<option value='$userId'>$username</option>";
-                }
             ?>
+
+            <?php foreach ($allUsers as $user): ?>
+                <option value="<?= $user->getId() ?>">
+                    <?= $user->getUsername() ?>
+                </option>
+            <?php endforeach; ?>
         </select>
 
         <input type="text" required name="service" id="service" placeholder="Serviço *">

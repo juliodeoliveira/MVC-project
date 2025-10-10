@@ -25,7 +25,7 @@ cd database && php migrations.php && cd ../
 
 Once all the dependencies have been installed and the database has been created you will need to configure your `.env` file, you can do this by simply editing and renaming the `.env.example` file in the root of the project. If your database is also correct, you just need to start the project with the command below:
 ```bash
-php -S localhost:5500 -t public
+php server.php
 ```
 
 ---

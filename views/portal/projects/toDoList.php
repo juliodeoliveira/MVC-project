@@ -106,7 +106,7 @@ $_SESSION["reloadPage"] = true;
     <script>
         $(".sendInfo").click(function() {
             $.ajax({
-                url: 'http://<?=LoadEnv::fetchEnv("HOST")?>/save-todo/<?=$projectID?>',
+                url: 'http://<?=LoadEnv::compose("HOST","PORT")?>/save-todo/<?=$projectID?>',
                 type: 'POST',
                 data: { valor: JSON.stringify(tarefas) },
                 success: function(response) {

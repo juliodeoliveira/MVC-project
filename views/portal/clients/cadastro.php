@@ -1,47 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <style>
+    <!-- <style>
         input, textarea {
             display: block;
             margin: 10px;
         }
-    </style>
+    </style> -->
+
+    <!-- TODO: validar aqui e mostrar os erros, quando eu coloco uma informacao errada ele só para a página -->
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de cliente</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components/_wizard.css">
+    
+
     <link rel="shortcut icon" href="./assets/images/favicon/closedfolder.png" type="image/x-icon">
 </head>
 <body>
 
 <!-- //! Estado deve ser select, depois implementação de API dos correios para preencher campos com base no CEP --> 
-    <form action="/write-client" method="POST" id="signForm">
-        <!-- //TODO: Aqui, para melhorar a usabilidade, deve ser feito com que cada input seja mostrado por vez na tela,
-                preencheu um, próximo input como se fosse uma troca de página, um input por vez -->
-        <input type="text"  name="enterpriseName" required id="enterprisename" placeholder="Nome da empresa *">
-        <input type="email" name="email" required id="email" placeholder="Email *">
-        <input type="text" name="phone_number" id="telephone" placeholder="Telefone">
-        <input type="text" name="cep" id="cep" placeholder="CEP" maxlength="9">
-        <input type="text" name="street" id="street" placeholder="Rua">
-        <input type="text" name="nHouse" id="house" placeholder="Número da casa">
-        <input type="text" name="neighbor" id="neightborhood" placeholder="Bairro">
-        <input type="text" name="city" id="city" placeholder="Cidade">
-        <!-- <input type="text" name="state" id="state" placeholder="Estado (UF)"> -->
-       
-        <select name="state" id="state" placeholde="Selecione o estado">
-            <option value="">Selecione o estado: </option>
-            <?php $states = json_decode(file_get_contents("./../config/json/states.json"), true); ?>
+    <form action="/write-client" method="POST" id="wizard-form">
+        <div class="wizard-nav" id="wizard-nav"></div>
 
-            <?php foreach ($states as $options): ?>
-                <option value='<?=$options["UF"]?>'><?=$options["Nome"]?> - <?=$options["UF"]?></option>
-            <?php endforeach ?>
+        <div class="slide active"><input type="text" name="enterpriseName" required placeholder="Nome da empresa *"></div>
+        <div class="slide"><input type="email" name="email" required placeholder="Email *"></div>
+        <div class="slide"><input type="text" name="phone_number" placeholder="Telefone"></div>
+        <div class="slide"><input type="text" name="cep" placeholder="CEP" maxlength="9"></div>
+        <div class="slide"><input type="text" name="street" placeholder="Rua"></div>
+        <div class="slide"><input type="text" name="nHouse" placeholder="Número da casa"></div>
+        <div class="slide"><input type="text" name="neighbor" placeholder="Bairro"></div>
+        <div class="slide"><input type="text" name="city" placeholder="Cidade"></div>
+        <div class="slide">
+            <select name="state">
+                <option value="">Selecione o estado</option>
+                <?php foreach ($states as $options): ?>
+                    <option value='<?=$options["UF"]?>'><?=$options["Nome"]?> - <?=$options["UF"]?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+        <div class="slide"><textarea name="complement" placeholder="Complemento"></textarea></div>
 
-        </select>
-        <textarea name="complement" id="complement" placeholder="Complemento"></textarea>
-        <input type="submit" value="Enviar">
+        <div class="wizard-buttons">
+            <button type="button" id="prevBtn">Voltar</button>
+            <button type="button" id="nextBtn">Avançar</button>
+            <input type="submit" id="submitBtn" style="display:none;" value="Enviar">
+        </div>
     </form>
 
-  <script src="./assets/js/validateCaracters.js"></script>
+    <script src="/assets/js/formWizard.js"></script>
+    <script src="./assets/js/validateCaracters.js"></script>
 </body>
 </html>

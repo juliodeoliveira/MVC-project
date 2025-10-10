@@ -9,6 +9,8 @@ use App\Models\ToDoList;
 class TasksController
 {
     // This name's supposed to be temporary
+    // TODO: pode ser privado
+    // TODO: injecao de dependencia com PHP-DI
     public function arrayMaker(int $projectId, array $todolist)
     {
         $tasksObject = [];

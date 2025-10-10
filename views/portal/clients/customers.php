@@ -7,10 +7,10 @@
     
     $listingClients = new ClientController();
     $allClients = $listingClients->allClients();
-    dump($allClients);
+    // dump($allClients);
 
     // TODO: pesquisar pelo nome de usuario, ja que nao repete (detalhe que eu tenho que modificar la no banco de dados), no banco de dados e retorna id para verificar suas permissoes...
-    dump($_SESSION["usernameLogged"]);
+    // dump($_SESSION["usernameLogged"]);
 ?>
 
 <!DOCTYPE html>
@@ -19,45 +19,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clientes</title>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/pages/clients.css">
+
     <link rel="shortcut icon" href="./assets/images/favicon/openfolder.png" type="image/x-icon">
 </head>
+
 <body>
-    <h1>Lista de clientes cadastrados</h1>
-    <form action="/search-clients/" method="GET">
-        <input type="text" name="s" id="searchClients" placeholder="Pesquise por clientes">
-        <input type="submit" value="Pesquisar">
-    </form>
+    <a href="/" class="back-btn">🏠 Voltar</a>
+    <div class="search-bar">
+        <form action="/search-clients/" method="GET" class="search-form">
+            <input type="text" name="s" placeholder="Pesquise por clientes">
+            <input type="submit" value="Pesquisar">
+        </form>
+    </div>
 
-    <br>
-    <a href="/">Voltar para a tela inicial</a>
-    <ul>       
+    <div class="clients-container">
         <?php foreach ($allClients as $client): ?>
-
-            <h1>Nome da empresa: <?=$client->getEnterpriseName()?></h1>
-            <h1>Email: <?=$client->getEmail()?></h1>
-            <ul>
-                <li>N° de telefone: <?=$client->getPhoneNumber()?></li>
-                <li>CEP: <?=$client->getCep()?></li>
-                <li>Rua: <?=$client->getStreet()?></li>
-                <li>N° da casa: <?=$client->getHouseNumber()?></li>
-                <li>Complemento: <?=$client->getComplement()?></li>
-                <li>Bairro: <?=$client->getNeighborhood()?></li>
-                <li>Cidade: <?=$client->getCity()?></li>
-                <li>Estado: <?=$client->getState()?></li>
-                <a href="/editing/<?=$client->getId()?>">Editar informações</a>
-                <br>
-                <a href="/project/<?=$client->getId()?>">Ver <?=$project->countProjects($client->getId())?> projetos</a>
-                <br>
-                <a href="/client-report/<?=$client->getId()?>">Gerar relatório</a>
-            </ul>
-            
-            <br>
-            <hr>
-            <br>
-            <br>
-            <br>
-
+            <div class="card">
+                <h2><?= $client->getEnterpriseName() ?></h2>
+                <p>Email: <?= $client->getEmail() ?></p>
+                <ul>
+                    <li>N° de telefone: <?= $client->getPhoneNumber() ?: "N/A" ?></li>
+                    <li>CEP: <?= $client->getCep() ?: "N/A" ?></li>
+                    <li>Rua: <?= $client->getStreet() ?: "N/A" ?></li>
+                    <li>N° da casa: <?= $client->getHouseNumber() ?: "N/A" ?></li>
+                    <li>Complemento: <?= $client->getComplement() ? $client->getComplement() : "N/A" ?></li>
+                    <li>Bairro: <?= $client->getNeighborhood() ? $client->getNeighborhood() : "N/A" ?></li>
+                    <li>Cidade: <?= $client->getCity() ? $client->getCity() : "N/A" ?></li>
+                    <li>Estado: <?= $client->getState() ? $client->getState() : "N/A" ?></li>
+                </ul>
+                <a class="btn small" href="/editing/<?= $client->getId() ?>">✏️ Editar informações</a>
+                <a class="btn small" href="/project/<?= $client->getId() ?>">👁️ Ver <?= $project->countProjects($client->getId()) ?> projetos</a>
+                <a class="btn small" href="/client-report/<?= $client->getId() ?>">📄 Gerar relatório</a>
+            </div>
         <?php endforeach ?>
-    </ul>
+    </div>
 </body>
+
 </html>

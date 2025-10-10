@@ -9,6 +9,12 @@ use App\Functions\StateValidation;
 
 class ClientController
 {
+    public static function countClients(): int
+    {
+        $teste = new ClientRepository();
+        return $teste->countClients();
+    }
+
     public function signClient(): void 
     {
         $_POST['enterpriseName'] = trim($_POST['enterpriseName']);

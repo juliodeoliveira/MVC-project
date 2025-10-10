@@ -39,8 +39,8 @@ if (isset($getIdbyURI) && $reloadPage === true) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Projetos</title>
-    <link rel="stylesheet" href="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/css/carroussel.css">
-    <link rel="stylesheet" href="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/css/documentList.css">
+    <link rel="stylesheet" href="http://<?=LoadEnv::compose("HOST","PORT")?>/assets/css/carroussel.css">
+    <link rel="stylesheet" href="http://<?=LoadEnv::compose("HOST","PORT")?>/assets/css/documentList.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -86,11 +86,11 @@ if (isset($getIdbyURI) && $reloadPage === true) {
         <?php if (count($allPhotos) > 0): ?>
             <?php $carouselId = "carousel-" . $project->getId(); ?>
                 <div class='carousel' id='<?= $carouselId ?>'>
-                    <div class='carousel-images'>";
+                    <div class='carousel-images'>
 
             <?php foreach ($allPhotos as $photo): ?>
                 <?php // Remove the dot from the original path ?>
-                <?php $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo->getNewPhotoPath(), 1); ?>
+                <?php $treatedPath = "http://" . LoadEnv::compose("HOST","PORT") . substr($photo->getNewPhotoPath(), 1); ?>
                 <img src='<?= $treatedPath ?>' alt='<?= $photo->getPhotoName()?>'>
             <?php endforeach; ?>
             
@@ -153,7 +153,7 @@ if (isset($getIdbyURI) && $reloadPage === true) {
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/js/loadCarousel.js"></script>
+    <script src="http://<?=LoadEnv::compose("HOST","PORT")?>/assets/js/loadCarousel.js"></script>
   
     <!-- Maintain scroll at the same position -->
     <script>

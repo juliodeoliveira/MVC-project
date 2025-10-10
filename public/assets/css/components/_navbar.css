@@ -1,0 +1,45 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--primary-color, #007bff);
+    color: white;
+    padding: 14px 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.navbar-logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+.navbar-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+}
+
+.navbar-links a:hover {
+    opacity: 0.8;
+}
+
+/* --- Versão compacta --- */
+.navbar-compact {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+.navbar-compact .navbar-links {
+    gap: 12px;
+}
+
+.navbar-compact .navbar-logo {
+    font-size: 1rem;
+}

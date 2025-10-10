@@ -27,55 +27,77 @@
             margin: 10px;
         }
     </style>
+
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/components/_wizard.css">
+
     <link rel="shortcut icon" href="localhost:5500/../assets/images/favicon/closedfolder.png" type="image/x-icon">
 </head>
 <body>
 
 <h1>Edite as informações</h1>
-    <form action="/edit/<?=$getIdbyURI?>" method="POST">
-        <label for="enterprisename">Nome da empresa:</label>
-        <input value="<?=$client->getEnterpriseName()?>" type="text" name="enterpriseName" required id="enterprisename" placeholder="Nome da empresa *">
-
-        <label for="email">E-mail:</label>
-        <input value="<?=$client->getEmail()?>" type="email" name="email" required id="email" placeholder="Email *">
-
-        <label for="telephone">Telefone:</label>
-        <input value="<?=$client->getPhoneNumber()?>" type="text" name="phone_number" id="telephone" placeholder="Telefone">
-
-        <label for="cep">CEP:</label>
-        <input value="<?=$client->getCep()?>" type="text" name="cep" id="cep" placeholder="CEP">
-
-        <label for="street">Rua:</label>
-        <input value="<?=$client->getStreet()?>" type="text" name="street" id="street" placeholder="Rua">
-
-        <label for="house">Número da casa:</label>
-        <input value="<?=$client->getHouseNumber()?>" type="text" name="nHouse" id="house" placeholder="Número da casa">
-
-        <label for="neighborhood">Bairro:</label>
-        <input value="<?=$client->getNeighborhood()?>" type="text" name="neighbor" id="neightborhood" placeholder="Bairro">
-
-        <label for="city">Cidade:</label>
-        <input value="<?=$client->getCity()?>" type="text" name="city" id="city" placeholder="Cidade">
-
-        <select name="state" id="state">
-            <option value="<?=$client->getState()?>"><?=StateValidation::replaceState($client->getState())?></option>
-
-            <?php  $states = json_decode(file_get_contents("./../config/json/states.json"), true); ?> 
-            
-            <?php foreach ($states as $options): ?>
-                <option value='<?= $options["UF"] ?>'> <?= $options["Nome"] ?> - <?= $options["UF"] ?></option>
-            <?php endforeach; ?>
-
-        </select>
+    <form action="/edit/<?=$getIdbyURI?>" method="POST" id="wizard-form">
+        <!-- Bolinhas do wizard -->
+        <div id="wizard-nav" class="wizard-nav"></div>
         
-        <br>
+        <div class="slide active">
+            <input type="text" name="enterpriseName" value="<?=$client->getEnterpriseName()?>" required placeholder="Nome da empresa *">
+        </div>
 
-        <label for="complement">Complemento:</label>
-        <textarea name="complement" id="complement" placeholder="Complemento"><?=$client->getComplement()?></textarea>
-        
-        <input type="submit" value="Editar">
+        <div class="slide">
+            <input type="email" name="email" value="<?=$client->getEmail()?>" required placeholder="E-mail *">
+        </div>
+
+        <div class="slide">
+            <input type="text" name="phone_number" value="<?=$client->getPhoneNumber()?>" placeholder="Telefone">
+        </div>
+
+        <div class="slide">
+            <input type="text" name="cep" value="<?=$client->getCep()?>" placeholder="CEP">
+        </div>
+
+        <div class="slide">
+            <input type="text" name="street" value="<?=$client->getStreet()?>" placeholder="Rua">
+        </div>
+
+        <div class="slide">
+            <input type="text" name="nHouse" value="<?=$client->getHouseNumber()?>" placeholder="Número da casa">
+        </div>
+
+        <div class="slide">
+            <input type="text" name="neighbor" value="<?=$client->getNeighborhood()?>" placeholder="Bairro">
+        </div>
+
+        <div class="slide">
+            <input type="text" name="city" value="<?=$client->getCity()?>" placeholder="Cidade">
+        </div>
+
+        <div class="slide">
+            <select name="state">
+                <option value="<?=$client->getState()?>"><?=StateValidation::replaceState($client->getState())?></option>
+                <?php $states = json_decode(file_get_contents("./../config/json/states.json"), true); ?>
+                <?php foreach ($states as $options): ?>
+                    <option value='<?= $options["UF"] ?>'><?= $options["Nome"] ?> - <?= $options["UF"] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+
+        <div class="slide">
+            <textarea name="complement" placeholder="Complemento"><?=$client->getComplement()?></textarea>
+        </div>
+
+        <!-- Botões de navegação -->
+        <div class="wizard-buttons">
+            <button type="button" id="prevBtn">← Anterior</button>
+            <button type="button" id="nextBtn">Próximo →</button>
+            <button type="submit" id="submitBtn">Salvar</button>
+        </div>
     </form>
-     
+
+
+
+         <script src="/assets/js/formWizard.js"></script>
+
     <script src="./../assets/js/validateCaracters.js"></script>
 </body>
 </html>

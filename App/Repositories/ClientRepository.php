@@ -114,5 +114,13 @@ class ClientRepository
 
         return $clients;
     }
+
+    public function countClients(): int
+    {
+        $query = $this->connection->prepare("SELECT COUNT(*) FROM customers");
+        $query->execute();
+
+        return $query->fetchColumn();
+    }
     
 }

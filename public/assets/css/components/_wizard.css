@@ -1,0 +1,115 @@
+/* Formulário Wizard */
+#wizard-form {
+    max-width: 500px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Cada input como "slide" */
+.slide {
+    display: none;
+    opacity: 0;
+    transform: translateX(60px);
+    transition: all 0.4s ease;
+}
+
+.slide.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Navegação de bolinhas */
+.wizard-nav {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.wizard-nav span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #ccc;
+    margin: 0 6px;
+    transition: all 0.3s;
+    position: relative;
+}
+
+/* Indicador da etapa atual */
+.wizard-nav span.active {
+    box-shadow: 0 0 0 3px #007bff;
+}
+
+/* Estados */
+.wizard-nav span.completed { background: #28a745; }
+.wizard-nav span.invalid { background: #dc3545; }
+.wizard-nav span.pending { background: #ffc107; }
+
+/* Botões Next/Prev */
+.wizard-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.wizard-buttons button, 
+.wizard-buttons input[type="submit"] {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.wizard-buttons button:hover, 
+.wizard-buttons input[type="submit"]:hover {
+    background: #0056b3;
+}
+
+/* Inputs e textarea */
+#wizard-form input, #wizard-form select, #wizard-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+#wizard-form input:focus, #wizard-form select:focus, #wizard-form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Inputs com erro */
+.invalid-input {
+    border-color: #dc3545 !important;
+    animation: shake 0.3s;
+}
+
+#submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #ccc;
+  border: 1px solid #aaa;
+}
+
+/* Animação shake */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}

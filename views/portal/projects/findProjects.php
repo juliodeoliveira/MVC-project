@@ -32,7 +32,7 @@ function searchProjects(Projects $project, $haystack) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Encontre seus projetos aqui!</title>
-    <link rel="stylesheet" href="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/css/carroussel.css">
+    <link rel="stylesheet" href="http://<?=LoadEnv::compose("HOST","PORT")?>/assets/css/carroussel.css">
 </head>
 <body>
     <h1>Resultado da busca por: <?=$_GET["s"]?></h1>
@@ -81,7 +81,7 @@ function searchProjects(Projects $project, $haystack) {
                             <div class='carousel-images'>
                         <?php foreach ($allPhotos as $photo): ?>
                             <?php // Remove the dot from the original path ?>
-                            <?php $treatedPath = "http://" . LoadEnv::fetchEnv("HOST") . substr($photo->getNewPhotoPath(), 1); ?>
+                            <?php $treatedPath = "http://" . LoadEnv::compose("HOST","PORT") . substr($photo->getNewPhotoPath(), 1); ?>
                             
                             <img src='<?= $treatedPath ?>' alt='<?= $photo->getPhotoName() ?>'>
                         <?php endforeach; ?>
@@ -117,7 +117,7 @@ function searchProjects(Projects $project, $haystack) {
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="http://<?=LoadEnv::fetchEnv('HOST')?>/assets/js/loadCarousel.js"/></script>
+    <script src="http://<?=LoadEnv::compose("HOST","PORT")?>/assets/js/loadCarousel.js"/></script>
 
     <script>
         window.addEventListener("pageshow", function (event) {

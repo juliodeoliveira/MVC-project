@@ -1,0 +1,125 @@
+.clients-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+/* 
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px;
+    align-items: center;
+}
+
+.search-bar input[type="text"] {
+    flex: 1 1 250px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.search-bar input[type="submit"] {
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.search-bar input[type="submit"]:hover {
+    background: #0056b3;
+}
+
+.back-link {
+    display: inline-block;
+    margin: 0 20px 20px 20px;
+    color: #007bff;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+} */
+
+
+.back-btn {
+    margin-left: 28px;
+    background-color: #28a745;
+}
+
+.back-btn:hover {
+    background: #1e7e34;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* distância entre os elementos */
+    padding: 20px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1; /* ocupa o máximo de espaço disponível */
+}
+
+.search-form input[type="text"] {
+    flex: 1; /* input cresce para preencher o espaço */
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.search-form input[type="submit"] {
+    margin-bottom: 0px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.25s ease;
+}
+
+.search-form input[type="submit"]:hover {
+    background: #0056b3;
+}
+
+.back-link {
+    white-space: nowrap; /* garante que o texto não quebre linha */
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .search-bar {
+        flex-direction: column;
+        align-items: stretch; /* faz os elementos ocuparem largura total */
+        gap: 10px;
+    }
+
+    .search-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .search-form input[type="text"],
+    .search-form input[type="submit"],
+    .back-link {
+        width: 100%; /* ocupa toda a largura do container */
+    }
+
+    .search-form input[type="submit"] {
+        text-align: center;
+    }
+}

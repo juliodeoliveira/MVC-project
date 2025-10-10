@@ -1,0 +1,16 @@
+/* Variáveis globais */
+:root {
+    --primary-color: #007bff;
+    --primary-color-hover: #0056b3;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --text-color: #333;
+    --bg-color: #f4f6f8;
+    --card-bg: #ffffff;
+    --border-radius: 12px;
+    --input-padding: 12px 14px;
+    --transition: 0.2s;
+    --box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

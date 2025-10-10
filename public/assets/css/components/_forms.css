@@ -1,0 +1,40 @@
+/* Formulários */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: var(--input-padding);
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    margin-top: 8px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+    font-weight: 500;
+}
+
+ul.form-errors {
+    color: var(--danger-color);
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+ul.form-errors li::before {
+    content: "⚠️ ";
+}

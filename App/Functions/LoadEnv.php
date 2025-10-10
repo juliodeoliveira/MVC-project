@@ -5,11 +5,12 @@ namespace App\Functions;
 class LoadEnv 
 {
 
-    private static $envPath = "./../.env";
+    private static $envPath = __DIR__ . "/../../.env";
 
     // Retornar do arquivo o valor que o usuario quer, por exemplo
     private static function env($filePath): void
     {
+        
         if (!file_exists($filePath)) {
             throw new \Exception(".env file not found.");
         }
@@ -36,6 +37,11 @@ class LoadEnv
     {
         self::env(self::$envPath);
         return getenv($envValue);
+    }
+
+    public static function compose(string $var1, string $var2, string $separator = ':'): string
+    {
+        return self::fetchEnv($var1) . $separator . self::fetchEnv($var2);
     }
 
 }
